@@ -5,20 +5,21 @@ import './App.css';
 import './SearchBar';
 import SearchBar from "./SearchBar";
 import {Button} from "@material-ui/core";
-import MiniDrawer from "./Drawer";
+import Navbar from "./Navbar";
 
 const logoStyle = {
-    padding: 50,
-    height: 300,
-    width: 600
+    padding: 25,
+    height: 200,
+    width: 500
 };
 
 const background = {
-        backgroundImage: `url(${background_image})`,
-        backgroundRepeat  : 'no-repeat',
-        backgroundPosition: 'center',
-        backgroundSize: 'cover',
-        height: '100%',
+    backgroundImage: `url(${background_image})`,
+    backgroundRepeat  : 'no-repeat',
+    backgroundPosition: 'center',
+    backgroundSize: 'cover',
+    overflow: 'hidden',
+    height: '100%',
 };
 
 const styles = ({
@@ -34,30 +35,29 @@ const styles = ({
 });
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App" style={background}>
-            <MiniDrawer/>
+    render() {
+        return (
+            <div className="App" style={background}>
+            <Navbar/>
             <div className="Primary-Container">
-                <img
-                    className ="App-logo"
-                    src={logo}
-                    alt="My logo"
-                    style={logoStyle}
-                />
-                <SearchBar/>
-                <div className="Button-bar" style={styles.container}>
-                    <Button variant="contained" style={styles.button}>
-                            Login
-                    </Button>
-                    <Button variant="contained" style={styles.button}>
-                            Sign Up
-                    </Button>
-                </div>
-            </div>
-      </div>
+            <img
+        src={logo}
+        alt="My logo"
+        style={logoStyle}
+        />
+        <SearchBar/>
+        <div className="Button-bar" style={styles.container}>
+            <Button variant="contained" style={styles.button}>
+            Login
+            </Button>
+            <Button variant="contained" style={styles.button}>
+            Sign Up
+        </Button>
+        </div>
+        </div>
+        </div>
     );
-  }
+    }
 }
 
 
