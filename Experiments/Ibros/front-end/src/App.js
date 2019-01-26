@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import logo from './logo.svg'
-import background_image from './beautiful-color-gradients.png'
+import logo from './logos/logo.svg'
+import background_image from './logos/beautiful-color-gradients.png'
 import './App.css';
 import './SearchBar';
 import SearchBar from "./SearchBar";
@@ -34,28 +34,33 @@ const styles = ({
     }
 });
 
+
 class App extends Component {
+    handleLogin = () => {
+        console.log('stub : move login logic to Login.js');
+    };
+
     render() {
         return (
             <div className="App" style={background}>
-            <Navbar/>
-            <div className="Primary-Container">
-            <img
-        src={logo}
-        alt="My logo"
-        style={logoStyle}
-        />
-        <SearchBar/>
-        <div className="Button-bar" style={styles.container}>
-            <Button variant="contained" style={styles.button}>
-            Login
-            </Button>
-            <Button variant="contained" style={styles.button}>
-            Sign Up
-        </Button>
-        </div>
-        </div>
-        </div>
+                <Navbar/>
+                <div className="Primary-Container">
+                    <img
+                    src={logo}
+                    alt="My logo"
+                    style={logoStyle}
+                    />
+                    <SearchBar/>
+                    <div className="Button-bar" style={styles.container}>
+                        <Button variant="contained" style={styles.button} onClick={this.handleLogin}>
+                            Login
+                        </Button>
+                        <Button variant="contained" style={styles.button}>
+                            Sign Up
+                        </Button>
+                    </div>
+                </div>
+            </div>
     );
     }
 }

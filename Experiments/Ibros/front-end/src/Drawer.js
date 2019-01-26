@@ -16,9 +16,9 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import HistoryIcon from './history_48px.svg'
-import CalendarIcon from './icons8-calendar.svg'
-import AccountIcon from './account_box_48px.svg'
+import HistoryIcon from './logos/history_48px.svg'
+import CalendarIcon from './logos/icons8-calendar.svg'
+import AccountIcon from './logos/account_box_48px.svg'
 
 const drawerWidth = 255;
 

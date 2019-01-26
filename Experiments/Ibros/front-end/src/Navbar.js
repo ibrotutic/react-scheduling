@@ -10,9 +10,9 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import AccountIcon from "./account_box_48px.svg";
-import CalendarIcon from "./icons8-calendar.svg";
-import HistoryIcon from "./history_48px.svg";
+import AccountIcon from "./logos/account_box_48px.svg";
+import CalendarIcon from "./logos/icons8-calendar.svg";
+import HistoryIcon from "./logos/history_48px.svg";
 
 class Navbar extends Component {
     state = {};
