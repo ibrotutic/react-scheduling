@@ -1,0 +1,5 @@
+curl -X PUT "localhost:9200/service/_doc/4?pretty" -H 'Content-Type: application/json' -d'
+{
+  "name": "ibro","service":"admin","address":"101 ISU Drive, Ames, Iowa, 50014"
+}
+
