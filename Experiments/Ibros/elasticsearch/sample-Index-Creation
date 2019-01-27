@@ -1,0 +1,21 @@
+Create index:
+
+curl -X PUT "localhost:9200/service?pretty"
+
+Response:
+{
+  "acknowledged" : true,
+  "shards_acknowledged" : true,
+  "index" : "service"
+}
+
+
+Check index health:
+
+curl -X GET "localhost:9200/_cat/indices?v"
+
+Response:
+health status index     uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+green  open   .kibana_1 qTpj_CRmQUmU5_iBsPzDiA   1   0          1            0      3.5kb          3.5kb
+yellow open   service   eo4aQF1yT1-R6a_kY3QunA   5   1          0            0       460b           460b
+yellow open   customer  8BA8KXpsRiiBqNIGhb66mA   5   1          0            0      1.1kb          1.1kb

@@ -1,0 +1,98 @@
+Ascending sort by service:
+curl -X GET "localhost:9200/service/_search?q=*&sort=service.keyword:asc&pretty"
+{
+  "took" : 5,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 5,
+    "successful" : 5,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : 4,
+    "max_score" : null,
+    "hits" : [
+      {
+        "_index" : "service",
+        "_type" : "_doc",
+        "_id" : "4",
+        "_score" : null,
+        "_source" : {
+          "name" : "ibro",
+          "service" : "admin",
+          "address" : "101 ISU Drive, Ames, Iowa, 50014"
+        },
+        "sort" : [
+          "admin"
+        ]
+      },
+      {
+        "_index" : "service",
+        "_type" : "_doc",
+        "_id" : "1",
+        "_score" : null,
+        "_source" : {
+          "name" : "ben",
+          "service" : "app development",
+          "address" : "69 ISU Street, Ames, Iowa, 50014"
+        },
+        "sort" : [
+          "app development"
+        ]
+      },
+      {
+        "_index" : "service",
+        "_type" : "_doc",
+        "_id" : "3",
+        "_score" : null,
+        "_source" : {
+          "name" : "jeff",
+          "service" : "barber",
+          "address" : "500 ISU Drive, Ames, Iowa, 50014"
+        },
+        "sort" : [
+          "barber"
+        ]
+      },
+      {
+        "_index" : "service",
+        "_type" : "_doc",
+        "_id" : "2",
+        "_score" : null,
+        "_source" : {
+          "name" : "john",
+          "service" : "computer repair",
+          "address" : "69 ISU Street, Ames, Iowa, 50014"
+        },
+        "sort" : [
+          "computer repair"
+        ]
+      }
+    ]
+  }
+}
+
+Sample search by street:
+curl -X GET "localhost:9200/service/_search" -H 'Content-Type: application/json' -d'
+{
+  "query": { "match_phrase": { "address": "ISU" } }
+}
+'
+{"took":3,"timed_out":false,"_shards":{"total":5,"successful":5,"skipped":0,"failed":0},"hits":{"total":4,"max_score":0.2876821,"hits":[{"_index":"service","_type":"_doc","_id":"1","_score":0.2876821,"_source":
+{
+  "name": "ben","service":"app development","address":"69 ISU Street, Ames, Iowa, 50014"
+}
+},{"_index":"service","_type":"_doc","_id":"3","_score":0.2876821,"_source":
+{
+  "name": "jeff","service":"barber","address":"500 ISU Drive, Ames, Iowa, 50014"
+}
+},{"_index":"service","_type":"_doc","_id":"2","_score":0.18232156,"_source":
+{
+  "name": "john","service":"computer repair","address":"69 ISU Street, Ames, Iowa, 50014"
+}
+},{"_index":"service","_type":"_doc","_id":"4","_score":0.18232156,"_source":
+{
+  "name": "ibro","service":"admin","address":"101 ISU Drive, Ames, Iowa, 50014"
+}
+}]}}
