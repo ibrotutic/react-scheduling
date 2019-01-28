@@ -12,6 +12,7 @@ import Today from "@material-ui/icons/CalendarTodaySharp";
 import Search from "@material-ui/icons/Search";
 import Alarm from "@material-ui/icons/Alarm";
 import Settings from "@material-ui/icons/Settings";
+//import { Link } from "react-router-dom";
 
 const styles = {
   list: {
@@ -51,6 +52,7 @@ class NavbarDrawer extends React.Component {
           <Divider />
           {["Search", "My Calendar", "Appointments", "Settings"].map(
             (text, index) => (
+              // <Link to={"/other"}>
               <ListItem button key={text}>
                 <ListItemIcon>
                   {index === 0 ? (
@@ -65,6 +67,7 @@ class NavbarDrawer extends React.Component {
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItem>
+              // </Link>
             )
           )}
         </List>
