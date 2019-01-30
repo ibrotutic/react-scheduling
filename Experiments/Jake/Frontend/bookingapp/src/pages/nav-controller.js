@@ -14,6 +14,7 @@ const NavController = () => (
         <Route exact path ="/Account" component={Account}/>
         <Route exact path ="/My Calendar" component={Calendar}/>
         <Route exact path ="/Appointments" component={Appointment}/>
+        <Route exact path ="/" component={Home}/>
         <Route exact path ="/Settings" component={Settings}/>
         <Route exact path ="/Login" component={Login}/>
         <Route exact path ="/SignUp" component={SignUp}/>
