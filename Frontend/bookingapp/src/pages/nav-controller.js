@@ -7,6 +7,7 @@ import Settings from "./settings";
 import Login from "./login"
 import SignUp from "./SignUp"
 import React from "react";
+import PageNotFound from "./page-not-found";
 
 const NavController = () => (
     <Switch>
@@ -18,8 +19,8 @@ const NavController = () => (
         <Route exact path ="/Settings" component={Settings}/>
         <Route exact path ="/Login" component={Login}/>
         <Route exact path ="/SignUp" component={SignUp}/>
+        <Route component={PageNotFound} />
     </Switch>
 )
 
 export default NavController
-
