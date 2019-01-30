@@ -12,7 +12,7 @@ import Today from "@material-ui/icons/CalendarTodaySharp";
 import Search from "@material-ui/icons/Search";
 import Alarm from "@material-ui/icons/Alarm";
 import Settings from "@material-ui/icons/Settings";
-//import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 const styles = {
   list: {
@@ -41,43 +41,41 @@ class NavbarDrawer extends React.Component {
     const { classes } = this.props;
 
     const sideList = (
-      <div className={classes.list}>
-        <List>
-          <ListItem>
-            <ListItemIcon>
-              <Avatar>?</Avatar>
-            </ListItemIcon>
-            <ListItemText primary="Account" />
-          </ListItem>
-          <Divider />
-          {["Search", "My Calendar", "Appointments", "Settings"].map(
-            (text, index) => (
-              // <Link to={"/other"}>
-              <ListItem button key={text}>
+          <div className={classes.list}>
+            <List>
+              <ListItem component={Link} to="/Account" button>
                 <ListItemIcon>
-                  {index === 0 ? (
-                    <Search />
-                  ) : index === 1 ? (
-                    <Today />
-                  ) : index === 2 ? (
-                    <Alarm />
-                  ) : (
-                    <Settings />
-                  )}
+                  <Avatar>?</Avatar>
                 </ListItemIcon>
-                <ListItemText primary={text} />
+                <ListItemText primary="Account" />
               </ListItem>
-              // </Link>
-            )
-          )}
-        </List>
-      </div>
+              <Divider />
+              {["Search", "My Calendar", "Appointments", "Settings"].map(
+                (text, index) => (
+                  <ListItem button key={text} component={Link} to={text}>
+                    <ListItemIcon>
+                      {index === 0 ? (
+                          <Search/>
+                      ) : index === 1 ? (
+                        <Today />
+                      ) : index === 2 ? (
+                        <Alarm />
+                      ) : (
+                        <Settings />
+                      )}
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItem>
+                )
+              )}
+            </List>
+          </div>
     );
 
     return (
       <div>
         <Drawer open={this.props.show} onClose={() => this.props.close()}>
-          <div tabIndex={0} role="button">
+          <div tabIndex={0} role="button" onClick={() => this.props.close()}>
             {sideList}
           </div>
         </Drawer>
