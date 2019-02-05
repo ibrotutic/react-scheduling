@@ -37,6 +37,10 @@ class NavbarDrawer extends React.Component {
     });
   };
 
+  formatRoute = (unformattedRoute) => {
+    return unformattedRoute.toLowerCase().replace(" ", "");
+  };
+
   render() {
     const { classes } = this.props;
 
@@ -52,7 +56,7 @@ class NavbarDrawer extends React.Component {
               <Divider />
               {["Search", "My Calendar", "Appointments", "Settings"].map(
                 (text, index) => (
-                  <ListItem button key={text} component={Link} to={text}>
+                  <ListItem button key={text} component={Link} to={this.formatRoute(text)}>
                     <ListItemIcon>
                       {index === 0 ? (
                           <Search/>

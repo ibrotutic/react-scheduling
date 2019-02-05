@@ -11,14 +11,14 @@ import PageNotFound from "./page-not-found";
 
 const NavController = () => (
     <Switch>
-        <Route exact path ="/Search" component={Home}/>
-        <Route exact path ="/Account" component={Account}/>
-        <Route exact path ="/My Calendar" component={Calendar}/>
-        <Route exact path ="/Appointments" component={Appointment}/>
+        <Route exact path ="/search" component={Home}/>
+        <Route exact path ="/account" component={Account}/>
+        <Route exact path ="/mycalendar" component={Calendar}/>
+        <Route exact path ="/appointments" component={Appointment}/>
         <Route exact path ="/" component={Home}/>
-        <Route exact path ="/Settings" component={Settings}/>
-        <Route exact path ="/Login" component={Login}/>
-        <Route exact path ="/SignUp" component={SignUp}/>
+        <Route exact path ="/settings" component={Settings}/>
+        <Route exact path ="/login" component={Login}/>
+        <Route exact path ="/signup" component={SignUp}/>
         <Route component={PageNotFound} />
     </Switch>
 )

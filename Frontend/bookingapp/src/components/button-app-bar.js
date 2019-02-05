@@ -41,8 +41,8 @@ function ButtonAppBar(props) {
           <Typography variant="h6" color="inherit" className={classes.grow}>
             Booking App
           </Typography>
-          <Button color="inherit" component={Link} to="/Login">Login</Button>
-          <Button color="inherit" component={Link} to="/SignUp">Sign Up</Button>
+          <Button color="inherit" component={Link} to="/login">Login</Button>
+          <Button color="inherit" component={Link} to="/signup">Sign Up</Button>
         </Toolbar>
       </AppBar>
     </div>
