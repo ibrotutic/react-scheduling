@@ -1,4 +1,4 @@
-Use the following command in your terminal to clone the project into your local system:
+Execute the following command in your terminal to clone the project into your local system:
 
 git clone https://git.linux.iastate.edu/tghosh/petclinic-mysql/ 
 
