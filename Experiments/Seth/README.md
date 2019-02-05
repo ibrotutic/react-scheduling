@@ -3,6 +3,7 @@ Use the following command in your terminal to clone the project into your local 
 git clone https://git.linux.iastate.edu/tghosh/petclinic-mysql/ 
 
 In order to run project you must:
+    
     -start a database server using XAMPP or WAMPserver
     
     -create a database schema (named petclinic) in MySQL Workbench and connect it to your database server
