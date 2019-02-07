@@ -24,18 +24,6 @@ const styles = {
 };
 
 class NavbarDrawer extends React.Component {
-  state = {
-    top: false,
-    left: false,
-    bottom: false,
-    right: false
-  };
-
-  toggleDrawer = (side, open) => () => {
-    this.setState({
-      [side]: open
-    });
-  };
 
   formatRoute = (unformattedRoute) => {
     return unformattedRoute.toLowerCase().replace(" ", "");

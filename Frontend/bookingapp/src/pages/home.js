@@ -1,9 +1,8 @@
 import React from "react";
+import Container from './search-with-container'
 
 const Home = () => (
-    <div>
-        <h2>Home stub, possibly search here?</h2>
-    </div>
+    <Container/>
 )
 
 export default Home
