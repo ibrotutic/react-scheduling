@@ -4,6 +4,7 @@ import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { Auth } from "aws-amplify";
+import { connect } from "react-redux";
 
 const styles = theme => ({
   container: {
@@ -37,7 +38,13 @@ class LoginForm extends Component {
 
   loginSubmit = () => {
     Auth.signIn(this.state.username, this.state.pw)
-      .then(() => console.log("Signed in"))
+      .then(resp => {
+        var payload = {
+          cognito: resp
+        };
+
+        this.props.updateUserData(payload);
+      })
       .catch(err => console.log(err));
   };
 
@@ -82,4 +89,26 @@ class LoginForm extends Component {
   }
 }
 
-export default withStyles(styles)(LoginForm);
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateUserData: userData => {
+      dispatch({
+        type: "LOAD_USER",
+        payload: userData
+      });
+    }
+  };
+};
+
+export default withStyles(styles)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(LoginForm)
+);

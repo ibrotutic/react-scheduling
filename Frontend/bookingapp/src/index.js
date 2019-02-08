@@ -10,7 +10,7 @@ import logger from "redux-logger";
 import { Provider } from "react-redux";
 
 const store = createStore(
-  combineReducers({ userReducer: userReducer }),
+  combineReducers({ user: userReducer }),
   {},
   applyMiddleware(logger)
 );

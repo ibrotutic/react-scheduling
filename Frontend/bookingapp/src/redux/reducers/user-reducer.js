@@ -11,17 +11,10 @@ export const userReducer = (state = initialUserData, action) => {
   const { payload, type } = action;
   switch (type) {
     case "LOAD_USER":
-      if (
-        payload !== undefined &&
-        payload.user !== undefined &&
-        payload.user.username !== undefined &&
-        payload.user.username !== ""
-      ) {
-        state = {
-          ...state,
-          user: payload.user
-        };
-      }
+      state = {
+        ...state,
+        user: payload.cognito
+      };
       break;
     default:
       break;
