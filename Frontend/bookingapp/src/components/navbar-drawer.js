@@ -79,7 +79,7 @@ class NavbarDrawer extends React.Component {
             )
           )}
           <Divider />
-          <ListItem onClick={() => Auth.signOut()}>
+          <ListItem button onClick={() => Auth.signOut()}>
             <ListItemText primary="Sign Out" />
           </ListItem>
         </List>
