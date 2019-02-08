@@ -10,15 +10,13 @@ Amplify.configure(awsmobile);
 
 class App extends Component {
   componentDidMount() {
-    console.log("mount");
     Auth.currentAuthenticatedUser(user => {
-      console.log("logged in app");
       var payload = {
         cognito: user
       };
       this.props.updateUserData(payload);
     }).catch(err => {
-      console.log("not auth app");
+      this.props.clearUserData();
     });
   }
   render() {
@@ -43,6 +41,12 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: "LOAD_USER",
         payload: userData
+      });
+    },
+    clearUserData: () => {
+      dispatch({
+        type: "SIGN_OUT_USER",
+        payload: {}
       });
     }
   };

@@ -50,8 +50,7 @@ class LoginForm extends Component {
 
   render() {
     const { classes } = this.props;
-    console.log(this.state.username);
-    console.log(this.state.pw);
+
     return (
       <Paper>
         <form>
