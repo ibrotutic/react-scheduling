@@ -5,6 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { Auth } from "aws-amplify";
 import { connect } from "react-redux";
+import { Redirect } from "react-router";
 
 const styles = theme => ({
   container: {
@@ -47,8 +48,9 @@ class LoginForm extends Component {
         var payload = {
           cognito: resp
         };
+
         this.props.updateUserData(payload);
-        window.location.replace("/");
+        this.setState({ success: true });
       })
       .catch(err => {
         if (err.code === "UserNotConfirmedException") {
@@ -68,6 +70,7 @@ class LoginForm extends Component {
               cognito: cognito
             };
             this.props.updateUserData(payload);
+            this.setState({ success: true });
           });
         }
       })
@@ -76,7 +79,9 @@ class LoginForm extends Component {
 
   render() {
     const { classes } = this.props;
-
+    if (this.state.success) {
+      return <Redirect to="/" />;
+    }
     if (this.state.confirmCodeMode) {
       return (
         <Paper className={classes.paper}>
