@@ -28,6 +28,7 @@ export var elasticsearchUtility = (function () {
     esClient.searchFor = async function (searchQuery) {
         try {
             const searchString = searchQuery.toString();
+
             const response = await client.search({
                 index: 'service',
                 body: {

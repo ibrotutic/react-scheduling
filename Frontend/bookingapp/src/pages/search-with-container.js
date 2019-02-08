@@ -3,7 +3,7 @@ import elasticsearchUtility from '../utilities/elastic-search-utility';
 
 const Result = ({results}) => {
 
-    if (results.length > 0) {
+    if (results && results.length > 0) {
         return results.map( (hit, index) =>
             <div key={index}>
                 <h1>{hit.name} - {hit.service}</h1>
