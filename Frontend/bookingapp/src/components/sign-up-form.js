@@ -28,10 +28,12 @@ const styles = theme => ({
   }
 });
 
-class LoginForm extends Component {
+class SignUpForm extends Component {
   state = {
     username: "",
-    pw: ""
+    pw: "",
+    confirm_pw: "",
+    email: ""
   };
 
   handleChange = (e, name) => {
@@ -40,18 +42,28 @@ class LoginForm extends Component {
     });
   };
 
-  loginSubmit = () => {
-    Auth.signIn(this.state.username, this.state.pw)
-      .then(resp => {
-        var payload = {
-          cognito: resp
-        };
-        this.props.updateUserData(payload);
-        window.location.replace("/");
+  signupSubmit = () => {
+    console.log(this.state.pw + " " + this.state.confirm_pw);
+    if (this.state.pw === this.state.confirm_pw && this.state.pw !== "") {
+      Auth.signUp({
+        username: this.state.username,
+        password: this.state.pw,
+        attributes: {
+          preferred_username: this.state.email,
+          email: this.state.email
+        }
       })
-      .catch(err => console.log(err));
+        .then(resp => {
+          console.log(resp);
+          var payload = {
+            cognito: resp
+          };
+          this.props.updateUserData(payload);
+          window.location.replace("/");
+        })
+        .catch(err => console.log(err));
+    }
   };
-
   render() {
     const { classes } = this.props;
 
@@ -60,11 +72,21 @@ class LoginForm extends Component {
         <form>
           <TextField
             // type="email" - when we convert to email
-            id="outlined-name"
+            id="outlined-username"
             label="Username"
             className={classes.textField}
             value={this.state.username}
             onChange={e => this.handleChange(e, "username")}
+            margin="normal"
+            variant="outlined"
+          />
+          <TextField
+            type="email"
+            id="outlined-email"
+            label="Email"
+            className={classes.textField}
+            value={this.state.email}
+            onChange={e => this.handleChange(e, "email")}
             margin="normal"
             variant="outlined"
           />
@@ -78,14 +100,24 @@ class LoginForm extends Component {
             margin="normal"
             variant="outlined"
           />
+          <TextField
+            type="password"
+            id="outlined-con-pw"
+            label="Confirm Password"
+            className={classes.textField}
+            value={this.state.confirm_pw}
+            onChange={e => this.handleChange(e, "confirm_pw")}
+            margin="normal"
+            variant="outlined"
+          />
         </form>
         <Button
           variant="contained"
           color="primary"
           className={classes.button}
-          onClick={() => this.loginSubmit()}
+          onClick={() => this.signupSubmit()}
         >
-          Login
+          Sign Up
         </Button>
       </Paper>
     );
@@ -113,5 +145,5 @@ export default withStyles(styles)(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(LoginForm)
+  )(SignUpForm)
 );
