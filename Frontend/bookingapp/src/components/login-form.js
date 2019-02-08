@@ -31,7 +31,8 @@ const styles = theme => ({
 class LoginForm extends Component {
   state = {
     username: "",
-    pw: ""
+    pw: "",
+    confirmCode: ""
   };
 
   handleChange = (e, name) => {
@@ -49,46 +50,95 @@ class LoginForm extends Component {
         this.props.updateUserData(payload);
         window.location.replace("/");
       })
+      .catch(err => {
+        if (err.code === "UserNotConfirmedException") {
+          this.setState({ confirmCodeMode: true });
+        } else {
+          alert("Unable to login, check username and password.");
+        }
+      });
+  };
+
+  confirmCodeSubmit = () => {
+    Auth.confirmSignUp(this.state.username, this.state.confirmCode)
+      .then(resp => {
+        if (resp === "SUCCESS") {
+          Auth.signIn(this.state.username, this.state.pw).then(cognito => {
+            var payload = {
+              cognito: cognito
+            };
+            this.props.updateUserData(payload);
+          });
+        }
+      })
       .catch(err => console.log(err));
   };
 
   render() {
     const { classes } = this.props;
 
-    return (
-      <Paper className={classes.paper}>
-        <form>
-          <TextField
-            // type="email" - when we convert to email
-            id="outlined-name"
-            label="Username"
-            className={classes.textField}
-            value={this.state.username}
-            onChange={e => this.handleChange(e, "username")}
-            margin="normal"
-            variant="outlined"
-          />
-          <TextField
-            type="password"
-            id="outlined-pw"
-            label="Password"
-            className={classes.textField}
-            value={this.state.pw}
-            onChange={e => this.handleChange(e, "pw")}
-            margin="normal"
-            variant="outlined"
-          />
-        </form>
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.button}
-          onClick={() => this.loginSubmit()}
-        >
-          Login
-        </Button>
-      </Paper>
-    );
+    if (this.state.confirmCodeMode) {
+      return (
+        <Paper className={classes.paper}>
+          <h3>We've sent a confirmation code to your email.</h3>
+          <form>
+            <TextField
+              type="password"
+              id="outlined-confirm-code"
+              label="Confirmation Code"
+              className={classes.textField}
+              value={this.state.confirmCode}
+              onChange={e => this.handleChange(e, "confirmCode")}
+              margin="normal"
+              variant="outlined"
+            />
+          </form>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            onClick={() => this.confirmCodeSubmit()}
+          >
+            Submit
+          </Button>
+        </Paper>
+      );
+    } else {
+      return (
+        <Paper className={classes.paper}>
+          <form>
+            <TextField
+              // type="email" - when we convert to email
+              id="outlined-name"
+              label="Username"
+              className={classes.textField}
+              value={this.state.username}
+              onChange={e => this.handleChange(e, "username")}
+              margin="normal"
+              variant="outlined"
+            />
+            <TextField
+              type="password"
+              id="outlined-pw"
+              label="Password"
+              className={classes.textField}
+              value={this.state.pw}
+              onChange={e => this.handleChange(e, "pw")}
+              margin="normal"
+              variant="outlined"
+            />
+          </form>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            onClick={() => this.loginSubmit()}
+          >
+            Login
+          </Button>
+        </Paper>
+      );
+    }
   }
 }
 

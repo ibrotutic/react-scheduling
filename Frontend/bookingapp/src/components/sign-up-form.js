@@ -5,6 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { Auth } from "aws-amplify";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 const styles = theme => ({
   container: {
@@ -43,7 +44,6 @@ class SignUpForm extends Component {
   };
 
   signupSubmit = () => {
-    console.log(this.state.pw + " " + this.state.confirm_pw);
     if (this.state.pw === this.state.confirm_pw && this.state.pw !== "") {
       Auth.signUp({
         username: this.state.username,
@@ -54,24 +54,35 @@ class SignUpForm extends Component {
         }
       })
         .then(resp => {
-          console.log(resp);
           var payload = {
             cognito: resp
           };
+
           this.props.updateUserData(payload);
-          window.location.replace("/");
+          this.setState({ signupSuccess: true });
         })
         .catch(err => console.log(err));
     }
   };
   render() {
     const { classes } = this.props;
-
+    if (this.state.signupSuccess) {
+      return (
+        <Paper className={classes.paper}>
+          <h3>
+            Congrats! Account Created. Please go to login to confirm your
+            account.
+          </h3>
+          <Button component={Link} to={"/login"}>
+            Go To Login
+          </Button>
+        </Paper>
+      );
+    }
     return (
       <Paper className={classes.paper}>
         <form>
           <TextField
-            // type="email" - when we convert to email
             id="outlined-username"
             label="Username"
             className={classes.textField}
