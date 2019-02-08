@@ -12,7 +12,11 @@ class Navbar extends Component {
   componentDidMount() {
     Auth.currentAuthenticatedUser()
       .then(() => this.setState({ loggedIn: true }))
-      .catch(() => this.setState({ loggedIn: false }));
+      .catch(() => {
+        Auth.signOut();
+
+        this.setState({ loggedIn: false });
+      });
   }
 
   render() {

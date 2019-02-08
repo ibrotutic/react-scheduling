@@ -12,7 +12,8 @@ import Today from "@material-ui/icons/CalendarTodaySharp";
 import Search from "@material-ui/icons/Search";
 import Alarm from "@material-ui/icons/Alarm";
 import Settings from "@material-ui/icons/Settings";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import { Auth } from "aws-amplify";
 
 const styles = {
   list: {
@@ -37,7 +38,7 @@ class NavbarDrawer extends React.Component {
     });
   };
 
-  formatRoute = (unformattedRoute) => {
+  formatRoute = unformattedRoute => {
     return unformattedRoute.toLowerCase().replace(" ", "");
   };
 
@@ -45,35 +46,44 @@ class NavbarDrawer extends React.Component {
     const { classes } = this.props;
 
     const sideList = (
-          <div className={classes.list}>
-            <List>
-              <ListItem component={Link} to="/Account" button>
+      <div className={classes.list}>
+        <List>
+          <ListItem component={Link} to="/Account" button>
+            <ListItemIcon>
+              <Avatar>?</Avatar>
+            </ListItemIcon>
+            <ListItemText primary="Account" />
+          </ListItem>
+          <Divider />
+          {["Search", "My Calendar", "Appointments", "Settings"].map(
+            (text, index) => (
+              <ListItem
+                button
+                key={text}
+                component={Link}
+                to={this.formatRoute(text)}
+              >
                 <ListItemIcon>
-                  <Avatar>?</Avatar>
+                  {index === 0 ? (
+                    <Search />
+                  ) : index === 1 ? (
+                    <Today />
+                  ) : index === 2 ? (
+                    <Alarm />
+                  ) : (
+                    <Settings />
+                  )}
                 </ListItemIcon>
-                <ListItemText primary="Account" />
+                <ListItemText primary={text} />
               </ListItem>
-              <Divider />
-              {["Search", "My Calendar", "Appointments", "Settings"].map(
-                (text, index) => (
-                  <ListItem button key={text} component={Link} to={this.formatRoute(text)}>
-                    <ListItemIcon>
-                      {index === 0 ? (
-                          <Search/>
-                      ) : index === 1 ? (
-                        <Today />
-                      ) : index === 2 ? (
-                        <Alarm />
-                      ) : (
-                        <Settings />
-                      )}
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItem>
-                )
-              )}
-            </List>
-          </div>
+            )
+          )}
+          <Divider />
+          <ListItem onClick={() => Auth.signOut()}>
+            <ListItemText primary="Sign Out" />
+          </ListItem>
+        </List>
+      </div>
     );
 
     return (

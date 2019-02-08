@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -42,14 +41,13 @@ class ButtonAppBar extends Component {
 
   render() {
     const { classes } = this.props;
-    console.log(this.state.user);
+
     return (
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
             <IconButton
               className={classes.menuButton}
-              color="inherit"
               aria-label="Menu"
               onClick={() => {
                 this.props.menuClick();
@@ -60,7 +58,7 @@ class ButtonAppBar extends Component {
             <Typography variant="h6" color="inherit" className={classes.grow}>
               Booking App
             </Typography>
-            {this.props.userLoggedIn ? (
+            {this.state.user !== null && this.props.userLoggedIn ? (
               <Typography variant="h6">{this.state.user.username}</Typography>
             ) : (
               <div>
