@@ -1,13 +1,16 @@
 import React from 'react';
 import elasticsearchUtility from '../utilities/elastic-search-utility';
+import ImgMediaCard from '../components/simple-card';
 
 const Result = ({results}) => {
 
     if (results && results.length > 0) {
         return results.map( (hit, index) =>
-            <div key={index}>
-                <h1>{hit.name} - {hit.service}</h1>
-            </div>
+            <li key ={index}>
+                <ImgMediaCard
+                props = {hit}
+                />
+            </li>
         )
     }
 
@@ -52,7 +55,9 @@ class Container extends React.Component {
     }
 
     onSearch() {
-        this.searchCluster();
+        if (this.searchQuery) {
+            this.searchCluster();
+        }
     }
 
     searchCluster() {
@@ -74,7 +79,13 @@ class Container extends React.Component {
                 onChange={this.onSearchQueryChange}
                 search={this.onSearch}
             />
-            <Result results={results} />
+            <div>
+                <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <ul style = {{ listStyleType: "none" }}>
+                        <Result results={results} />
+                    </ul>
+                </div>
+            </div>
         </div>;
     }
 }
