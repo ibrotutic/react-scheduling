@@ -47,7 +47,7 @@ class ButtonAppBar extends Component {
 
   render() {
     const { classes } = this.props;
-    console.log(this.props.cognito);
+
     return (
       <div className={classes.root}>
         <AppBar position="static">
