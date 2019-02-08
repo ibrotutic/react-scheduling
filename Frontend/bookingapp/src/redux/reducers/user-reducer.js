@@ -13,7 +13,13 @@ export const userReducer = (state = initialUserData, action) => {
     case "LOAD_USER":
       state = {
         ...state,
-        user: payload.cognito
+        cognito: payload.cognito
+      };
+      break;
+    case "SIGN_OUT_USER":
+      state = {
+        ...state,
+        cognito: null
       };
       break;
     default:

@@ -42,8 +42,8 @@ class LoginForm extends Component {
         var payload = {
           cognito: resp
         };
-
         this.props.updateUserData(payload);
+        window.location.replace("/");
       })
       .catch(err => console.log(err));
   };
@@ -60,7 +60,7 @@ class LoginForm extends Component {
             id="outlined-name"
             label="Username"
             className={classes.textField}
-            value={this.state.name}
+            value={this.state.username}
             onChange={e => this.handleChange(e, "username")}
             margin="normal"
             variant="outlined"
@@ -70,7 +70,7 @@ class LoginForm extends Component {
             id="outlined-pw"
             label="Password"
             className={classes.textField}
-            value={this.state.name}
+            value={this.state.pw}
             onChange={e => this.handleChange(e, "pw")}
             margin="normal"
             variant="outlined"
@@ -91,7 +91,7 @@ class LoginForm extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    cognito: state.user
   };
 };
 

@@ -8,6 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import { Link } from "react-router-dom";
 import { Auth } from "aws-amplify";
+import { connect } from "react-redux";
 
 const styles = {
   root: {
@@ -29,9 +30,14 @@ class ButtonAppBar extends Component {
     Auth.currentAuthenticatedUser()
       .then(resp => {
         this.setState({ user: resp });
+        var payload = {
+          cognito: resp
+        };
+        this.props.updateUserData(payload);
       })
       .catch(() => {
         this.setState({ user: null });
+        this.props.clearUserData();
       });
   };
 
@@ -41,7 +47,7 @@ class ButtonAppBar extends Component {
 
   render() {
     const { classes } = this.props;
-
+    console.log(this.props.cognito);
     return (
       <div className={classes.root}>
         <AppBar position="static">
@@ -58,8 +64,12 @@ class ButtonAppBar extends Component {
             <Typography variant="h6" color="inherit" className={classes.grow}>
               Booking App
             </Typography>
-            {this.state.user !== null && this.props.userLoggedIn ? (
-              <Typography variant="h6">{this.state.user.username}</Typography>
+            {this.props.user.cognito !== null &&
+            this.props.user.cognito !== undefined &&
+            this.props.user.username !== "" ? (
+              <Typography variant="h6">
+                {this.props.user.cognito.username}
+              </Typography>
             ) : (
               <div>
                 <Button color="inherit" component={Link} to="/login">
@@ -77,4 +87,32 @@ class ButtonAppBar extends Component {
   }
 }
 
-export default withStyles(styles)(ButtonAppBar);
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateUserData: userData => {
+      dispatch({
+        type: "LOAD_USER",
+        payload: userData
+      });
+    },
+    clearUserData: () => {
+      dispatch({
+        type: "SIGN_OUT_USER",
+        payload: {}
+      });
+    }
+  };
+};
+
+export default withStyles(styles)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(ButtonAppBar)
+);

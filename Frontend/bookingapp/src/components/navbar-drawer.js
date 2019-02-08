@@ -14,6 +14,7 @@ import Alarm from "@material-ui/icons/Alarm";
 import Settings from "@material-ui/icons/Settings";
 import { Link } from "react-router-dom";
 import { Auth } from "aws-amplify";
+import { connect } from "react-redux";
 
 const styles = {
   list: {
@@ -79,7 +80,14 @@ class NavbarDrawer extends React.Component {
             )
           )}
           <Divider />
-          <ListItem button onClick={() => Auth.signOut()}>
+          <ListItem
+            button
+            onClick={() =>
+              Auth.signOut().then(() => {
+                this.props.clearUserData();
+              })
+            }
+          >
             <ListItemText primary="Sign Out" />
           </ListItem>
         </List>
@@ -102,4 +110,32 @@ NavbarDrawer.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(NavbarDrawer);
+const mapStateToProps = state => {
+  return {
+    cognito: state.user
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateUserData: userData => {
+      dispatch({
+        type: "LOAD_USER",
+        payload: userData
+      });
+    },
+    clearUserData: () => {
+      dispatch({
+        type: "SIGN_OUT_USER",
+        payload: {}
+      });
+    }
+  };
+};
+
+export default withStyles(styles)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(NavbarDrawer)
+);
