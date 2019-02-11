@@ -47,22 +47,38 @@ class Search extends Component{
         };
 
         elasticsearchUtility.startClient();
+
+        this.onChange = this.onChange.bind(this);
+        this.keyPress = this.keyPress.bind(this);
     }
 
     searchCluster(query) {
-        elasticsearchUtility.searchFor(query).then((result) =>{
-                let parsedResults = elasticsearchUtility.parseResults(result);
-                if (parsedResults) {
-                    this.props.updateResults(parsedResults);
+        if (query) {
+            elasticsearchUtility.searchFor(query).then((result) =>{
+                    let parsedResults = elasticsearchUtility.parseResults(result);
+                    if (parsedResults) {
+                        this.props.updateResults(parsedResults);
+                    }
                 }
-            }
-        ).catch(() => {
-            console.error("Failed to search cluster");
-        });
+            ).catch(() => {
+                console.error("Failed to search cluster");
+            });
+        }
+        else {
+            this.props.updateResults([]);
+        }
     }
 
-    onChange = event => {
-        this.searchCluster(event.target.value)
+    keyPress(e) {
+        if(e.keyCode === 13){
+            console.log("Enter");
+            this.searchCluster(e.target.value)
+        }
+    }
+
+    onChange(event) {
+        //uncomment to search on button press.
+        //this.searchCluster(event.target.value)
     };
 
     render() {
@@ -87,6 +103,7 @@ class Search extends Component{
                         },
                     }}
                     onChange={this.onChange}
+                    onKeyDown={this.keyPress}
                     label="Service search"
                     variant="outlined"
                     id="custom-css-outlined-input"
