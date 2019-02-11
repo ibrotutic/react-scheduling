@@ -25,6 +25,21 @@ const styles = {
   }
 };
 
+function displaySignOut(user) {
+  if(user) {
+    return <ListItem
+        button
+        onClick={() =>
+            Auth.signOut().then(() => {
+              this.props.clearUserData();
+            })
+        }
+    >
+      <ListItemText primary="Sign Out" />
+    </ListItem>
+  }
+}
+
 class NavbarDrawer extends React.Component {
 
   formatRoute = unformattedRoute => {
@@ -68,16 +83,7 @@ class NavbarDrawer extends React.Component {
             )
           )}
           <Divider />
-          <ListItem
-            button
-            onClick={() =>
-              Auth.signOut().then(() => {
-                this.props.clearUserData();
-              })
-            }
-          >
-            <ListItemText primary="Sign Out" />
-          </ListItem>
+          {displaySignOut(this.props.user)}
         </List>
       </div>
     );

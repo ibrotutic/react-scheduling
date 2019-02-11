@@ -13,10 +13,16 @@ import Search from "./search";
 
 const styles = {
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   grow: {
     flexGrow: 1
+  },
+  positionLeft: {
+    float: "left",
+  },
+  positionRight: {
+    float: "right",
   },
   menuButton: {
     marginLeft: -12,
@@ -62,10 +68,10 @@ class ButtonAppBar extends Component {
             >
               <MenuIcon />
             </IconButton>
-            <Search/>
             <Typography variant="h6" color="inherit" className={classes.grow}>
               Booking App
             </Typography>
+            <Search/>
             {this.props.user.cognito !== null &&
             this.props.user.cognito !== undefined &&
             this.props.user.username !== "" ? (
@@ -73,7 +79,7 @@ class ButtonAppBar extends Component {
                 {this.props.user.cognito.username}
               </Typography>
             ) : (
-              <div>
+              <div className={classes.positionRight}>
                 <Button color="inherit" component={Link} to="/login">
                   Login
                 </Button>

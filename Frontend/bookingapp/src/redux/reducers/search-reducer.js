@@ -1,10 +1,9 @@
-export const initialQuery = '';
 
-export const searchReducer = (state = initialQuery, action) => {
+export const searchReducer = (state = null, action) => {
 
     switch (action.type) {
-        case "SEARCH":
-            return action.value;
+        case "SETRESULT":
+            return action.results;
         default:
             return state;
     }

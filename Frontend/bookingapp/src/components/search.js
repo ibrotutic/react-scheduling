@@ -38,16 +38,31 @@ const styles = theme => ({
 });
 
 class Search extends Component{
-    state = {
-        searchQuery: ""
-    };
+    constructor(props) {
+        super(props);
 
-    componentDidMount() {
+        this.state = {
+            searchQuery: '',
+            results: []
+        };
+
         elasticsearchUtility.startClient();
     }
 
+    searchCluster(query) {
+        elasticsearchUtility.searchFor(query).then((result) =>{
+                let parsedResults = elasticsearchUtility.parseResults(result);
+                if (parsedResults) {
+                    this.props.updateResults(parsedResults);
+                }
+            }
+        ).catch(() => {
+            console.error("Failed to search cluster");
+        });
+    }
+
     onChange = event => {
-        this.props.updateQuery(event.target.value);
+        this.searchCluster(event.target.value)
     };
 
     render() {
@@ -83,20 +98,20 @@ class Search extends Component{
 }
 const mapStateToProps = (state) => {
     return {
-        query: state.searchQuery
+        results: state.results
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateQuery: (query) => {
-            dispatch(search(query))
+        updateResults: (results) => {
+            dispatch(setResults(results))
         }
     }
 };
 
-function search(value) {
-    return {type: "SEARCH", value};
+function setResults(results) {
+    return {type: "SETRESULT", results};
 }
 
 Search.propTypes = {

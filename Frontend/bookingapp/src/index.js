@@ -13,7 +13,7 @@ import { Provider } from "react-redux";
 const store = createStore(
   combineReducers({
       user: userReducer,
-      query: searchReducer,
+      results: searchReducer,
   }),
   {},
   applyMiddleware(logger)
