@@ -25,25 +25,26 @@ const styles = {
   }
 };
 
-function displaySignOut(user) {
-  if(user) {
-    return <ListItem
-        button
-        onClick={() =>
+class NavbarDrawer extends React.Component {
+  formatRoute = unformattedRoute => {
+    return unformattedRoute.toLowerCase().replace(" ", "");
+  };
+
+  displaySignOut = () => {
+    if (this.props.cognito) {
+      return (
+        <ListItem
+          button
+          onClick={() =>
             Auth.signOut().then(() => {
               this.props.clearUserData();
             })
-        }
-    >
-      <ListItemText primary="Sign Out" />
-    </ListItem>
-  }
-}
-
-class NavbarDrawer extends React.Component {
-
-  formatRoute = unformattedRoute => {
-    return unformattedRoute.toLowerCase().replace(" ", "");
+          }
+        >
+          <ListItemText primary="Sign Out" />
+        </ListItem>
+      );
+    }
   };
 
   render() {
@@ -83,7 +84,7 @@ class NavbarDrawer extends React.Component {
             )
           )}
           <Divider />
-          {displaySignOut(this.props.user)}
+          {this.displaySignOut(this.props.cognito)}
         </List>
       </div>
     );
@@ -106,7 +107,7 @@ NavbarDrawer.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    cognito: state.user
+    cognito: state.user.cognito
   };
 };
 

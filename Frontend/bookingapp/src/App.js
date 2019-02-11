@@ -5,7 +5,7 @@ import NavController from "./pages/nav-controller";
 import Amplify, { Auth } from "aws-amplify";
 import awsmobile from "./aws-exports";
 import { connect } from "react-redux";
-import {BrowserRouter} from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 
 Amplify.configure(awsmobile);
 
@@ -22,12 +22,12 @@ class App extends Component {
   }
   render() {
     return (
-        <BrowserRouter>
-          <div className="App">
-              <Navbar />
-              <NavController />
-          </div>
-        </BrowserRouter>
+      <BrowserRouter>
+        <div className="App">
+          <Navbar />
+          <NavController />
+        </div>
+      </BrowserRouter>
     );
   }
 }
