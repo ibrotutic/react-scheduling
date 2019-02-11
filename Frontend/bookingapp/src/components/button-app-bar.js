@@ -9,6 +9,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import { Link } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import { connect } from "react-redux";
+import Search from "./search";
 
 const styles = {
   root: {
@@ -61,6 +62,7 @@ class ButtonAppBar extends Component {
             >
               <MenuIcon />
             </IconButton>
+            <Search/>
             <Typography variant="h6" color="inherit" className={classes.grow}>
               Booking App
             </Typography>

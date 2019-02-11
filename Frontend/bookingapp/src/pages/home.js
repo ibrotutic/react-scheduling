@@ -1,8 +1,8 @@
 import React from "react";
-import Container from './search-with-container'
+import SearchResults from '../components/search-results'
 
 const Home = () => (
-    <Container/>
-)
+    <SearchResults/>
+);
 
 export default Home
