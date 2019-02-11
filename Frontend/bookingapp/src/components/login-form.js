@@ -149,7 +149,7 @@ class LoginForm extends Component {
 
 const mapStateToProps = state => {
   return {
-    cognito: state.user
+    cognito: state.user.cognito
   };
 };
 
