@@ -1,9 +1,8 @@
 import React from "react";
+import SearchResults from '../components/search-results'
 
 const Home = () => (
-    <div>
-        <h2>Home stub, possibly search here?</h2>
-    </div>
-)
+    <SearchResults/>
+);
 
 export default Home
