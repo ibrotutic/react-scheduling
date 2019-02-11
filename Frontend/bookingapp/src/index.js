@@ -3,23 +3,24 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { BrowserRouter } from "react-router-dom";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { userReducer } from "./redux/reducers/user-reducer";
+import { searchReducer } from "./redux/reducers/search-reducer"
 import logger from "redux-logger";
 import { Provider } from "react-redux";
 
 const store = createStore(
-  combineReducers({ user: userReducer }),
+  combineReducers({
+      user: userReducer,
+      results: searchReducer,
+  }),
   {},
   applyMiddleware(logger)
 );
 
 ReactDOM.render(
   <Provider store={store}>
-    <BrowserRouter>
       <App />
-    </BrowserRouter>
   </Provider>,
   document.getElementById("root")
 );

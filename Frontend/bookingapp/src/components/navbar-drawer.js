@@ -25,19 +25,22 @@ const styles = {
   }
 };
 
-class NavbarDrawer extends React.Component {
-  state = {
-    top: false,
-    left: false,
-    bottom: false,
-    right: false
-  };
+function displaySignOut(user) {
+  if(user) {
+    return <ListItem
+        button
+        onClick={() =>
+            Auth.signOut().then(() => {
+              this.props.clearUserData();
+            })
+        }
+    >
+      <ListItemText primary="Sign Out" />
+    </ListItem>
+  }
+}
 
-  toggleDrawer = (side, open) => () => {
-    this.setState({
-      [side]: open
-    });
-  };
+class NavbarDrawer extends React.Component {
 
   formatRoute = unformattedRoute => {
     return unformattedRoute.toLowerCase().replace(" ", "");
@@ -80,16 +83,7 @@ class NavbarDrawer extends React.Component {
             )
           )}
           <Divider />
-          <ListItem
-            button
-            onClick={() =>
-              Auth.signOut().then(() => {
-                this.props.clearUserData();
-              })
-            }
-          >
-            <ListItemText primary="Sign Out" />
-          </ListItem>
+          {displaySignOut(this.props.user)}
         </List>
       </div>
     );
