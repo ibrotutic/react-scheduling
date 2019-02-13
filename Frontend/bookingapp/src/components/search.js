@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { connect } from "react-redux";
 import elasticsearchUtility from "../utilities/elastic-search-utility";
+import { withRouter } from 'react-router-dom';
 
 const styles = theme => ({
     container: {
@@ -35,6 +36,9 @@ const styles = theme => ({
         borderWidth: '1px',
         borderColor: 'white !important'
     },
+    text: {
+        color: 'white',
+    },
 });
 
 class Search extends Component{
@@ -59,9 +63,11 @@ class Search extends Component{
                     if (parsedResults) {
                         this.props.updateResults(parsedResults);
                     }
+                    this.props.history.push('/results?query='+query);
                 }
             ).catch(() => {
                 console.error("Failed to search cluster");
+                alert("Search failed, check console. Are you behind VPN?");
             });
         }
         else {
@@ -72,7 +78,7 @@ class Search extends Component{
     keyPress(e) {
         if(e.keyCode === 13){
             console.log("Enter");
-            this.searchCluster(e.target.value)
+            this.searchCluster(e.target.value);
         }
     }
 
@@ -100,6 +106,7 @@ class Search extends Component{
                             root: classes.cssOutlinedInput,
                             focused: classes.cssFocused,
                             notchedOutline: classes.notchedOutline,
+                            input: classes.text,
                         },
                     }}
                     onChange={this.onChange}
@@ -135,9 +142,9 @@ Search.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(
+export default withStyles(styles)(withRouter(
     connect(
         mapStateToProps,
         mapDispatchToProps
-    )(Search)
+    )(Search))
 );

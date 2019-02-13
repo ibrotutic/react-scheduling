@@ -1,8 +1,7 @@
 import React from "react";
-import SearchResults from '../components/search-results'
 
 const Home = () => (
-    <SearchResults/>
+    <h1>Home stub.</h1>
 );
 
 export default Home
