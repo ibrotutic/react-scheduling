@@ -7,7 +7,7 @@ export var elasticsearchUtility = (function () {
 
     esClient.startClient = function () {
         client  = new elasticsearch.Client({
-            host: 'localhost:9200'
+            host: '10.24.226.19:9200'
         });
     };
 
@@ -29,7 +29,7 @@ export var elasticsearchUtility = (function () {
             const searchString = searchQuery.toString();
 
             const response = await client.search({
-                index: 'service',
+                index: 'services',
                 body: {
                     query: {
                         query_string: {
@@ -51,14 +51,13 @@ export var elasticsearchUtility = (function () {
             return results.map( (hit) => {
                 let result = {};
 
-                result.service = hit._source.service;
 
-                if (hit._source.name != null) {
-                    result.name = hit._source.name;
-                }
-                else {
-                    result.name = hit._source.user;
-                }
+                result.name = hit._source.name;
+                result.service = hit._source.service;
+                result.description = hit._source.description;
+                result.orgId = hit._source.ordID;
+                result.address = hit._source.address;
+
                 return result;
             });
         }
