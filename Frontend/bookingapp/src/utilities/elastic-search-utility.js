@@ -51,6 +51,7 @@ export var elasticsearchUtility = (function () {
             return results.map( (hit) => {
                 let result = {};
 
+
                 result.name = hit._source.name;
                 result.service = hit._source.service;
                 result.description = hit._source.description;
