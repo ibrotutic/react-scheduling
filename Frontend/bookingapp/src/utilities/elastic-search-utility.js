@@ -7,7 +7,7 @@ export var elasticsearchUtility = (function () {
 
     esClient.startClient = function () {
         client  = new elasticsearch.Client({
-            host: 'localhost:9200'
+            host: '10.24.226.19:9200'
         });
     };
 
@@ -29,7 +29,7 @@ export var elasticsearchUtility = (function () {
             const searchString = searchQuery.toString();
 
             const response = await client.search({
-                index: 'service',
+                index: 'services',
                 body: {
                     query: {
                         query_string: {

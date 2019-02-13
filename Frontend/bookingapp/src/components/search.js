@@ -60,9 +60,11 @@ class Search extends Component{
                     if (parsedResults) {
                         this.props.updateResults(parsedResults);
                     }
+                    this.props.history.push('/results?query='+query);
                 }
             ).catch(() => {
                 console.error("Failed to search cluster");
+                alert("Search failed, check console. Are you behind VPN?");
             });
         }
         else {
@@ -74,7 +76,6 @@ class Search extends Component{
         if(e.keyCode === 13){
             console.log("Enter");
             this.searchCluster(e.target.value);
-            this.props.history.push('/results?query='+e.target.value);
         }
     }
 
