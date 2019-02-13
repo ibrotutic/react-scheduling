@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { connect } from "react-redux";
 import elasticsearchUtility from "../utilities/elastic-search-utility";
+import { withRouter } from 'react-router-dom';
 
 const styles = theme => ({
     container: {
@@ -72,7 +73,8 @@ class Search extends Component{
     keyPress(e) {
         if(e.keyCode === 13){
             console.log("Enter");
-            this.searchCluster(e.target.value)
+            this.searchCluster(e.target.value);
+            this.props.history.push('/results?query='+e.target.value);
         }
     }
 
@@ -135,9 +137,9 @@ Search.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(
+export default withStyles(styles)(withRouter(
     connect(
         mapStateToProps,
         mapDispatchToProps
-    )(Search)
+    )(Search))
 );
