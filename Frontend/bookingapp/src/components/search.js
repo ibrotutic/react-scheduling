@@ -36,6 +36,9 @@ const styles = theme => ({
         borderWidth: '1px',
         borderColor: 'white !important'
     },
+    text: {
+        color: 'white',
+    },
 });
 
 class Search extends Component{
@@ -103,6 +106,7 @@ class Search extends Component{
                             root: classes.cssOutlinedInput,
                             focused: classes.cssFocused,
                             notchedOutline: classes.notchedOutline,
+                            input: classes.text,
                         },
                     }}
                     onChange={this.onChange}

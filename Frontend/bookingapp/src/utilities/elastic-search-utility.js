@@ -51,14 +51,12 @@ export var elasticsearchUtility = (function () {
             return results.map( (hit) => {
                 let result = {};
 
+                result.name = hit._source.name;
                 result.service = hit._source.service;
+                result.description = hit._source.description;
+                result.orgId = hit._source.ordID;
+                result.address = hit._source.address;
 
-                if (hit._source.name != null) {
-                    result.name = hit._source.name;
-                }
-                else {
-                    result.name = hit._source.user;
-                }
                 return result;
             });
         }
