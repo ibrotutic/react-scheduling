@@ -24,8 +24,8 @@ services:
         max_attempts: 3
         window: 120s
     volumes:
-      - esdata1:/usr/share/elasticsearch/data
-      - ${PWD}/elastic-config/:/usr/shares/elasticsearch/config/
+      - /etc/elastic/data/es1:/usr/share/elasticsearch/data
+      - ${PWD}/elastic-config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     ports:
       - 9200:9200
       - 9300:9300
@@ -54,8 +54,8 @@ services:
         max_attempts: 3
         window: 120s
     volumes:
-      - esdata2:/usr/share/elasticsearch/data
-      - ${PWD}/elastic-config/:/usr/shares/elasticsearch/config/
+      - /etc/elastic/data/es2:/usr/share/elasticsearch/data
+      - ${PWD}/elastic-config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
   elasticsearch3:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.5.0
     container_name: elasticsearch3
@@ -81,8 +81,8 @@ services:
         max_attempts: 3
         window: 120s
     volumes:
-      - esdata3:/usr/share/elasticsearch/data
-      - ${PWD}/elastic-config/:/usr/shares/elasticsearch/config/
+      - /etc/elastic/data/es3:/usr/share/elasticsearch/data
+      - ${PWD}/elastic-config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticesearch.yml
   kibana:
     image: docker.elastic.co/kibana/kibana-oss:6.5.0
     container_name: kibana
@@ -105,7 +105,3 @@ services:
         delay: 5s
         max_attempts: 3
         window: 120s
-volumes:
-  esdata1:
-  esdata2:
-  esdata3:
