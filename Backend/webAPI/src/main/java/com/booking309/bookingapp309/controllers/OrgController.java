@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class OrgController {
 
+    //Imma add a controller
     @RequestMapping("/org")
     public Response getOrgInfo(@RequestParam(value="orgId", defaultValue = "") String orgId) {
         if (orgId.equals("")) {
