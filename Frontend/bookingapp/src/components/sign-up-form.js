@@ -64,6 +64,7 @@ class SignUpForm extends Component {
         .catch(err => console.log(err));
     }
   };
+
   render() {
     const { classes } = this.props;
     if (this.state.signupSuccess) {
