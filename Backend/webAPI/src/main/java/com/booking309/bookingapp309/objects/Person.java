@@ -34,7 +34,7 @@ public class Person extends com.booking309.bookingapp309.objects.Response {
     public int getPid(){
         return pid;
     }
-    
+
     public String getFirstname() {
         return firstname;
     }
