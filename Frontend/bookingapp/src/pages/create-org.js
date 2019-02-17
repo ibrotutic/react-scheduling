@@ -6,6 +6,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import { withStyles } from "@material-ui/core/styles";
+import elasticsearchUtility from "../utilities/elastic-search-utility";
 
 const styles = theme => ({
   container: {
@@ -31,6 +32,18 @@ const styles = theme => ({
 
 class CreateOrg extends Component {
   state = {};
+
+  createOrg = () => {
+    var org = {
+      name: this.state.companyName,
+      address: this.state.address,
+      service: this.state.serviceType,
+      description: this.state.description,
+      tags: this.state.tags
+    };
+
+    elasticsearchUtility.createOrg(org);
+  };
 
   handleChange = (event, name) => {
     this.setState({ [name]: event.target.value });
@@ -98,7 +111,7 @@ class CreateOrg extends Component {
             variant="contained"
             color="primary"
             className={classes.button}
-            onClick={() => this.signupSubmit()}
+            onClick={() => this.createOrg()}
           >
             Sign Up Company
           </Button>
