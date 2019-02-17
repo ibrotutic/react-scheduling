@@ -9,4 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class SettingsController {
+
+    @RequestMapping("/settings")
+    public Response getSetInfo(){
+        //return ;
+    }
 }
+
