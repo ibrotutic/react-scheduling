@@ -85,6 +85,10 @@ class NavbarDrawer extends React.Component {
           )}
           <Divider />
           {this.displaySignOut(this.props.cognito)}
+          <Divider />
+          <ListItem>
+            <Link to={"/create-org"}>Own a company? Sign up.</Link>
+          </ListItem>
         </List>
       </div>
     );
