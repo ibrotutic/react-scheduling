@@ -4,6 +4,7 @@ import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import elasticsearchUtility from "../utilities/elastic-search-utility";
+import { Link } from "react-router-dom";
 
 const uuidv4 = require("uuid/v4");
 
@@ -43,6 +44,8 @@ class CreateOrg extends Component {
     };
 
     elasticsearchUtility.createOrg(org);
+
+    this.setState({ success: true });
   };
 
   handleChange = (event, name) => {
@@ -51,6 +54,17 @@ class CreateOrg extends Component {
 
   render() {
     const classes = this.props.classes;
+
+    if (this.state.success) {
+      return (
+        <div>
+          <Paper>
+            <h2>Org Created!</h2>
+            <Link to="/">Go home</Link>
+          </Paper>
+        </div>
+      );
+    }
 
     return (
       <div>
