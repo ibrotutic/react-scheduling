@@ -66,10 +66,9 @@ export var elasticsearchUtility = (function() {
 
   esClient.createOrg = function(org) {
     client
-      .create({
+      .index({
         index: "services",
         type: "_doc",
-        id: "fadsfasdfaksjdfnsdkjfn",
         body: org
       })
       .then(resp => console.log(resp))
