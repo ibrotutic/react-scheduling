@@ -70,7 +70,7 @@ class CreateOrg extends Component {
       <div>
         <Paper className={classes.paper}>
           <h2>Create Business?</h2>
-          // Name, address, tags, service, description
+          {/* Name, address, tags, service, description */}
           <form>
             <TextField
               id="username"
