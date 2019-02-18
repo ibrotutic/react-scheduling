@@ -2,11 +2,10 @@ import React, { Component } from "react";
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import InputLabel from "@material-ui/core/InputLabel";
 import { withStyles } from "@material-ui/core/styles";
 import elasticsearchUtility from "../utilities/elastic-search-utility";
+
+const uuidv4 = require("uuid/v4");
 
 const styles = theme => ({
   container: {
@@ -35,6 +34,7 @@ class CreateOrg extends Component {
 
   createOrg = () => {
     var org = {
+      orgId: uuidv4(),
       name: this.state.companyName,
       address: this.state.address,
       service: this.state.serviceType,
