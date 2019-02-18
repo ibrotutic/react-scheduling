@@ -55,8 +55,9 @@ export var elasticsearchUtility = (function () {
                 result.name = hit._source.name;
                 result.service = hit._source.service;
                 result.description = hit._source.description;
-                result.orgId = hit._source.ordID;
+                result.orgId = hit._source.orgId;
                 result.address = hit._source.address;
+                result.tags = hit._source.address;
 
                 return result;
             });
