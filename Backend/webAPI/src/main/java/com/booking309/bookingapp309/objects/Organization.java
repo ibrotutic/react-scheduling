@@ -1,12 +1,11 @@
 package com.booking309.bookingapp309.objects;
-import java.util.ArrayList;
 
 public class Organization extends com.booking309.bookingapp309.objects.Response {
     private final int id;
     private final String serviceType;
     private final String address;
     private final String description;
-    private final Employee employeeList[] = new Employee[3];
+    private final Employee[] employeeList = new Employee[3];
 
 
     public Organization(int respCode, int id, String serviceType, String address, String description) {
