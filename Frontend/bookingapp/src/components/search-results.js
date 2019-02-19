@@ -24,7 +24,8 @@ class SearchResults extends Component {
 
         this.state = {
             searchQuery: '',
-            results: []
+            results: [],
+            open: false,
         };
 
         elasticsearchUtility.startClient();

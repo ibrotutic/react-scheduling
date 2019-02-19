@@ -1,12 +1,20 @@
-export const modalReducer = (state = null, action) => {
+const initialState = {
+    modalType: null,
+    orgInfo: {},
+    open: false
+};
+
+export function modal(state = initialState, action) {
     switch (action.type) {
         case 'SHOW_MODAL':
             return {
-                modalProps: action.orgInfo
+                modalType: action.modalType,
+                orgInfo: action.orgInfo,
+                open: true
             };
         case 'HIDE_MODAL':
-            return null;
+            return initialState;
         default:
-            return state;
+            return state
     }
 };

@@ -77,8 +77,9 @@ SimpleCard.propTypes = {
 
 function updateOrgInfo(orgInfo) {
     return {
-        type: "SHOW_MODAL",
-        orgInfo
+        type: 'SHOW_MODAL',
+        modalType: 'ORG_SELECT',
+        orgInfo: orgInfo
     };
 }
 
