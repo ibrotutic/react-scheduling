@@ -5,12 +5,22 @@ import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
 import Button from "@material-ui/core/Button";
 import EmployeeMenu from "./employee-dropdown";
+import Calendar from "react-calendar";
 
 function getModalStyle() {
     return {
         position: `absolute`, left: `50%`, top: `50%`,
         transform: `translate(-50%, -50%)`
     };
+}
+
+function CalendarComponent(props) {
+    if (props.props.scheduling) {
+        return <Calendar/>
+    }
+    else {
+        return <Button onClick={props.props.clickSchedule}>Schedule</Button>
+    }
 }
 
 const styles = theme => ({
@@ -29,18 +39,31 @@ class ModalRoot extends React.Component {
         super(props);
 
         this.state = {
-            orgInfo: ""
+            orgInfo: "",
+            scheduling: false
         };
 
         this.onClick = this.onClick.bind(this);
+        this.clickSchedule = this.clickSchedule.bind(this);
     }
 
     onClick(){
+        this.setState({scheduling: false});
         this.props.hideModal();
+    }
+
+    clickSchedule(){
+        console.log("Show schedule");
+        this.setState({scheduling: true});
     }
 
     render() {
         const { classes } = this.props;
+
+        let props = {
+            clickSchedule: this.clickSchedule,
+            scheduling: this.state.scheduling
+        };
 
         if(this.props.open) {
             return (
@@ -65,7 +88,7 @@ class ModalRoot extends React.Component {
                         </Typography>
                         <EmployeeMenu employees={["ibro", "jake"]}/>
                         <Button onClick={this.onClick}>Close</Button>
-                        <Button onClick={this.onClick}>Schedule</Button>
+                        <CalendarComponent props={props}/>
                     </div>
                 </Modal>
             )
