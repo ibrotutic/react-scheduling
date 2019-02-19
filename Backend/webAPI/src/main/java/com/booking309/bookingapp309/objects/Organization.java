@@ -5,6 +5,8 @@ public class Organization extends com.booking309.bookingapp309.objects.Response 
     private final String serviceType;
     private final String address;
     private final String description;
+    private final Employee[] employeeList = new Employee[3];
+
 
     public Organization(int respCode, int id, String serviceType, String address, String description) {
         super(respCode);
@@ -13,6 +15,7 @@ public class Organization extends com.booking309.bookingapp309.objects.Response 
         this.serviceType = serviceType;
         this.address = address;
         this.description = description;
+        setNewEmployeeList();
     }
 
     public int getId() {
@@ -29,5 +32,15 @@ public class Organization extends com.booking309.bookingapp309.objects.Response 
 
     public String getDescription() {
         return description;
+    }
+
+    public Employee[] getEmployeeList(){
+        return employeeList;
+    }
+
+    public void setNewEmployeeList(){
+        employeeList[0] = new Employee("Hunter", 1,"owner");
+        employeeList[1] = new Employee("Jake", 2, "employee");
+        employeeList[2] = new Employee("Ibro", 3,"employee");
     }
 }
