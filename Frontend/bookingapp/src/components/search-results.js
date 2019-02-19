@@ -6,8 +6,8 @@ import SimpleCard from "../components/simple-card";
 const Result = ({results}) => {
 
     if (results && results.length > 0) {
-        return results.map( (hit, index) =>
-            <li key ={index}>
+        return results.map( (hit) =>
+            <li key ={hit.orgId}>
                 <SimpleCard
                     props = {hit}
                 />
