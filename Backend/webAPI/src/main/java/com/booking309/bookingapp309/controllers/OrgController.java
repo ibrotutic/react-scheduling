@@ -20,19 +20,4 @@ public class OrgController {
             return new Organization(200, 1, "Barber", "123 Seseme St.", "I provide good haircuts!");
         }
     }
-
-
-
-    @RequestMapping("/org/employees")
-    public Response getEmployees(@RequestParam(value="orgId", defaultValue = "") String orgId) {
-        if (orgId.equals("")) {
-            return new ClientError(400, "Must provide an orgId.");
-        } else {
-            Organization temp = new Organization(200, 1, "Barber", "123 Seseme St.", "I provide good haircuts!");
-            EmployeeList list = new EmployeeList(200, temp.getEmployeeList());
-            return list;
-        }
-    }
-
-
 }
