@@ -7,10 +7,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
+/**
+ * A class that controls the endpoints that are being utilized
+ * @author Jake Veatch
+ * @author Seth Jones
+ */
 @RestController
 public class OrgController {
 
+    /**
+     * A method that returns an organization of Response type as a JSON object
+     *
+     * @param orgId
+     * @return returns the organization information (id, service type, address, description)
+     */
     @RequestMapping("/org")
     public Response getOrgInfo(@RequestParam(value="orgId", defaultValue = "") String orgId) {
         if (orgId.equals("")) {
@@ -20,3 +30,5 @@ public class OrgController {
         }
     }
 }
+
+

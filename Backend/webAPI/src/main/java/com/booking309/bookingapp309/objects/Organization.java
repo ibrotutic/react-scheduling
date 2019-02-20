@@ -1,5 +1,12 @@
 package com.booking309.bookingapp309.objects;
 
+/**
+ * A class that represents an organization with a unique identifier, service type,
+ * address, description, and a list of employees
+ *
+ * @author Jake Veatch
+ * @author Seth Jones
+ */
 public class Organization extends com.booking309.bookingapp309.objects.Response {
     private final int id;
     private final String serviceType;
