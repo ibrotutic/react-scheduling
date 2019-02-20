@@ -3,8 +3,7 @@ import connect from "react-redux/es/connect/connect";
 import OrganizationSchedulingModal from "./modals/organization-scheduling-modal";
 
 const MODAL_COMPONENTS = {
-    'ORG_SELECT': OrganizationSchedulingModal,
-    'CREATE_ORG': OrganizationCreationModal
+    'ORG_SELECT': OrganizationSchedulingModal
     /* other modals */
 };
 
