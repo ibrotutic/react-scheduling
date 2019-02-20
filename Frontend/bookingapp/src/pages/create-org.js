@@ -4,7 +4,6 @@ import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import elasticsearchUtility from "../utilities/elastic-search-utility";
-import { Link } from "react-router-dom";
 
 const uuidv4 = require("uuid/v4");
 
@@ -12,6 +11,9 @@ const styles = theme => ({
   container: {
     display: "flex",
     flexWrap: "wrap"
+  },
+  header: {
+    textAlign: "center"
   },
   textField: {
     marginLeft: theme.spacing.unit,
@@ -26,7 +28,8 @@ const styles = theme => ({
   button: {},
   paper: {
     margin: "auto",
-    maxWidth: "400px"
+    maxWidth: "400px",
+    textAlign: "center"
   }
 });
 
@@ -60,7 +63,6 @@ class CreateOrg extends Component {
         <div>
           <Paper>
             <h2>Org Created!</h2>
-            <Link to="/">Go home</Link>
           </Paper>
         </div>
       );
@@ -68,8 +70,8 @@ class CreateOrg extends Component {
 
     return (
       <div>
+        <h2 className={classes.header}>Create A Business</h2>
         <Paper className={classes.paper}>
-          <h2>Create Business?</h2>
           {/* Name, address, tags, service, description */}
           <form>
             <TextField
