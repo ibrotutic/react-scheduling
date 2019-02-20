@@ -2,6 +2,14 @@ package com.booking309.bookingapp309.objects;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+
+/**
+ * A class that represents an organization with a unique identifier, service type,
+ * address, description, and a list of employees
+ *
+ * @author Jake Veatch
+ * @author Seth Jones
+ */
 @Entity
 public class Organization {
     @Id
@@ -9,7 +17,7 @@ public class Organization {
     private String serviceType;
     private String address;
     private String description;
-    private Employee[] employeeList = new Employee[3];
+    private Employee[] employeeList;
 
     public int getId() {
         return id;

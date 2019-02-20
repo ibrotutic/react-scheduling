@@ -5,12 +5,22 @@ import com.booking309.bookingapp309.repositories.OrgRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-
+/**
+ * A class that controls the endpoints that are being utilized
+ * @author Jake Veatch
+ * @author Seth Jones
+ */
 @RestController
 public class OrgController {
     @Autowired
     private OrgRepository orgRepository;
 
+    /**
+     * A method that returns an organization of Response type as a JSON object
+     *
+     * @param orgId
+     * @return returns the organization information (id, service type, address, description)
+     */
     @GetMapping("/org")
     public @ResponseBody Organization getOrgInfo(@RequestParam String orgId) {
         if (orgId.equals("")) {
@@ -27,3 +37,5 @@ public class OrgController {
         return org;
     }
 }
+
+

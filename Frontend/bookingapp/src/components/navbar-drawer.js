@@ -15,6 +15,7 @@ import Settings from "@material-ui/icons/Settings";
 import { Link } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import { connect } from "react-redux";
+import {Button} from "@material-ui/core";
 
 const styles = {
   list: {
@@ -28,6 +29,14 @@ const styles = {
 class NavbarDrawer extends React.Component {
   formatRoute = unformattedRoute => {
     return unformattedRoute.toLowerCase().replace(" ", "");
+  };
+
+  showCreateOrgIfLoggedIn = () => {
+    if(this.props.cognito) {
+      return (
+          <Button onClick={this.props.createOrgSignUpModal}>Own a company? Sign up.</Button>
+      )
+    }
   };
 
   displaySignOut = () => {
@@ -86,9 +95,7 @@ class NavbarDrawer extends React.Component {
           <Divider />
           {this.displaySignOut(this.props.cognito)}
           <Divider />
-          <ListItem>
-            <Link to={"/create-org"}>Own a company? Sign up.</Link>
-          </ListItem>
+          {this.showCreateOrgIfLoggedIn()}
         </List>
       </div>
     );
@@ -128,6 +135,12 @@ const mapDispatchToProps = dispatch => {
         type: "SIGN_OUT_USER",
         payload: {}
       });
+    },
+    createOrgSignUpModal: () => {
+      dispatch({
+        type: 'SHOW_MODAL',
+        modalType: 'ORG_CREATE',
+      })
     }
   };
 };

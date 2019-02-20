@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 import connect from "react-redux/es/connect/connect";
 import elasticsearchUtility from "../utilities/elastic-search-utility";
-import ImgMediaCard from "../components/simple-card";
+import SimpleCard from "../components/simple-card";
 
 const Result = ({results}) => {
 
     if (results && results.length > 0) {
-        return results.map( (hit, index) =>
-            <li key ={index}>
-                <ImgMediaCard
+        return results.map( (hit) =>
+            <li key ={hit.orgId}>
+                <SimpleCard
                     props = {hit}
                 />
             </li>
@@ -24,7 +24,8 @@ class SearchResults extends Component {
 
         this.state = {
             searchQuery: '',
-            results: []
+            results: [],
+            open: false,
         };
 
         elasticsearchUtility.startClient();
