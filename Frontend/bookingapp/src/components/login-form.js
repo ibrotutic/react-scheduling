@@ -5,7 +5,6 @@ import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { Auth } from "aws-amplify";
 import { connect } from "react-redux";
-import { Redirect } from "react-router";
 
 const styles = theme => ({
   container: {
@@ -16,6 +15,9 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit
   },
+  header: {
+    textAlign: "center"
+  },
   dense: {
     marginTop: 16
   },
@@ -25,7 +27,8 @@ const styles = theme => ({
   button: {},
   paper: {
     margin: "auto",
-    maxWidth: "400px"
+    maxWidth: "400px",
+    textAlign: "center"
   }
 });
 
@@ -51,6 +54,7 @@ class LoginForm extends Component {
 
         this.props.updateUserData(payload);
         this.setState({ success: true });
+        this.props.closeModal();
       })
       .catch(err => {
         if (err.code === "UserNotConfirmedException") {
@@ -79,38 +83,40 @@ class LoginForm extends Component {
 
   render() {
     const { classes } = this.props;
-    if (this.state.success) {
-      return <Redirect to="/" />;
-    }
     if (this.state.confirmCodeMode) {
       return (
-        <Paper className={classes.paper}>
-          <h3>We've sent a confirmation code to your email.</h3>
-          <form>
-            <TextField
-              type="password"
-              id="outlined-confirm-code"
-              label="Confirmation Code"
-              className={classes.textField}
-              value={this.state.confirmCode}
-              onChange={e => this.handleChange(e, "confirmCode")}
-              margin="normal"
-              variant="outlined"
-            />
-          </form>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            onClick={() => this.confirmCodeSubmit()}
-          >
-            Submit
-          </Button>
-        </Paper>
+
+          <div>
+            <Paper className={classes.paper}>
+              <h2 className={classes.header}>Confirm Code</h2>
+              <h3 className={classes.header}>We've sent a confirmation code to your email.</h3>
+              <form>
+                <TextField
+                  type="password"
+                  id="outlined-confirm-code"
+                  label="Confirmation Code"
+                  className={classes.textField}
+                  value={this.state.confirmCode}
+                  onChange={e => this.handleChange(e, "confirmCode")}
+                  margin="normal"
+                  variant="outlined"
+                />
+              </form>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                onClick={() => this.confirmCodeSubmit()}
+              >
+                Submit
+              </Button>
+            </Paper>
+          </div>
       );
     } else {
       return (
         <Paper className={classes.paper}>
+          <h2 className={classes.header}>Login</h2>
           <form>
             <TextField
               // type="email" - when we convert to email
@@ -159,6 +165,11 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: "LOAD_USER",
         payload: userData
+      });
+    },
+    closeModal: () => {
+      dispatch({
+        type: 'HIDE_MODAL',
       });
     }
   };

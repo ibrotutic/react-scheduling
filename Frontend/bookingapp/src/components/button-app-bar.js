@@ -80,7 +80,7 @@ class ButtonAppBar extends Component {
               </Typography>
             ) : (
               <div className={classes.positionRight}>
-                <Button color="inherit" component={Link} to="/login">
+                <Button color="inherit" onClick={this.props.createLoginModal}>
                   Login
                 </Button>
                 <Button color="inherit" component={Link} to="/signup">
@@ -114,6 +114,12 @@ const mapDispatchToProps = dispatch => {
         type: "SIGN_OUT_USER",
         payload: {}
       });
+    },
+    createLoginModal: () => {
+      dispatch({
+        type: 'SHOW_MODAL',
+        modalType: 'LOGIN'
+      })
     }
   };
 };

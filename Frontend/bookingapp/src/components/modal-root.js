@@ -2,10 +2,12 @@ import React from "react";
 import connect from "react-redux/es/connect/connect";
 import OrganizationSchedulingModal from "./modals/organization-scheduling-modal";
 import OrganizationCreationModal from "./modals/organization-creation-modal"
+import LoginModal from "./modals/login-modal"
 
 const MODAL_COMPONENTS = {
     'ORG_SELECT': OrganizationSchedulingModal,
-    'ORG_CREATE': OrganizationCreationModal
+    'ORG_CREATE': OrganizationCreationModal,
+    'LOGIN': LoginModal
     /* other modals */
 };
 

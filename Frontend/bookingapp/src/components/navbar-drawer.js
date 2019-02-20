@@ -140,7 +140,7 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: 'SHOW_MODAL',
         modalType: 'ORG_CREATE',
-      })
+      });
     }
   };
 };
