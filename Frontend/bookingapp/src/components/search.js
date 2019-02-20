@@ -135,7 +135,7 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 function setResults(results) {
-    return {type: "SETRESULT", results};
+    return {type: "SET_RESULT", results};
 }
 
 Search.propTypes = {
