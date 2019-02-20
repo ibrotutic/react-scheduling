@@ -14,7 +14,7 @@ const store = createStore(
   combineReducers({
       user: userReducer,
       results: searchReducer,
-      orgInfo: modal
+      modal: modal
   }),
   {},
   applyMiddleware(logger)

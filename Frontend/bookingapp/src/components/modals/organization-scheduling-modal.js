@@ -3,8 +3,9 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Button from "@material-ui/core/Button";
-import EmployeeMenu from "./employee-dropdown";
+import EmployeeMenu from "../employee-dropdown";
 import Calendar from "react-calendar";
+import connect from "react-redux/es/connect/connect";
 
 const styles = theme => ({
     paper: {
@@ -37,8 +38,7 @@ class OrganizationSchedulingModal extends Component {
     constructor(props){
         super(props);
         this.state = {
-            scheduling: false,
-            orgInfo: props.props.orgInfo
+            scheduling: false
         };
         this.close = this.props.props.onClick.bind(this);
 
@@ -63,6 +63,8 @@ class OrganizationSchedulingModal extends Component {
             scheduling: this.state.scheduling
         };
 
+        let orgInfo = this.props.orgInfo;
+
         return (
             <Modal
                 aria-labelledby="simple-modal-title"
@@ -72,16 +74,16 @@ class OrganizationSchedulingModal extends Component {
             >
                 <div style={getModalStyle()} className={classes.paper}>
                     <Typography variant="headline" id="modal-title">
-                        {this.state.orgInfo.name}
+                        {orgInfo.name}
                     </Typography>
                     <Typography variant="title" id="simple-modal-description">
-                        {this.state.orgInfo.service}
+                        {orgInfo.service}
                     </Typography>
                     <Typography variant="h5" id="simple-modal-description">
-                        {this.state.orgInfo.address}
+                        {orgInfo.address}
                     </Typography>
                     <Typography variant="body1" id="modal-description">
-                        {this.state.orgInfo.description}
+                        {orgInfo.description}
                     </Typography>
                     <EmployeeMenu employees={["ibro", "jake"]}/>
                     <Button onClick={this.onClick}>Close</Button>
@@ -92,4 +94,10 @@ class OrganizationSchedulingModal extends Component {
     }
 }
 
-export default withStyles(styles)(OrganizationSchedulingModal);
+function mapStateToProps(state) {
+    return {
+        orgInfo: state.modal.orgInfo
+    };
+}
+
+export default withStyles(styles)(connect(mapStateToProps, null)(OrganizationSchedulingModal));
