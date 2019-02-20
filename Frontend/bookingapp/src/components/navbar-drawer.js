@@ -31,6 +31,14 @@ class NavbarDrawer extends React.Component {
     return unformattedRoute.toLowerCase().replace(" ", "");
   };
 
+  showCreateOrgIfLoggedIn = () => {
+    if(this.props.cognito) {
+      return (
+          <Button onClick={this.props.createOrgSignUpModal}>Own a company? Sign up.</Button>
+      )
+    }
+  };
+
   displaySignOut = () => {
     if (this.props.cognito) {
       return (
@@ -87,9 +95,7 @@ class NavbarDrawer extends React.Component {
           <Divider />
           {this.displaySignOut(this.props.cognito)}
           <Divider />
-          <ListItem>
-            <Button onClick={this.props.createOrgSignUpModal}>Own a company? Sign up.</Button>
-          </ListItem>
+          {this.showCreateOrgIfLoggedIn()}
         </List>
       </div>
     );
