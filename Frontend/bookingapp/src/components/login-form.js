@@ -5,6 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { Auth } from "aws-amplify";
 import { connect } from "react-redux";
+import LoadingIndicator from "./loading-indicator"
 
 const styles = theme => ({
   container: {
@@ -36,7 +37,8 @@ class LoginForm extends Component {
   state = {
     username: "",
     pw: "",
-    confirmCode: ""
+    confirmCode: "",
+    loading: ""
   };
 
   handleChange = (e, name) => {
@@ -46,6 +48,7 @@ class LoginForm extends Component {
   };
 
   loginSubmit = () => {
+    this.setState({ loading: true });
     Auth.signIn(this.state.username, this.state.pw)
       .then(resp => {
         var payload = {
@@ -53,6 +56,7 @@ class LoginForm extends Component {
         };
 
         this.props.updateUserData(payload);
+        this.setState({ loading: false });
         this.setState({ success: true });
         this.props.closeModal();
       })
@@ -85,35 +89,39 @@ class LoginForm extends Component {
     const { classes } = this.props;
     if (this.state.confirmCodeMode) {
       return (
-
           <div>
-            <Paper className={classes.paper}>
-              <h2 className={classes.header}>Confirm Code</h2>
-              <h3 className={classes.header}>We've sent a confirmation code to your email.</h3>
-              <form>
-                <TextField
-                  type="password"
-                  id="outlined-confirm-code"
-                  label="Confirmation Code"
-                  className={classes.textField}
-                  value={this.state.confirmCode}
-                  onChange={e => this.handleChange(e, "confirmCode")}
-                  margin="normal"
-                  variant="outlined"
-                />
-              </form>
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                onClick={() => this.confirmCodeSubmit()}
-              >
-                Submit
-              </Button>
-            </Paper>
+            <h2 className={classes.header}>Confirm Code</h2>
+            <h3 className={classes.header}>We've sent a confirmation code to your email.</h3>
+              <Paper className={classes.paper}>
+                <form>
+                  <TextField
+                    type="password"
+                    id="outlined-confirm-code"
+                    label="Confirmation Code"
+                    className={classes.textField}
+                    value={this.state.confirmCode}
+                    onChange={e => this.handleChange(e, "confirmCode")}
+                    margin="normal"
+                    variant="outlined"
+                  />
+                </form>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                  onClick={() => this.confirmCodeSubmit()}
+                >
+                  Submit
+                </Button>
+              </Paper>
           </div>
       );
-    } else {
+    } else if (this.state.loading) {
+      return (
+          <LoadingIndicator/>
+          )
+    }
+    else {
       return (
         <Paper className={classes.paper}>
           <h2 className={classes.header}>Login</h2>

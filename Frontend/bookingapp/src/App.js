@@ -7,11 +7,13 @@ import awsmobile from "./aws-exports";
 import { connect } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import ModalRoot from "./components/modal-root";
+import elasticsearchUtility from "./utilities/elastic-search-utility";
 
 Amplify.configure(awsmobile);
 
 class App extends Component {
   componentDidMount() {
+    elasticsearchUtility.startClient();
     Auth.currentAuthenticatedUser(user => {
       var payload = {
         cognito: user

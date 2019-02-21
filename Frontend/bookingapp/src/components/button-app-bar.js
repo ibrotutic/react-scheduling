@@ -6,7 +6,6 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import { Link } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import { connect } from "react-redux";
 import Search from "./search";
@@ -75,7 +74,7 @@ class ButtonAppBar extends Component {
             {this.props.user.cognito !== null &&
             this.props.user.cognito !== undefined &&
             this.props.user.username !== "" ? (
-              <Typography variant="h6">
+              <Typography variant="h6" color="inherit">
                 {this.props.user.cognito.username}
               </Typography>
             ) : (
@@ -83,7 +82,7 @@ class ButtonAppBar extends Component {
                 <Button color="inherit" onClick={this.props.createLoginModal}>
                   Login
                 </Button>
-                <Button color="inherit" component={Link} to="/signup">
+                <Button color="inherit" onClick={this.props.createSignUpModal}>
                   Sign Up
                 </Button>
               </div>
@@ -119,6 +118,12 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: 'SHOW_MODAL',
         modalType: 'LOGIN'
+      })
+    },
+    createSignUpModal: () => {
+      dispatch({
+        type: 'SHOW_MODAL',
+        modalType: 'SIGN_UP'
       })
     }
   };
