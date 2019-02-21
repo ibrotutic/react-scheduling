@@ -1,5 +1,7 @@
 package com.booking309.bookingapp309.objects;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -19,7 +21,8 @@ public class Organization {
     private String description;
     private Employee[] employeeList;
 
-    public String getId() {
+    @Length(max=50)
+    public String getOrgId() {
         return orgId;
     }
 
@@ -39,7 +42,7 @@ public class Organization {
         return employeeList;
     }
 
-    public void setId(String id) {
+    public void setOrgId(String id) {
         this.orgId = id;
     }
 
