@@ -56,8 +56,7 @@ class LoginForm extends Component {
         };
 
         this.props.updateUserData(payload);
-        this.setState({ loading: false });
-        this.setState({ success: true });
+        this.setState({ loading: false, success:true });
         this.props.closeModal();
       })
       .catch(err => {
