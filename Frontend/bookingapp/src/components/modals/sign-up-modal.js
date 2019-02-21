@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
-import Button from "@material-ui/core/Button";
-import CreateOrg from "../create-org";
+import SignUpForm from "../sign-up-form";
 
 const styles = theme => ({
     paper: {
@@ -22,7 +21,7 @@ function getModalStyle() {
     };
 }
 
-class OrganizationCreationModal extends Component {
+class SignUpModal extends Component {
     constructor(props){
         super(props);
         this.close = this.props.props.onClick.bind(this);
@@ -45,12 +44,11 @@ class OrganizationCreationModal extends Component {
                 onClose={this.onClick}
             >
                 <div style={getModalStyle()} className={classes.paper}>
-                    <CreateOrg/>
-                    <Button onClick={this.onClick}>Close</Button>
+                    <SignUpForm/>
                 </div>
             </Modal>
         );
     }
 }
 
-export default withStyles(styles)(OrganizationCreationModal);
+export default withStyles(styles)(SignUpModal);

@@ -4,13 +4,10 @@ import Account from "./account";
 import Calendar from "./calendar";
 import Appointment from "./appointments";
 import Settings from "./settings";
-import Login from "./login";
-import Signup from "./signup";
 import Results from "./results";
 import Search from "./search";
 import React from "react";
 import PageNotFound from "./page-not-found";
-import CreateOrg from "./create-org";
 
 const NavController = () => (
   <Switch>
@@ -20,10 +17,7 @@ const NavController = () => (
     <Route exact path="/search" component={Search} />
     <Route exact path="/" component={Home} />
     <Route exact path="/settings" component={Settings} />
-    <Route exact path="/login" component={Login} />
-    <Route exact path="/signup" component={Signup} />
     <Route path="/results" component={Results} />
-    <Route path="/create-org" component={CreateOrg} />
     <Route component={PageNotFound} />
   </Switch>
 );

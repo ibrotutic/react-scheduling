@@ -5,7 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { Auth } from "aws-amplify";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import LoginForm from "./login-form";
 
 const styles = theme => ({
   container: {
@@ -16,6 +16,9 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit
   },
+  header:{
+    textAlign: "center"
+  },
   dense: {
     marginTop: 16
   },
@@ -25,7 +28,8 @@ const styles = theme => ({
   button: {},
   paper: {
     margin: "auto",
-    maxWidth: "400px"
+    maxWidth: "400px",
+    textAlign: "center"
   }
 });
 
@@ -71,67 +75,67 @@ class SignUpForm extends Component {
       return (
         <Paper className={classes.paper}>
           <h3>
-            Congrats! Account Created. Please go to login to confirm your
-            account.
+            Congrats! Account Created. Please login and confirm your account.
           </h3>
-          <Button component={Link} to={"/login"}>
-            Go To Login
-          </Button>
+          <LoginForm/>
         </Paper>
       );
     }
     return (
-      <Paper className={classes.paper}>
-        <form>
-          <TextField
-            id="outlined-username"
-            label="Username"
-            className={classes.textField}
-            value={this.state.username}
-            onChange={e => this.handleChange(e, "username")}
-            margin="normal"
-            variant="outlined"
-          />
-          <TextField
-            type="email"
-            id="outlined-email"
-            label="Email"
-            className={classes.textField}
-            value={this.state.email}
-            onChange={e => this.handleChange(e, "email")}
-            margin="normal"
-            variant="outlined"
-          />
-          <TextField
-            type="password"
-            id="outlined-pw"
-            label="Password"
-            className={classes.textField}
-            value={this.state.pw}
-            onChange={e => this.handleChange(e, "pw")}
-            margin="normal"
-            variant="outlined"
-          />
-          <TextField
-            type="password"
-            id="outlined-con-pw"
-            label="Confirm Password"
-            className={classes.textField}
-            value={this.state.confirm_pw}
-            onChange={e => this.handleChange(e, "confirm_pw")}
-            margin="normal"
-            variant="outlined"
-          />
-        </form>
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.button}
-          onClick={() => this.signupSubmit()}
-        >
-          Sign Up
-        </Button>
-      </Paper>
+        <div>
+          <h2 className={classes.header}>Sign Up</h2>
+          <Paper className={classes.paper}>
+            <form>
+              <TextField
+                id="outlined-username"
+                label="Username"
+                className={classes.textField}
+                value={this.state.username}
+                onChange={e => this.handleChange(e, "username")}
+                margin="normal"
+                variant="outlined"
+              />
+              <TextField
+                type="email"
+                id="outlined-email"
+                label="Email"
+                className={classes.textField}
+                value={this.state.email}
+                onChange={e => this.handleChange(e, "email")}
+                margin="normal"
+                variant="outlined"
+              />
+              <TextField
+                type="password"
+                id="outlined-pw"
+                label="Password"
+                className={classes.textField}
+                value={this.state.pw}
+                onChange={e => this.handleChange(e, "pw")}
+                margin="normal"
+                variant="outlined"
+              />
+              <TextField
+                type="password"
+                id="outlined-con-pw"
+                label="Confirm Password"
+                className={classes.textField}
+                value={this.state.confirm_pw}
+                onChange={e => this.handleChange(e, "confirm_pw")}
+                margin="normal"
+                variant="outlined"
+              />
+            </form>
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              onClick={() => this.signupSubmit()}
+            >
+              Sign Up
+            </Button>
+          </Paper>
+        </div>
     );
   }
 }
@@ -149,6 +153,12 @@ const mapDispatchToProps = dispatch => {
         type: "LOAD_USER",
         payload: userData
       });
+    },
+    createLoginModal: () => {
+      dispatch({
+        type: 'SHOW_MODAL',
+        modalType: 'LOGIN'
+      })
     }
   };
 };

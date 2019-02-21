@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import connect from "react-redux/es/connect/connect";
-import elasticsearchUtility from "../utilities/elastic-search-utility";
 import SimpleCard from "../components/simple-card";
 
 const Result = ({results}) => {
@@ -19,19 +18,6 @@ const Result = ({results}) => {
 };
 
 class SearchResults extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            searchQuery: '',
-            results: [],
-            open: false,
-        };
-
-        elasticsearchUtility.startClient();
-    }
-
-
     render() {
         return (
             <div>
