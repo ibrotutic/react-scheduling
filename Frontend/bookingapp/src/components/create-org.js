@@ -56,7 +56,7 @@ class CreateOrg extends Component {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          id: org.orgId,
+          orgId: org.orgId,
           address: org.address,
           serviceType: org.service,
           description: org.description,

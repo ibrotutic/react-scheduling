@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import EmployeeMenu from "../employee-dropdown";
 import Calendar from "react-calendar";
 import connect from "react-redux/es/connect/connect";
+import LoadingIndicator from "../loading-indicator";
 
 const styles = theme => ({
   paper: {
@@ -39,7 +40,8 @@ class OrganizationSchedulingModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      scheduling: false
+      scheduling: false,
+      loading: true
     };
     this.close = this.props.props.onClick.bind(this);
 
@@ -48,15 +50,23 @@ class OrganizationSchedulingModal extends Component {
   }
 
   componentDidMount() {
+    this.setState({ loading: true });
     window
       .fetch("http://localhost:8080/org?orgId=" + this.props.orgInfo.orgId, {
         headers: {
-          "Access-Control-Allow-Origin": "*"
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json"
         }
       })
       .then(resp => resp.json())
-      .then(resp => console.log(JSON.stringify(resp)))
-      .catch(err => console.log(err));
+      .then(resp => {
+        this.setState({ org: resp });
+        this.setState({ loading: false });
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({ loading: false });
+      });
   }
 
   onClick() {
@@ -77,33 +87,37 @@ class OrganizationSchedulingModal extends Component {
     };
 
     let orgInfo = this.props.orgInfo;
-    console.log(orgInfo);
-    return (
-      <Modal
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        open={true}
-        onClose={this.onClick}
-      >
-        <div style={getModalStyle()} className={classes.paper}>
-          <Typography variant="headline" id="modal-title">
-            {orgInfo.name}
-          </Typography>
-          <Typography variant="title" id="simple-modal-description">
-            {orgInfo.service}
-          </Typography>
-          <Typography variant="h5" id="simple-modal-description">
-            {orgInfo.address}
-          </Typography>
-          <Typography variant="body1" id="modal-description">
-            {orgInfo.description}
-          </Typography>
-          <EmployeeMenu employees={["ibro", "jake"]} />
-          <Button onClick={this.onClick}>Close</Button>
-          <CalendarComponent props={calendarProps} />
-        </div>
-      </Modal>
-    );
+    console.log(this.state.org);
+    if (this.state.loading) {
+      return <LoadingIndicator />;
+    } else {
+      return (
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          open={true}
+          onClose={this.onClick}
+        >
+          <div style={getModalStyle()} className={classes.paper}>
+            <Typography variant="headline" id="modal-title">
+              {orgInfo.name}
+            </Typography>
+            <Typography variant="title" id="simple-modal-description">
+              {orgInfo.service}
+            </Typography>
+            <Typography variant="h5" id="simple-modal-description">
+              {orgInfo.address}
+            </Typography>
+            <Typography variant="body1" id="modal-description">
+              {orgInfo.description}
+            </Typography>
+            <EmployeeMenu employees={this.state.org.employeeList} />
+            <Button onClick={this.onClick}>Close</Button>
+            <CalendarComponent props={calendarProps} />
+          </div>
+        </Modal>
+      );
+    }
   }
 }
 
