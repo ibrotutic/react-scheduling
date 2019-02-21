@@ -1,12 +1,17 @@
 package com.booking309.bookingapp309.objects;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 /**
  * An class that represents an employee with a name, unique identifier, and status
  *
  * @author Seth Jones
  */
+@Entity
 public class Employee{
     private final String name;
+    @Id
     private final int id;
     private final String status;
 
