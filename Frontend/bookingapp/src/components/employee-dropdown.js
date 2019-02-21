@@ -59,7 +59,7 @@ class EmployeeMenu extends React.Component {
               secondary={
                 this.state.employees.length === 0
                   ? "No Employees Available"
-                  : this.state.employees[this.state.selectedIndex]
+                  : this.props.employees[this.state.selectedIndex]
               }
             />
           </ListItem>
@@ -70,13 +70,13 @@ class EmployeeMenu extends React.Component {
           open={Boolean(anchorEl)}
           onClose={this.handleClose}
         >
-          {this.state.employees.map((employee, index) => (
+          {this.props.employees.map((employee, index) => (
             <MenuItem
-              key={employee}
+              key={employee.empId}
               selected={index === this.state.selectedIndex}
               onClick={event => this.handleMenuItemClick(event, index)}
             >
-              {employee}
+              {employee.name}
             </MenuItem>
           ))}
         </Menu>

@@ -41,10 +41,11 @@ class CreateOrg extends Component {
   };
 
   createOrg = () => {
-    var emp = this.collectEmployees();
+    var orgId = uuidv4();
+    var emp = this.collectEmployees(orgId);
 
     var org = {
-      orgId: uuidv4(),
+      orgId: orgId,
       name: this.state.companyName,
       address: this.state.address,
       service: this.state.serviceType,
@@ -54,20 +55,14 @@ class CreateOrg extends Component {
 
     elasticsearchUtility.createOrg(org);
     window
-      .fetch("http://localhost:8080/org?orgId=" + org.orgId, {
+      .fetch("http://localhost:8080/employees?orgId=" + org.orgId, {
         method: "POST",
         mode: "cors",
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          orgId: org.orgId,
-          address: org.address,
-          serviceType: org.service,
-          description: org.description,
-          employeeList: emp
-        })
+        body: JSON.stringify(emp)
       })
       .then(resp => resp.json())
       .then(resp => console.log(JSON.stringify(resp)))
@@ -103,7 +98,7 @@ class CreateOrg extends Component {
     );
   };
 
-  collectEmployees = () => {
+  collectEmployees = id => {
     var filledEmp = this.state.employeeList
       .map((emp, index) => {
         var empName = this.state["emp" + index];
@@ -111,7 +106,8 @@ class CreateOrg extends Component {
         if (empName !== "" && empName !== undefined) {
           return {
             name: empName,
-            id: "",
+            empId: uuidv4(),
+            orgId: id,
             status: ""
           };
         } else {
