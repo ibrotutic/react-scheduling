@@ -6,6 +6,7 @@ import Amplify, { Auth } from "aws-amplify";
 import awsmobile from "./aws-exports";
 import { connect } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
+import ModalRoot from "./components/modal-root";
 
 Amplify.configure(awsmobile);
 
@@ -24,6 +25,7 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
+          <ModalRoot/>
           <Navbar />
           <NavController />
         </div>
