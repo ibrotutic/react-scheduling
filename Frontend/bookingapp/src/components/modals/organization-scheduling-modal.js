@@ -49,7 +49,7 @@ class OrganizationSchedulingModal extends Component {
 
   componentDidMount() {
     window
-      .fetch("http://cs309-pp-7.misc.iastate.edu:8080/org?orgId=test", {
+      .fetch("http://localhost:8080/org?orgId=" + this.props.orgInfo.orgId, {
         headers: {
           "Access-Control-Allow-Origin": "*"
         }

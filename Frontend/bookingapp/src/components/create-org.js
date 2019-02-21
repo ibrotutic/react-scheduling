@@ -47,6 +47,25 @@ class CreateOrg extends Component {
     };
 
     elasticsearchUtility.createOrg(org);
+    window
+      .fetch("http://localhost:8080/org?orgId=" + org.orgId, {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          id: org.orgId,
+          address: org.address,
+          serviceType: org.service,
+          description: org.description,
+          employeeList: []
+        })
+      })
+      .then(resp => resp.json())
+      .then(resp => console.log(JSON.stringify(resp)))
+      .catch(err => console.log(err));
 
     this.setState({ success: true });
   };
