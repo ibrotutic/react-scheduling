@@ -52,15 +52,18 @@ class OrganizationSchedulingModal extends Component {
   componentDidMount() {
     this.setState({ loading: true });
     window
-      .fetch("http://localhost:8080/org?orgId=" + this.props.orgInfo.orgId, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json"
+      .fetch(
+        "http://localhost:8080/employees?orgId=" + this.props.orgInfo.orgId,
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json"
+          }
         }
-      })
+      )
       .then(resp => resp.json())
       .then(resp => {
-        this.setState({ org: resp });
+        this.setState({ employees: resp });
         this.setState({ loading: false });
       })
       .catch(err => {
@@ -111,7 +114,7 @@ class OrganizationSchedulingModal extends Component {
             <Typography variant="body1" id="modal-description">
               {orgInfo.description}
             </Typography>
-            <EmployeeMenu employees={this.state.org.employeeList} />
+            <EmployeeMenu employees={this.state.employees} />
             <Button onClick={this.onClick}>Close</Button>
             <CalendarComponent props={calendarProps} />
           </div>
