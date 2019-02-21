@@ -5,6 +5,7 @@ package com.booking309.bookingapp309.objects;
  *
  * @author Seth Jones
  */
+@Entity
 public class Employee{
     private final String name;
     private final int id;

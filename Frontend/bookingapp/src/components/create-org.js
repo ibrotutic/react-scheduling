@@ -4,8 +4,10 @@ import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import elasticsearchUtility from "../utilities/elastic-search-utility";
+import { Divider } from "@material-ui/core";
 
 const uuidv4 = require("uuid/v4");
+const newEmp = { name: "", id: "", status: "" };
 
 const styles = theme => ({
   container: {
@@ -34,9 +36,13 @@ const styles = theme => ({
 });
 
 class CreateOrg extends Component {
-  state = {};
+  state = {
+    employeeList: [newEmp]
+  };
 
   createOrg = () => {
+    var emp = this.collectEmployees();
+
     var org = {
       orgId: uuidv4(),
       name: this.state.companyName,
@@ -60,7 +66,7 @@ class CreateOrg extends Component {
           address: org.address,
           serviceType: org.service,
           description: org.description,
-          employeeList: []
+          employeeList: emp
         })
       })
       .then(resp => resp.json())
@@ -72,6 +78,56 @@ class CreateOrg extends Component {
 
   handleChange = (event, name) => {
     this.setState({ [name]: event.target.value });
+  };
+
+  getEmployeeForm = () => {
+    return (
+      <div>
+        {this.state.employeeList.map((emp, index) => {
+          return (
+            <div key={index}>
+              <Divider />
+              <TextField
+                id={"emp" + index}
+                label="Employee Name"
+                className={this.props.classes.textField}
+                value={this.state.username}
+                onChange={e => this.handleChange(e, "emp" + index)}
+                margin="normal"
+                variant="outlined"
+              />
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  collectEmployees = () => {
+    var filledEmp = this.state.employeeList
+      .map((emp, index) => {
+        var empName = this.state["emp" + index];
+
+        if (empName !== "" && empName !== undefined) {
+          return {
+            name: empName,
+            id: "",
+            status: ""
+          };
+        } else {
+          return undefined;
+        }
+      })
+      .filter(emp => emp !== undefined);
+
+    return filledEmp;
+  };
+
+  addEmployee = () => {
+    var empList = this.state.employeeList;
+    empList.push(newEmp);
+
+    this.setState({ employeeList: empList });
   };
 
   render() {
@@ -141,6 +197,15 @@ class CreateOrg extends Component {
               margin="normal"
               variant="outlined"
             />
+            {this.getEmployeeForm()}
+            <Button
+              variant="contained"
+              color="secondary"
+              className={classes.button}
+              onClick={() => this.addEmployee()}
+            >
+              Add Employee
+            </Button>
           </form>
           <Button
             variant="contained"
