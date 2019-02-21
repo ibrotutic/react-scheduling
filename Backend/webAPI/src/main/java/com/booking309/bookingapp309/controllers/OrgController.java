@@ -21,6 +21,7 @@ public class OrgController {
      * @param orgId
      * @return returns the organization information (id, service type, address, description)
      */
+    @CrossOrigin
     @GetMapping("/org")
     public @ResponseBody Organization getOrgInfo(@RequestParam String orgId) {
         if (orgId.equals("")) {
@@ -30,6 +31,7 @@ public class OrgController {
         return orgRepository.findById(Integer.parseInt(orgId));
     }
 
+    @CrossOrigin
     @PostMapping("/org")
     public @ResponseBody Organization putOrgInfo(@RequestBody Organization org) {
         orgRepository.save(org);
