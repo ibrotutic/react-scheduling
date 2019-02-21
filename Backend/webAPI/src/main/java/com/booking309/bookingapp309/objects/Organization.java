@@ -1,5 +1,10 @@
 package com.booking309.bookingapp309.objects;
 
+import org.hibernate.validator.constraints.Length;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 /**
  * A class that represents an organization with a unique identifier, service type,
  * address, description, and a list of employees
@@ -7,26 +12,18 @@ package com.booking309.bookingapp309.objects;
  * @author Jake Veatch
  * @author Seth Jones
  */
-public class Organization extends com.booking309.bookingapp309.objects.Response {
-    private final int id;
-    private final String serviceType;
-    private final String address;
-    private final String description;
-    private final Employee[] employeeList = new Employee[3];
+@Entity
+public class Organization {
+    @Id
+    private String orgId;
+    private String serviceType;
+    private String address;
+    private String description;
+    private Employee[] employeeList;
 
-
-    public Organization(int respCode, int id, String serviceType, String address, String description) {
-        super(respCode);
-
-        this.id = id;
-        this.serviceType = serviceType;
-        this.address = address;
-        this.description = description;
-        setNewEmployeeList();
-    }
-
-    public int getId() {
-        return id;
+    @Length(max=50)
+    public String getOrgId() {
+        return orgId;
     }
 
     public String getServiceType() {
@@ -45,9 +42,23 @@ public class Organization extends com.booking309.bookingapp309.objects.Response 
         return employeeList;
     }
 
-    public void setNewEmployeeList(){
-        employeeList[0] = new Employee("Hunter", 1,"owner");
-        employeeList[1] = new Employee("Jake", 2, "employee");
-        employeeList[2] = new Employee("Ibro", 3,"employee");
+    public void setOrgId(String id) {
+        this.orgId = id;
+    }
+
+    public void setServiceType(String serviceType) {
+        this.serviceType = serviceType;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setEmployeeList(Employee[] employeeList) {
+        this.employeeList = employeeList;
     }
 }
