@@ -1,11 +1,9 @@
 package com.booking309.bookingapp309.controllers;
 
-import com.booking309.bookingapp309.objects.ClientError;
 import com.booking309.bookingapp309.objects.Organization;
-import com.booking309.bookingapp309.objects.Response;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.booking309.bookingapp309.repositories.OrgRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * A class that controls the endpoints that are being utilized
@@ -14,20 +12,31 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class OrgController {
+    @Autowired
+    private OrgRepository orgRepository;
 
     /**
      * A method that returns an organization of Response type as a JSON object
      *
-     * @param orgId
+     * @param orgId Id of the org to fetch
      * @return returns the organization information (id, service type, address, description)
      */
-    @RequestMapping("/org")
-    public Response getOrgInfo(@RequestParam(value="orgId", defaultValue = "") String orgId) {
+    @CrossOrigin
+    @GetMapping("/org")
+    public @ResponseBody Organization getOrgInfo(@RequestParam String orgId) {
         if (orgId.equals("")) {
-            return new ClientError(400, "Must provide an orgId.");
-        } else {
-            return new Organization(200, 1, "Barber", "123 Seseme St.", "I provide good haircuts!");
+            return null;
         }
+
+        return orgRepository.findByOrgId(orgId);
+    }
+
+    @CrossOrigin
+    @PostMapping("/org")
+    public @ResponseBody Organization putOrgInfo(@RequestBody Organization org) {
+        orgRepository.save(org);
+
+        return org;
     }
 }
 
