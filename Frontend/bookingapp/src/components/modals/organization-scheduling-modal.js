@@ -90,7 +90,7 @@ class OrganizationSchedulingModal extends Component {
     };
 
     let orgInfo = this.props.orgInfo;
-    console.log(this.state.employees);
+
     if (this.state.loading) {
       return <LoadingIndicator />;
     } else {

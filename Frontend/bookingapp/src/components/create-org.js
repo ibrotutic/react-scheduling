@@ -65,7 +65,7 @@ class CreateOrg extends Component {
         body: JSON.stringify(emp)
       })
       .then(resp => resp.json())
-      .then(resp => console.log(JSON.stringify(resp)))
+      .then(resp => JSON.stringify(resp))
       .catch(err => console.log(err));
 
     this.setState({ success: true });
