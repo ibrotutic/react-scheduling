@@ -1,5 +1,7 @@
 package com.booking309.bookingapp309.objects;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -10,46 +12,42 @@ import javax.persistence.Id;
  */
 @Entity
 public class Employee{
-    private final String name;
+    private String name;
     @Id
-    private final int id;
-    private final String status;
+    private String empId;
+    private String orgId;
+    private String status;
 
-    /**
-     * Constructor for employee, sets the name, id, and status of the new employee
-     * to the given parameters that are passed into the constructor
-     *
-     * @param name
-     * @param id
-     * @param status
-     */
-    public Employee(String name, int id, String status){
-        this.name = name;
-        this.id = id;
-        this.status = status;
-    }
-
-    /**
-     * Getter function for the name field
-     * @return returns the name of the employee
-     */
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    /**
-     * Getter function for the id field
-     * @return returns the id (primary key) of the employee
-     */
-    public int getId(){
-        return id;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    /**
-     * Getter function for the status field
-     * @return returns if the empoyee is an owner or employee
-     */
-    public String getStatus(){
+    @Length(max=50)
+    public String getEmpId() {
+        return empId;
+    }
+
+    public void setEmpId(String empId) {
+        this.empId = empId;
+    }
+
+    public String getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(String orgId) {
+        this.orgId = orgId;
+    }
+
+    public String getStatus() {
         return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
