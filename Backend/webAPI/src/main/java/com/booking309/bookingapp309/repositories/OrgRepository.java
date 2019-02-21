@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface OrgRepository extends CrudRepository<Organization, String> {
 
-    Organization findById(Integer id);
+    Organization findByOrgId(String id);
 }

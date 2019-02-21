@@ -13,14 +13,14 @@ import javax.persistence.Id;
 @Entity
 public class Organization {
     @Id
-    private int id;
+    private String orgId;
     private String serviceType;
     private String address;
     private String description;
     private Employee[] employeeList;
 
-    public int getId() {
-        return id;
+    public String getId() {
+        return orgId;
     }
 
     public String getServiceType() {
@@ -39,8 +39,8 @@ public class Organization {
         return employeeList;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(String id) {
+        this.orgId = id;
     }
 
     public void setServiceType(String serviceType) {

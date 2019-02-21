@@ -18,7 +18,7 @@ public class OrgController {
     /**
      * A method that returns an organization of Response type as a JSON object
      *
-     * @param orgId
+     * @param orgId Id of the org to fetch
      * @return returns the organization information (id, service type, address, description)
      */
     @CrossOrigin
@@ -28,7 +28,7 @@ public class OrgController {
             return null;
         }
 
-        return orgRepository.findById(Integer.parseInt(orgId));
+        return orgRepository.findByOrgId(orgId);
     }
 
     @CrossOrigin
