@@ -6,16 +6,14 @@ public class Person extends com.booking309.bookingapp309.objects.Response {
     private final String firstname;
     private final String lastname;
     private final String email;
-    private final String password;
     private final String employer;
     private final int empid;
     private final int adminid;
-    private final String businessname;
-    private final String businesstype;
 
 
-    public Person(int respCode, int pid, String firstname, String lastname, String email, String password,
-                  String employer, int empid, int adminid, String businessname, String businesstype) {
+
+    public Person(int respCode, int pid, String firstname, String lastname, String email,
+                  String employer, int empid, int adminid) {
 
         super(respCode);
 
@@ -23,12 +21,9 @@ public class Person extends com.booking309.bookingapp309.objects.Response {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
-        this.password = password;
         this.employer = employer;
         this.empid = empid;
         this.adminid = adminid;
-        this.businessname = businessname;
-        this.businesstype = businesstype;
     }
 
     public int getPid(){
@@ -47,10 +42,6 @@ public class Person extends com.booking309.bookingapp309.objects.Response {
         return email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public String getEmployer() {
         return employer;
     }
@@ -61,13 +52,5 @@ public class Person extends com.booking309.bookingapp309.objects.Response {
 
     public int getAdminid() {
         return adminid;
-    }
-
-    public String getBusinessname() {
-        return businessname;
-    }
-
-    public String getBusinesstype() {
-        return businesstype;
     }
 }

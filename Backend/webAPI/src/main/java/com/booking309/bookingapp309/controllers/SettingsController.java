@@ -16,8 +16,8 @@ public class SettingsController {
             return new ClientError(400, "Must provide an pid.");
         } else {
             return new Person(200, 1, "Rimothy", "Timothy",
-                    "sethsux@jakesux2.com", "Ibro'sCool", "Iowa State",
-                    0, 0, null, null);
+                    "sethsux@jakesux2.com", "Iowa State",
+                    0, 0);
         }
     }
 }
