@@ -53,7 +53,8 @@ class OrganizationSchedulingModal extends Component {
     this.setState({ loading: true });
     window
       .fetch(
-        "http://localhost:8080/employees?orgId=" + this.props.orgInfo.orgId,
+        "http://cs309-pp-7.misc.iastate.edu:8080/employees?orgId=" +
+          this.props.orgInfo.orgId,
         {
           headers: {
             "Access-Control-Allow-Origin": "*",
