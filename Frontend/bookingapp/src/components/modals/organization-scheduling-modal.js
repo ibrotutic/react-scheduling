@@ -92,36 +92,36 @@ class OrganizationSchedulingModal extends Component {
 
     let orgInfo = this.props.orgInfo;
 
-    if (this.state.loading) {
-      return <LoadingIndicator />;
-    } else {
-      return (
-        <Modal
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
-          open={true}
-          onClose={this.onClick}
-        >
-          <div style={getModalStyle()} className={classes.paper}>
-            <Typography variant="headline" id="modal-title">
-              {orgInfo.name}
-            </Typography>
-            <Typography variant="title" id="simple-modal-description">
-              {orgInfo.service}
-            </Typography>
-            <Typography variant="h5" id="simple-modal-description">
-              {orgInfo.address}
-            </Typography>
-            <Typography variant="body1" id="modal-description">
-              {orgInfo.description}
-            </Typography>
+    return (
+      <Modal
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+        open={true}
+        onClose={this.onClick}
+      >
+        <div style={getModalStyle()} className={classes.paper}>
+          <Typography variant="headline" id="modal-title">
+            {orgInfo.name}
+          </Typography>
+          <Typography variant="title" id="simple-modal-description">
+            {orgInfo.service}
+          </Typography>
+          <Typography variant="h5" id="simple-modal-description">
+            {orgInfo.address}
+          </Typography>
+          <Typography variant="body1" id="modal-description">
+            {orgInfo.description}
+          </Typography>
+          {this.state.loading ? (
+            <LoadingIndicator />
+          ) : (
             <EmployeeMenu employees={this.state.employees} />
-            <Button onClick={this.onClick}>Close</Button>
-            <CalendarComponent props={calendarProps} />
-          </div>
-        </Modal>
-      );
-    }
+          )}
+          <Button onClick={this.onClick}>Close</Button>
+          <CalendarComponent props={calendarProps} />
+        </div>
+      </Modal>
+    );
   }
 }
 
