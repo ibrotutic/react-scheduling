@@ -55,20 +55,19 @@ class CreateOrg extends Component {
 
     elasticsearchUtility.createOrg(org);
     window
-      .fetch(
-        "http://cs309-pp-7.misc.iastate.edu:8080/employees?orgId=" + org.orgId,
-        {
-          method: "POST",
-          mode: "cors",
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(emp)
-        }
-      )
+      .fetch("http://localhost:8080/employees?orgId=" + org.orgId, {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          emp
+        })
+      })
       .then(resp => resp.json())
-      .then(resp => JSON.stringify(resp))
+      .then(resp => console.log(JSON.stringify(resp)))
       .catch(err => console.log(err));
 
     this.setState({ success: true });
@@ -101,16 +100,16 @@ class CreateOrg extends Component {
     );
   };
 
-  collectEmployees = id => {
+  collectEmployees = orgId => {
     var filledEmp = this.state.employeeList
       .map((emp, index) => {
         var empName = this.state["emp" + index];
 
         if (empName !== "" && empName !== undefined) {
           return {
-            name: empName,
             empId: uuidv4(),
-            orgId: id,
+            orgId: orgId,
+            name: empName,
             status: ""
           };
         } else {
