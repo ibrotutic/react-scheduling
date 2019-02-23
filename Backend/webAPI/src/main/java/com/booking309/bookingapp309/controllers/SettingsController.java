@@ -1,24 +1,27 @@
 package com.booking309.bookingapp309.controllers;
 
-import com.booking309.bookingapp309.objects.ClientError;
 import com.booking309.bookingapp309.objects.Person;
-import com.booking309.bookingapp309.objects.Response;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.booking309.bookingapp309.repositories.PersonRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class SettingsController {
+    @Autowired
+    private PersonRepository personRepository;
 
-    @RequestMapping("/settings")
-    public Response getSetInfo(@RequestParam(value="pid", defaultValue = "") String pid) {
-        if (pid.equals("")) {
-            return new ClientError(400, "Must provide an pid.");
-        } else {
-            return new Person(200, 1, "Rimothy", "Timothy",
-                    "sethsux@jakesux2.com", "Iowa State",
-                    0, 0);
-        }
+    @CrossOrigin
+    @GetMapping("/settings")
+    public @ResponseBody Person getSetInfo(@RequestParam String pid) {
+        return personRepository.findByPId(pid);
+    }
+
+    @CrossOrigin
+    @PostMapping("/settings")
+    public @ResponseBody Person putSetInfo(@RequestBody Person person) {
+        personRepository.save(person);
+
+        return person;
     }
 }
 

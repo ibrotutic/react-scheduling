@@ -58,7 +58,17 @@ public class Organization {
         this.description = description;
     }
 
-    public void setEmployeeList(Employee[] employeeList) {
-        this.employeeList = employeeList;
+    public void setEmployeeList(Employee employee) {
+        this.employeeList = addEmployee(employee);
+    }
+
+    private Employee[] addEmployee(Employee emp){
+        Employee[] newEmpList = new Employee[this.employeeList.length +1];
+        for(int i = 0; i < this.employeeList.length; i++){
+            newEmpList[i] = this.employeeList[i];
+        }
+        newEmpList[newEmpList.length-1] = emp;
+
+        return newEmpList;
     }
 }
