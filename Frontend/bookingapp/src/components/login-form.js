@@ -64,6 +64,7 @@ class LoginForm extends Component {
           this.setState({ confirmCodeMode: true });
         } else {
           alert("Unable to login, check username and password.");
+          this.setState({ loading: false });
         }
       });
   };
