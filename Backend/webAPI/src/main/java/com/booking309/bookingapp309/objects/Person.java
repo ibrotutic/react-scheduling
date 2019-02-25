@@ -17,6 +17,7 @@ public class Person{
     private String[] employeeOfList;
     private String[] adminOfList;
 
+
     @Length(max=50)
     public String getpId(){
         return pId;
@@ -46,19 +47,16 @@ public class Person{
         return employeeOfList;
     }
 
-    public void setEmployeeOfList(String orgName){
-        ArrayList<String> temp = new ArrayList<>(Arrays.asList(employeeOfList));
-        temp.add(orgName);
-        this.employeeOfList = (String[])temp.toArray();
+    public void setEmployeeOfList(String[] employeeOfList) {
+        this.employeeOfList = employeeOfList;
     }
 
     public String[] getAdminOfList(){
         return employeeOfList;
     }
 
-    public void setAdminOfList(String orgName){
-        ArrayList<String> temp = new ArrayList<>(Arrays.asList(adminOfList));
-        temp.add(orgName);
-        this.adminOfList = (String[])temp.toArray();
+    public void setAdminOfList(String[] adminOfList) {
+        this.adminOfList = adminOfList;
     }
+
 }

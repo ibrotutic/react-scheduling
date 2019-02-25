@@ -60,9 +60,7 @@ public class Organization {
         this.description = description;
     }
 
-    public void setEmployeeList(Employee employee) {
-        ArrayList<Employee> temp = new ArrayList<>(Arrays.asList(employeeList));
-        temp.add(employee);
-        this.employeeList = (Employee[])temp.toArray();
+    public void setEmployeeList(Employee[] employeeList) {
+        this.employeeList = employeeList;
     }
 }
