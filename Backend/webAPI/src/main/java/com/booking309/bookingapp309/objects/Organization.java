@@ -4,8 +4,6 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * A class that represents an organization with a unique identifier, service type,
@@ -21,7 +19,6 @@ public class Organization {
     private String serviceType;
     private String address;
     private String description;
-    private Employee[] employeeList;
 
     @Length(max=50)
     public String getOrgId() {
@@ -40,10 +37,6 @@ public class Organization {
         return description;
     }
 
-    public Employee[] getEmployeeList(){
-        return employeeList;
-    }
-
     public void setOrgId(String id) {
         this.orgId = id;
     }
@@ -58,9 +51,5 @@ public class Organization {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public void setEmployeeList(Employee[] employeeList) {
-        this.employeeList = employeeList;
     }
 }

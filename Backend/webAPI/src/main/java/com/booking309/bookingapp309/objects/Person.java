@@ -3,8 +3,6 @@ package com.booking309.bookingapp309.objects;
 import org.hibernate.validator.constraints.Length;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 @Entity
 public class Person{
@@ -14,8 +12,7 @@ public class Person{
 
     private String email;
     private String name;
-    private String[] employeeOfList;
-    private String[] adminOfList;
+    private String adminOf;
 
 
     @Length(max=50)
@@ -43,20 +40,11 @@ public class Person{
         this.name = name;
     }
 
-    public String[] getEmployeeOfList(){
-        return employeeOfList;
+    public String getAdminOf(){
+        return adminOf;
     }
 
-    public void setEmployeeOfList(String[] employeeOfList) {
-        this.employeeOfList = employeeOfList;
+    public void setAdminOf(String adminOf) {
+        this.adminOf = adminOf;
     }
-
-    public String[] getAdminOfList(){
-        return employeeOfList;
-    }
-
-    public void setAdminOfList(String[] adminOfList) {
-        this.adminOfList = adminOfList;
-    }
-
 }

@@ -6,18 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class SettingsController {
+public class PersonController {
     @Autowired
     private PersonRepository personRepository;
 
     @CrossOrigin
-    @GetMapping("/settings")
+    @GetMapping("/person")
     public @ResponseBody Person getSetInfo(@RequestParam String pid) {
         return personRepository.findByPId(pid);
     }
 
     @CrossOrigin
-    @PostMapping("/settings")
+    @PostMapping("/person")
     public @ResponseBody Person putSetInfo(@RequestBody Person person) {
         personRepository.save(person);
 
