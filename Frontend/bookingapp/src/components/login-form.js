@@ -63,8 +63,8 @@ class LoginForm extends Component {
         if (err.code === "UserNotConfirmedException") {
           this.setState({ confirmCodeMode: true });
         } else {
-          alert("Unable to login, check username and password.");
           this.setState({ loading: false });
+          alert("Unable to login, check username and password.");
         }
       });
   };
