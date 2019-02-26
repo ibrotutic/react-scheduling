@@ -7,11 +7,6 @@ public class EmployeeCompositeKey implements Serializable {
     private String empId;
     private String orgId;
 
-    public EmployeeCompositeKey(String empId, String orgId) {
-        this.empId = empId;
-        this.orgId = orgId;
-    }
-
     public String getEmpId() {
         return empId;
     }
