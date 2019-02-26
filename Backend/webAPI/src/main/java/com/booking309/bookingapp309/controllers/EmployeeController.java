@@ -1,7 +1,6 @@
 package com.booking309.bookingapp309.controllers;
 
 import com.booking309.bookingapp309.objects.Employee;
-import com.booking309.bookingapp309.objects.Organization;
 import com.booking309.bookingapp309.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
