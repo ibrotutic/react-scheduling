@@ -9,5 +9,5 @@ import java.util.List;
 public interface EmployeeRepository extends CrudRepository<Employee, String> {
     public List<Employee> findAllByOrgId(String orgId);
 
-    public List<Organization> findAllByEmpId(String empId);
+    public List<Employee> findAllByEmpId(String empId);
 }

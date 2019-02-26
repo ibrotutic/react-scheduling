@@ -20,7 +20,7 @@ public class EmployeeController {
      * @return returns the organization information (id, service type, address, description)
      */
     @CrossOrigin
-    @GetMapping("/employees")
+    @GetMapping("/employees/org")
     public @ResponseBody
     List<Employee> getOrgInfo(@RequestParam String orgId) {
         return empRepository.findAllByOrgId(orgId);
@@ -29,7 +29,7 @@ public class EmployeeController {
     @CrossOrigin
     @GetMapping("/employees")
     public @ResponseBody
-    List<Organization> getOrgs(@RequestParam String empId) {
+    List<Employee> getOrgs(@RequestParam String empId) {
         return empRepository.findAllByEmpId(empId);
     }
 
