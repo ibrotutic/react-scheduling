@@ -9,7 +9,6 @@ public class Person{
 
     @Id
     private String pId;
-
     private String email;
     private String name;
     private String adminOf;
@@ -20,7 +19,7 @@ public class Person{
         return pId;
     }
 
-    public void setpId(String id){
+    public void setpId(String pId){
         this.pId = pId;
     }
 

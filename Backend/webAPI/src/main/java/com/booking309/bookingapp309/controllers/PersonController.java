@@ -13,7 +13,7 @@ public class PersonController {
     @CrossOrigin
     @GetMapping("/person")
     public @ResponseBody Person getSetInfo(@RequestParam String pid) {
-        return personRepository.findByPId(pid);
+        return personRepository.findBypId(pid);
     }
 
     @CrossOrigin
