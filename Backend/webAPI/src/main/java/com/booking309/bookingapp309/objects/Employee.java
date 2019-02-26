@@ -12,10 +12,15 @@ import javax.persistence.Id;
  */
 @Entity
 public class Employee{
+
     private String name;
+
     @Id
     private String empId;
+
+    @Id
     private String orgId;
+
     private String status;
 
     public String getName() {
@@ -35,6 +40,7 @@ public class Employee{
         this.empId = empId;
     }
 
+    @Length(max=50)
     public String getOrgId() {
         return orgId;
     }
