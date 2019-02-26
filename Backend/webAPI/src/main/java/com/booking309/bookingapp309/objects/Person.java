@@ -1,56 +1,49 @@
 package com.booking309.bookingapp309.objects;
 
-public class Person extends com.booking309.bookingapp309.objects.Response {
+import org.hibernate.validator.constraints.Length;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
-    private final int pid;
-    private final String firstname;
-    private final String lastname;
-    private final String email;
-    private final String employer;
-    private final int empid;
-    private final int adminid;
+@Entity
+public class Person{
+
+    @Id
+    private String pId;
+    private String email;
+    private String name;
+    private String adminOf;
 
 
-
-    public Person(int respCode, int pid, String firstname, String lastname, String email,
-                  String employer, int empid, int adminid) {
-
-        super(respCode);
-
-        this.pid = pid;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.email = email;
-        this.employer = employer;
-        this.empid = empid;
-        this.adminid = adminid;
+    @Length(max=50)
+    public String getpId(){
+        return pId;
     }
 
-    public int getPid(){
-        return pid;
+    public void setpId(String pId){
+        this.pId = pId;
     }
 
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public String getEmail() {
+    public String getEmail(){
         return email;
     }
 
-    public String getEmployer() {
-        return employer;
+    public void setEmail(String email){
+        this.email = email;
     }
 
-    public int getEmpid() {
-        return empid;
+    public String getName(){
+        return name;
     }
 
-    public int getAdminid() {
-        return adminid;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAdminOf(){
+        return adminOf;
+    }
+
+    public void setAdminOf(String adminOf) {
+        this.adminOf = adminOf;
     }
 }
