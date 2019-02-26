@@ -3,6 +3,7 @@ package com.booking309.bookingapp309.objects;
 import com.booking309.bookingapp309.compositeKeys.EmployeeCompositeKey;
 import org.hibernate.validator.constraints.Length;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
@@ -17,8 +18,10 @@ import java.io.Serializable;
 @IdClass(EmployeeCompositeKey.class)
 public class Employee {
     @Id
+    @Column(length=50)
     private String empId;
     @Id
+    @Column(length=50)
     private String orgId;
 
     private String status;

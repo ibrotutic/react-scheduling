@@ -1,5 +1,7 @@
 package com.booking309.bookingapp309.compositeKeys;
 
+import org.hibernate.validator.constraints.Length;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -7,6 +9,7 @@ public class EmployeeCompositeKey implements Serializable {
     private String empId;
     private String orgId;
 
+    @Length(max=50)
     public String getEmpId() {
         return empId;
     }
@@ -15,6 +18,7 @@ public class EmployeeCompositeKey implements Serializable {
         this.empId = empId;
     }
 
+    @Length(max=50)
     public String getOrgId() {
         return orgId;
     }
