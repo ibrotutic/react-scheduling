@@ -1,9 +1,13 @@
 package com.booking309.bookingapp309.objects;
 
+import com.booking309.bookingapp309.compositeKeys.EmployeeCompositeKey;
 import org.hibernate.validator.constraints.Length;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
+import java.io.Serializable;
 
 /**
  * An class that represents an employee with a name, unique identifier, and status
@@ -11,20 +15,16 @@ import javax.persistence.Id;
  * @author Seth Jones
  */
 @Entity
-public class Employee{
-    private String name;
+@IdClass(EmployeeCompositeKey.class)
+public class Employee {
     @Id
+    @Column(length=50)
     private String empId;
+    @Id
+    @Column(length=50)
     private String orgId;
+
     private String status;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     @Length(max=50)
     public String getEmpId() {
@@ -35,6 +35,7 @@ public class Employee{
         this.empId = empId;
     }
 
+    @Length(max=50)
     public String getOrgId() {
         return orgId;
     }
