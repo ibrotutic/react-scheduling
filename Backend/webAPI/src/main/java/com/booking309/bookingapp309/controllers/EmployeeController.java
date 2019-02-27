@@ -1,16 +1,22 @@
 package com.booking309.bookingapp309.controllers;
 
 import com.booking309.bookingapp309.objects.Employee;
+import com.booking309.bookingapp309.objects.Person;
 import com.booking309.bookingapp309.repositories.EmployeeRepository;
+import com.booking309.bookingapp309.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 public class EmployeeController {
     @Autowired
     private EmployeeRepository empRepository;
+    @Autowired
+    private PersonRepository personRepository;
 
     /**
      * A method that returns an organization of Response type as a JSON object
@@ -21,8 +27,11 @@ public class EmployeeController {
     @CrossOrigin
     @GetMapping("/employees/org")
     public @ResponseBody
-    List<Employee> getOrgInfo(@RequestParam String orgId) {
-        return empRepository.findAllByOrgId(orgId);
+    List<Person> getOrgInfo(@RequestParam String orgId) {
+        return empRepository.findAllByOrgId(orgId).stream()
+                .map(emp -> personRepository.findBypId(emp.getEmpId()))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
     @CrossOrigin
