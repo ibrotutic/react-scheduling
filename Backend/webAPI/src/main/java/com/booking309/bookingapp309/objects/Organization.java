@@ -19,6 +19,7 @@ public class Organization {
     private String serviceType;
     private String address;
     private String description;
+    private String adminId;
 
     @Length(max=50)
     public String getOrgId() {
@@ -51,5 +52,13 @@ public class Organization {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getAdminId() {
+        return adminId;
+    }
+
+    public void setAdminId(String adminId) {
+        this.adminId = adminId;
     }
 }
