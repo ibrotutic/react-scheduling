@@ -3,9 +3,9 @@ import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import { Auth } from "aws-amplify";
 import { connect } from "react-redux";
 import LoginForm from "./login-form";
+import hackyApiUtility from "../utilities/hacky-api-utility";
 
 const styles = theme => ({
   container: {
@@ -16,7 +16,7 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit
   },
-  header:{
+  header: {
     textAlign: "center"
   },
   dense: {
@@ -49,23 +49,22 @@ class SignUpForm extends Component {
 
   signupSubmit = () => {
     if (this.state.pw === this.state.confirm_pw && this.state.pw !== "") {
-      Auth.signUp({
+      var user = {
         username: this.state.username,
-        password: this.state.pw,
-        attributes: {
-          preferred_username: this.state.email,
-          email: this.state.email
-        }
-      })
-        .then(resp => {
-          var payload = {
-            cognito: resp
-          };
+        pw: this.state.pw,
+        email: this.state.email
+      };
 
-          this.props.updateUserData(payload);
-          this.setState({ signupSuccess: true });
-        })
-        .catch(err => console.log(err));
+      hackyApiUtility.createUser(user, this.loadUser);
+    }
+  };
+
+  loadUser = payload => {
+    if (payload !== null) {
+      this.props.updateUserData(payload);
+      this.setState({ signupSuccess: true });
+    } else {
+      alert("Unable to sign up");
     }
   };
 
@@ -77,65 +76,65 @@ class SignUpForm extends Component {
           <h3>
             Congrats! Account Created. Please login and confirm your account.
           </h3>
-          <LoginForm/>
+          <LoginForm />
         </Paper>
       );
     }
     return (
-        <div>
-          <h2 className={classes.header}>Sign Up</h2>
-          <Paper className={classes.paper}>
-            <form>
-              <TextField
-                id="outlined-username"
-                label="Username"
-                className={classes.textField}
-                value={this.state.username}
-                onChange={e => this.handleChange(e, "username")}
-                margin="normal"
-                variant="outlined"
-              />
-              <TextField
-                type="email"
-                id="outlined-email"
-                label="Email"
-                className={classes.textField}
-                value={this.state.email}
-                onChange={e => this.handleChange(e, "email")}
-                margin="normal"
-                variant="outlined"
-              />
-              <TextField
-                type="password"
-                id="outlined-pw"
-                label="Password"
-                className={classes.textField}
-                value={this.state.pw}
-                onChange={e => this.handleChange(e, "pw")}
-                margin="normal"
-                variant="outlined"
-              />
-              <TextField
-                type="password"
-                id="outlined-con-pw"
-                label="Confirm Password"
-                className={classes.textField}
-                value={this.state.confirm_pw}
-                onChange={e => this.handleChange(e, "confirm_pw")}
-                margin="normal"
-                variant="outlined"
-              />
-            </form>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.button}
-              onClick={() => this.signupSubmit()}
-            >
-              Sign Up
-            </Button>
-          </Paper>
-        </div>
+      <div>
+        <h2 className={classes.header}>Sign Up</h2>
+        <Paper className={classes.paper}>
+          <form>
+            <TextField
+              id="outlined-username"
+              label="Username"
+              className={classes.textField}
+              value={this.state.username}
+              onChange={e => this.handleChange(e, "username")}
+              margin="normal"
+              variant="outlined"
+            />
+            <TextField
+              type="email"
+              id="outlined-email"
+              label="Email"
+              className={classes.textField}
+              value={this.state.email}
+              onChange={e => this.handleChange(e, "email")}
+              margin="normal"
+              variant="outlined"
+            />
+            <TextField
+              type="password"
+              id="outlined-pw"
+              label="Password"
+              className={classes.textField}
+              value={this.state.pw}
+              onChange={e => this.handleChange(e, "pw")}
+              margin="normal"
+              variant="outlined"
+            />
+            <TextField
+              type="password"
+              id="outlined-con-pw"
+              label="Confirm Password"
+              className={classes.textField}
+              value={this.state.confirm_pw}
+              onChange={e => this.handleChange(e, "confirm_pw")}
+              margin="normal"
+              variant="outlined"
+            />
+          </form>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            onClick={() => this.signupSubmit()}
+          >
+            Sign Up
+          </Button>
+        </Paper>
+      </div>
     );
   }
 }
@@ -156,9 +155,9 @@ const mapDispatchToProps = dispatch => {
     },
     createLoginModal: () => {
       dispatch({
-        type: 'SHOW_MODAL',
-        modalType: 'LOGIN'
-      })
+        type: "SHOW_MODAL",
+        modalType: "LOGIN"
+      });
     }
   };
 };
