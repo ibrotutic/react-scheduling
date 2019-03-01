@@ -9,8 +9,8 @@ import {connect} from "react-redux";
 
 const styles = {
     card: {
-        maxWidth: 350,
-        width: 330,
+        maxWidth: 500,
+        width: 400,
         height: 200,
     },
     media: {

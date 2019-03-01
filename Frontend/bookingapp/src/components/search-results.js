@@ -2,6 +2,16 @@ import React, {Component} from 'react';
 import connect from "react-redux/es/connect/connect";
 import SimpleCard from "../components/simple-card";
 
+const styles =  ({
+    resultsContainer: {
+        display: "flex",
+        justifyContent: "center",
+        height: "700px",
+        overflowY: "scroll"
+    }
+});
+
+
 const Result = ({results}) => {
 
     if (results && results.length > 0) {
@@ -21,7 +31,7 @@ class SearchResults extends Component {
     render() {
         return (
             <div>
-                <div style={{display: 'flex', justifyContent: 'center'}}>
+                <div style={styles.resultsContainer}>
                     <ul style = {{ listStyleType: "none" }}>
                         <Result results={this.props.results}/>
                     </ul>
