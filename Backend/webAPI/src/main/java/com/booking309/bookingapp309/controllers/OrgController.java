@@ -5,6 +5,8 @@ import com.booking309.bookingapp309.repositories.OrgRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * A class that controls the endpoints that are being utilized
  * @author Jake Veatch
@@ -24,10 +26,6 @@ public class OrgController {
     @CrossOrigin
     @GetMapping("/org")
     public @ResponseBody Organization getOrgInfo(@RequestParam String orgId) {
-        if (orgId.equals("")) {
-            return null;
-        }
-
         return orgRepository.findByOrgId(orgId);
     }
 
@@ -38,6 +36,11 @@ public class OrgController {
 
         return org;
     }
+
+    @CrossOrigin
+    @GetMapping("/org/admin")
+    public @ResponseBody
+    List<Organization> getOrgAdminInfo(@RequestParam String adminId) {
+        return orgRepository.findAllByAdminId(adminId);
+    }
 }
-
-
