@@ -5,7 +5,6 @@ import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import elasticsearchUtility from "../utilities/elastic-search-utility";
 import { Divider } from "@material-ui/core";
-import { connect } from "react-redux";
 
 const uuidv4 = require("uuid/v4");
 const newEmp = { name: "", id: "", status: "" };
@@ -37,6 +36,10 @@ const styles = theme => ({
 });
 
 class CreateOrg extends Component {
+  state = {
+    employeeList: [newEmp]
+  };
+
   createOrg = () => {
     var orgId = uuidv4();
     var emp = this.collectEmployees(orgId);
@@ -61,7 +64,7 @@ class CreateOrg extends Component {
             "Access-Control-Allow-Origin": "*",
             "Content-Type": "application/json"
           },
-          body: JSON.stringify()
+          body: JSON.stringify(emp)
         }
       )
       .then(resp => resp.json())
@@ -217,15 +220,4 @@ class CreateOrg extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    orgInfo: state.user.z
-  };
-}
-
-export default withStyles(styles)(
-  connect(
-    mapStateToProps,
-    null
-  )(CreateOrg)
-);
+export default withStyles(styles)(CreateOrg);
