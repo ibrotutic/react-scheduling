@@ -16,7 +16,7 @@ const Result = ({results}) => {
 
     if (results && results.length > 0) {
         return results.map( (hit) =>
-            <li key ={hit.orgId}>
+            <li key ={hit.orgId} style={{marginBottom:"10px"}}>
                 <SimpleCard
                     props = {hit}
                 />
@@ -32,7 +32,7 @@ class SearchResults extends Component {
         return (
             <div>
                 <div style={styles.resultsContainer}>
-                    <ul style = {{ listStyleType: "none" }}>
+                    <ul style = {{ listStyleType: "none"}}>
                         <Result results={this.props.results}/>
                     </ul>
                 </div>
