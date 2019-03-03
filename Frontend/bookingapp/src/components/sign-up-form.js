@@ -38,7 +38,8 @@ class SignUpForm extends Component {
     username: "",
     pw: "",
     confirm_pw: "",
-    email: ""
+    email: "",
+    name: ""
   };
 
   handleChange = (e, name) => {
@@ -52,7 +53,8 @@ class SignUpForm extends Component {
       var user = {
         username: this.state.username,
         pw: this.state.pw,
-        email: this.state.email
+        email: this.state.email,
+        name: this.state.name
       };
 
       hackyApiUtility.createUser(user, this.loadUser);
@@ -103,6 +105,16 @@ class SignUpForm extends Component {
               onChange={e => this.handleChange(e, "email")}
               margin="normal"
               variant="outlined"
+            />
+            <TextField
+                type="name"
+                id="outlined-pw"
+                label="Your Name"
+                className={classes.textField}
+                value={this.state.name}
+                onChange={e => this.handleChange(e, "name")}
+                margin="normal"
+                variant="outlined"
             />
             <TextField
               type="password"
