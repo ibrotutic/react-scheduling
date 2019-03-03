@@ -4,10 +4,9 @@ import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import elasticsearchUtility from "../utilities/elastic-search-utility";
-import { Divider } from "@material-ui/core";
+import connect from "react-redux/es/connect/connect";
 
 const uuidv4 = require("uuid/v4");
-const newEmp = { name: "", id: "", status: "" };
 
 const styles = theme => ({
   container: {
@@ -36,13 +35,23 @@ const styles = theme => ({
 });
 
 class CreateOrg extends Component {
-  state = {
-    employeeList: [newEmp]
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      success: false,
+    };
+  }
 
   createOrg = () => {
     var orgId = uuidv4();
-    var emp = this.collectEmployees(orgId);
+
+    var adminId = this.props.cognito.cognito.attributes.sub;
+    var admin = {
+      empId: adminId,
+      orgId: orgId,
+      status: "admin"
+    };
 
     var org = {
       orgId: orgId,
@@ -53,10 +62,12 @@ class CreateOrg extends Component {
       tags: this.state.tags
     };
 
+    console.log(admin);
+
     elasticsearchUtility.createOrg(org);
     window
       .fetch(
-        "http://cs309-pp-7.misc.iastate.edu:8080/employees?orgId=" + org.orgId,
+        "http://cs309-pp-7.misc.iastate.edu:8080/employees/org?orgId=" + org.orgId,
         {
           method: "POST",
           mode: "cors",
@@ -64,7 +75,7 @@ class CreateOrg extends Component {
             "Access-Control-Allow-Origin": "*",
             "Content-Type": "application/json"
           },
-          body: JSON.stringify(emp)
+          body: JSON.stringify(admin)
         }
       )
       .then(resp => resp.json())
@@ -76,57 +87,6 @@ class CreateOrg extends Component {
 
   handleChange = (event, name) => {
     this.setState({ [name]: event.target.value });
-  };
-
-  getEmployeeForm = () => {
-    return (
-      <div>
-        {this.state.employeeList.map((emp, index) => {
-          return (
-            <div key={index}>
-              <Divider />
-              <TextField
-                id={"emp" + index}
-                label="Employee Name"
-                className={this.props.classes.textField}
-                value={this.state.username}
-                onChange={e => this.handleChange(e, "emp" + index)}
-                margin="normal"
-                variant="outlined"
-              />
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
-
-  collectEmployees = id => {
-    var filledEmp = this.state.employeeList
-      .map((emp, index) => {
-        var empName = this.state["emp" + index];
-
-        if (empName !== "" && empName !== undefined) {
-          return {
-            name: empName,
-            empId: uuidv4(),
-            orgId: id,
-            status: ""
-          };
-        } else {
-          return undefined;
-        }
-      })
-      .filter(emp => emp !== undefined);
-
-    return filledEmp;
-  };
-
-  addEmployee = () => {
-    var empList = this.state.employeeList;
-    empList.push(newEmp);
-
-    this.setState({ employeeList: empList });
   };
 
   render() {
@@ -196,15 +156,6 @@ class CreateOrg extends Component {
               margin="normal"
               variant="outlined"
             />
-            {this.getEmployeeForm()}
-            <Button
-              variant="contained"
-              color="secondary"
-              className={classes.button}
-              onClick={() => this.addEmployee()}
-            >
-              Add Employee
-            </Button>
           </form>
           <Button
             variant="contained"
@@ -220,4 +171,15 @@ class CreateOrg extends Component {
   }
 }
 
-export default withStyles(styles)(CreateOrg);
+const mapStateToProps = state => {
+  return {
+    cognito: state.user
+  };
+};
+
+export default withStyles(styles)(
+    connect(
+        mapStateToProps,
+        null
+    )(CreateOrg)
+);
