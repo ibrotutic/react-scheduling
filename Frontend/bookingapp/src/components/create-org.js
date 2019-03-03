@@ -3,7 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
-import elasticsearchUtility from "../utilities/elastic-search-utility";
+import hackyApiUtility from '../utilities/hacky-api-utility'
 import connect from "react-redux/es/connect/connect";
 
 const uuidv4 = require("uuid/v4");
@@ -62,26 +62,7 @@ class CreateOrg extends Component {
       tags: this.state.tags
     };
 
-    console.log(admin);
-
-    elasticsearchUtility.createOrg(org);
-    window
-      .fetch(
-        "http://cs309-pp-7.misc.iastate.edu:8080/employees/org?orgId=" + org.orgId,
-        {
-          method: "POST",
-          mode: "cors",
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(admin)
-        }
-      )
-      .then(resp => resp.json())
-      .then(resp => JSON.stringify(resp))
-      .catch(err => console.log(err));
-
+    hackyApiUtility.createOrg(org, admin);
     this.setState({ success: true });
   };
 
