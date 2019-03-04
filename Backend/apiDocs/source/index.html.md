@@ -48,6 +48,10 @@ curl "http://cs309-pp-7.misc.iastate.edu:8080/employees?empId=foobar"
 ]
 ```
 
+### HTTP Request
+
+`GET http://cs309-pp-7.misc.iastate.edu:8080/employees?eId=<ID>`
+
 ## Get all employees (person) of an org
 
 Gets all employees of a specified organization.
@@ -82,6 +86,10 @@ curl "http://cs309-pp-7.misc.iastate.edu:8080/employees/org?orgId=youtellme"
   }
 ]
 ```
+
+### HTTP Request
+
+`GET http://cs309-pp-7.misc.iastate.edu:8080/employees/org?orgId=<ID>`
 
 ## Save employees
 
@@ -135,6 +143,10 @@ curl "http://cs309-pp-7.misc.iastate.edu:8080/employees"
 ]
 ```
 
+### HTTP Request
+
+`POST http://cs309-pp-7.misc.iastate.edu:8080/employees`
+
 # Person
 
 # Get a person
@@ -162,6 +174,10 @@ curl "http://cs309-pp-7.misc.iastate.edu:8080/person?pid=guccimane"
   "lname": "Que"
 }
 ```
+
+### HTTP Request
+
+`GET http://cs309-pp-7.misc.iastate.edu:8080/person?pid=<ID>`
 
 # Save a person
 
@@ -201,174 +217,112 @@ curl "http://cs309-pp-7.misc.iastate.edu:8080/person"
 }
 ```
 
-# Kittens
+### HTTP Request
 
-## Get All Kittens
+`POST http://cs309-pp-7.misc.iastate.edu:8080/person`
 
-```ruby
-require 'kittn'
+# Organization
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
+## Get an org
 
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
+Get an org based on its orgId.
 
 ```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
+# With shell, you can just pass the correct header with each request
+curl "http://cs309-pp-7.misc.iastate.edu:8080/org?orgId=fugazzi"
+  -H "Content-Type: application/json"
 ```
 
 ```javascript
-const kittn = require("kittn");
-
-let api = kittn.authorize("meowmeowmeow");
-let kittens = api.kittens.get();
+// todo
 ```
 
-> The above command returns JSON structured like this:
+> Returns an org if found, or nothing
+
+```json
+{
+  "orgId": "temptMe420",
+  "serviceType": "You know ;)",
+  "address": "Your place",
+  "description": "Its illegal so no cops",
+  "adminId": "foo-bar-baz-pimp"
+}
+```
+
+### HTTP Request
+
+`GET http://cs309-pp-7.misc.iastate.edu:8080/org?orgId=<ID>`
+
+## Save an org
+
+Save an org.
+
+> Example request body (test.json)
+
+```json
+{
+  "orgId": "temptMe420",
+  "serviceType": "You know ;)",
+  "address": "Your place",
+  "description": "Its illegal so no cops",
+  "adminId": "foo-bar-baz-pimp"
+}
+```
+
+```shell
+# With shell, you can just pass the correct header with each request
+curl "http://cs309-pp-7.misc.iastate.edu:8080/org"
+  -H "Content-Type: application/json" -d test.json
+```
+
+```javascript
+// todo
+```
+
+> Returns the saved org
+
+```json
+{
+  "orgId": "temptMe420",
+  "serviceType": "You know ;)",
+  "address": "Your place",
+  "description": "Its illegal so no cops",
+  "adminId": "foo-bar-baz-pimp"
+}
+```
+
+### HTTP Request
+
+`POST http://cs309-pp-7.misc.iastate.edu:8080/org`
+
+## Get all orgs for admin
+
+Given an adminId get all orgs connected to it.
+
+```shell
+# With shell, you can just pass the correct header with each request
+curl "http://cs309-pp-7.misc.iastate.edu:8080/org/admin?adminId=snoopD0gg"
+  -H "Content-Type: application/json"
+```
+
+```javascript
+// todo
+```
+
+> Returns an array of all associated orgs, or empty
 
 ```json
 [
   {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
+    "orgId": "temptMe420",
+    "serviceType": "You know ;)",
+    "address": "Your place",
+    "description": "Its illegal so no cops",
+    "adminId": "foo-bar-baz-pimp"
   }
 ]
 ```
 
-This endpoint retrieves all kittens.
-
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
-
-### Query Parameters
-
-| Parameter    | Default | Description                                                                      |
-| ------------ | ------- | -------------------------------------------------------------------------------- |
-| include_cats | false   | If set to true, the result will also include cats.                               |
-| available    | true    | If set to false, the result will include kittens that have already been adopted. |
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require("kittn");
-
-let api = kittn.authorize("meowmeowmeow");
-let max = api.kittens.get(2);
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
-}
-```
-
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-
-### HTTP Request
-
-`GET http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-| Parameter | Description                      |
-| --------- | -------------------------------- |
-| ID        | The ID of the kitten to retrieve |
-
-## Delete a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -X DELETE
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require("kittn");
-
-let api = kittn.authorize("meowmeowmeow");
-let max = api.kittens.delete(2);
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "deleted": ":("
-}
-```
-
-This endpoint deletes a specific kitten.
-
-### HTTP Request
-
-`DELETE http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-| Parameter | Description                    |
-| --------- | ------------------------------ |
-| ID        | The ID of the kitten to delete |
+`GET http://cs309-pp-7.misc.iastate.edu:8080/org/admin?adminId=<ID>`
