@@ -6,7 +6,11 @@ export var hackyApiUtility = (function() {
 
   hackyApi.createOrg = function(orgDetails, admin) {
     elasticsearchUtility.createOrg(orgDetails);
-    hackyApi.addEmployees(admin, orgDetails.orgId);
+    hackyApi.addEmployees(admin);
+  };
+
+  hackyApi.createSpringOrg = function (orgDetails) {
+      
   };
 
   hackyApi.createUser = function(userDetails, callback) {
@@ -56,10 +60,10 @@ export var hackyApiUtility = (function() {
     //spring and elasticsearch stuff to update org
   };
 
-  hackyApi.addEmployees = function(employees, orgId) {
+  hackyApi.addEmployees = function(employees) {
       window
           .fetch(
-              "http://cs309-pp-7.misc.iastate.edu:8080/employees/org?orgId=" + orgId,
+              "http://cs309-pp-7.misc.iastate.edu:8080/employees/",
               {
                   method: "POST",
                   mode: "cors",
