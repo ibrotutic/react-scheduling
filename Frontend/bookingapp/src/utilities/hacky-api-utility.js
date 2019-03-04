@@ -10,7 +10,7 @@ export var hackyApiUtility = (function() {
   };
 
   hackyApi.createSpringOrg = function (orgDetails) {
-      
+
   };
 
   hackyApi.createUser = function(userDetails, callback) {

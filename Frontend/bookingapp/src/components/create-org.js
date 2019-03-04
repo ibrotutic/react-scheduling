@@ -61,7 +61,7 @@ class CreateOrg extends Component {
       description: this.state.description,
       tags: this.state.tags
     };
-
+    
     hackyApiUtility.createOrg(org, admin);
     this.setState({ success: true });
   };
