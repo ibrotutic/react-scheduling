@@ -149,7 +149,7 @@ curl "http://cs309-pp-7.misc.iastate.edu:8080/employees"
 
 # Person
 
-# Get a person
+## Get a person
 
 Getting a speceified person by their ID.
 
@@ -179,7 +179,7 @@ curl "http://cs309-pp-7.misc.iastate.edu:8080/person?pid=guccimane"
 
 `GET http://cs309-pp-7.misc.iastate.edu:8080/person?pid=<ID>`
 
-# Save a person
+## Save a person
 
 Only God can do that. Jk here's an example lol.
 
