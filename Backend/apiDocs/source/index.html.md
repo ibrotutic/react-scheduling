@@ -87,7 +87,24 @@ curl "http://cs309-pp-7.misc.iastate.edu:8080/employees/org?orgId=youtellme"
 
 Takes a list of employees, saves them.
 
-> I would highly recommend placing your test requests in a file, this doc will use test.json
+> I would highly recommend placing your test requests in a file, this doc will use test.json, windows parses escape characters wierdly
+
+> Example request json
+
+```json
+[
+  {
+    "empId": "123",
+    "orgId": "9494",
+    "status": "nothing lol"
+  },
+  {
+    "empId": "123",
+    "orgId": "73629",
+    "status": "nothing lol"
+  }
+]
+```
 
 ```shell
 # With shell, you can just pass the correct header with each request
@@ -97,6 +114,91 @@ curl "http://cs309-pp-7.misc.iastate.edu:8080/employees"
 
 ```javascript
 // todo
+```
+
+> The response will return the list of employees entered
+
+> Example response json
+
+```json
+[
+  {
+    "empId": "123",
+    "orgId": "9494",
+    "status": "nothing lol"
+  },
+  {
+    "empId": "123",
+    "orgId": "73629",
+    "status": "nothing lol"
+  }
+]
+```
+
+# Person
+
+# Get a person
+
+Getting a speceified person by their ID.
+
+```shell
+# With shell, you can just pass the correct header with each request
+curl "http://cs309-pp-7.misc.iastate.edu:8080/person?pid=guccimane"
+  -H "Content-Type: application/json"
+```
+
+```javascript
+// todo
+```
+
+> The response will be a single person found, or nothing
+
+```json
+{
+  "pId": "1436",
+  "email": "susieQ@hearsawho.com",
+  "username": "jimmybuffetlover69",
+  "fname": "Susie",
+  "lname": "Que"
+}
+```
+
+# Save a person
+
+Only God can do that. Jk here's an example lol.
+
+> Example request (test.json)
+
+```json
+{
+  "pId": "1436",
+  "email": "susieQ@hearsawho.com",
+  "username": "jimmybuffetlover69",
+  "fname": "Susie",
+  "lname": "Que"
+}
+```
+
+```shell
+# With shell, you can just pass the correct header with each request
+curl "http://cs309-pp-7.misc.iastate.edu:8080/person"
+  -H "Content-Type: application/json" -d test.json
+```
+
+```javascript
+// todo
+```
+
+> The response will be the person
+
+```json
+{
+  "pId": "1436",
+  "email": "susieQ@hearsawho.com",
+  "username": "jimmybuffetlover69",
+  "fname": "Susie",
+  "lname": "Que"
+}
 ```
 
 # Kittens
