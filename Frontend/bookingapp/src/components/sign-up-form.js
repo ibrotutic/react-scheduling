@@ -109,7 +109,7 @@ class SignUpForm extends Component {
             />
             <TextField
                 type="name"
-                id="outlined-pw"
+                id="outlined-fname"
                 label="Your First Name"
                 className={classes.textField}
                 value={this.state.fName}
@@ -119,7 +119,7 @@ class SignUpForm extends Component {
             />
             <TextField
                 type="name"
-                id="outlined-pw"
+                id="outlined-lname"
                 label="Your Last Name"
                 className={classes.textField}
                 value={this.state.lName}
