@@ -6,7 +6,10 @@ export var hackyApiUtility = (function() {
 
   hackyApi.createOrg = function(orgDetails, admin) {
     elasticsearchUtility.createOrg(orgDetails);
-    hackyApi.addEmployees(admin);
+    //our api expects a list...so we send one.
+    let employeeList = [];
+    employeeList.push(admin);
+    hackyApi.addEmployees(employeeList);
   };
 
   hackyApi.createSpringOrg = function (orgDetails) {
@@ -63,7 +66,7 @@ export var hackyApiUtility = (function() {
   hackyApi.addEmployees = function(employees) {
       window
           .fetch(
-              "http://cs309-pp-7.misc.iastate.edu:8080/employees/",
+              "http://cs309-pp-7.misc.iastate.edu:8080/employees",
               {
                   method: "POST",
                   mode: "cors",
@@ -74,8 +77,8 @@ export var hackyApiUtility = (function() {
                   body: JSON.stringify(employees)
               }
           )
-          .then(resp => resp.json())
-          .then(resp => JSON.stringify(resp))
+          .then(resp => console.log(resp.json()))
+          .then(resp => console.log(JSON.stringify(resp)))
           .catch(err => console.log(err));
   };
 
