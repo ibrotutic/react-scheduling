@@ -3,18 +3,18 @@ package com.booking309.bookingapp309.objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.util.Date;
 
 @Entity
 public class Appointment {
 
     @Id
+    @GeneratedValue
     private int id;
     private String clientId;
     private String empId;
     private String orgId;
-//    private Date startTime;
-//    private Date endTime;
+    private long startTime;
+    private long endTime;
 
     public int getId() {
         return id;
@@ -47,20 +47,20 @@ public class Appointment {
     public void setOrgId(String orgId) {
         this.orgId = orgId;
     }
-//
-//    public Date getStartTime() {
-//        return startTime;
-//    }
-//
-//    public void setStartTime(Date startTime) {
-//        this.startTime = startTime;
-//    }
-//
-//    public Date getEndTime() {
-//        return endTime;
-//    }
-//
-//    public void setEndTime(Date endTime) {
-//        this.endTime = endTime;
-//    }
+
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
+    }
+
+    public long getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(long endTime) {
+        this.endTime = endTime;
+    }
 }
