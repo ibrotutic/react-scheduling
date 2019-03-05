@@ -1,9 +1,17 @@
-import React from "react";
+import React, { Component } from "react";
 
-const Calendar = () => (
-    <div>
-        <h2>Calendar stub. import Calendar from react-calendar for nice calendar.</h2>
-    </div>
-)
+class Calendar extends Component {
+  state = {};
 
-export default Calendar
+  render() {
+    return (
+      <div>
+        <h2>
+          Calendar stub.import Calendar from react-calendar for nice calendar.
+        </h2>
+      </div>
+    );
+  }
+}
+
+export default Calendar;
