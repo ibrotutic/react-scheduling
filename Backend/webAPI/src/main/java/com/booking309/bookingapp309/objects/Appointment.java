@@ -9,20 +9,19 @@ import java.util.Date;
 public class Appointment {
 
     @Id
-    @GeneratedValue
-    private int Id;
+    private int id;
     private String clientId;
     private String empId;
-    private String ordId;
-    private Date startTime;
-    private Date endTime;
+    private String orgId;
+//    private Date startTime;
+//    private Date endTime;
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public void setId(int id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getClientId() {
@@ -41,27 +40,27 @@ public class Appointment {
         this.empId = empId;
     }
 
-    public String getOrdId() {
-        return ordId;
+    public String getOrgId() {
+        return orgId;
     }
 
-    public void setOrdId(String ordId) {
-        this.ordId = ordId;
+    public void setOrgId(String orgId) {
+        this.orgId = orgId;
     }
-
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
+//
+//    public Date getStartTime() {
+//        return startTime;
+//    }
+//
+//    public void setStartTime(Date startTime) {
+//        this.startTime = startTime;
+//    }
+//
+//    public Date getEndTime() {
+//        return endTime;
+//    }
+//
+//    public void setEndTime(Date endTime) {
+//        this.endTime = endTime;
+//    }
 }
