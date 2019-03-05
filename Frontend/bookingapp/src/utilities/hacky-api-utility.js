@@ -1,5 +1,8 @@
 import elasticsearchUtility from "./elastic-search-utility";
+import axios from "axios";
 import { Auth } from "aws-amplify";
+
+const endpointBase = "http://cs309-pp-7.misc.iastate.edu:8080";
 
 export var hackyApiUtility = (function() {
   let hackyApi = {}; // Public object
@@ -71,6 +74,22 @@ export var hackyApiUtility = (function() {
 
   hackyApi.modifyUser = function(userId) {
     //modify user stuff, (email, name, etc)
+  };
+
+  hackyApi.createAppointment = function(appointment) {};
+
+  hackyApi.getAppointments = function(userId, callback) {
+    axios
+      .get(endpointBase + "/calendar?pid=" + userId)
+      .then(resp => {
+        callback(resp.data);
+      })
+      .catch(err => {
+        console.log(err);
+
+        var empty = [];
+        callback(empty);
+      });
   };
 
   return hackyApi; // expose externally
