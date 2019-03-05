@@ -77,8 +77,8 @@ export var hackyApiUtility = (function() {
                   body: JSON.stringify(employees)
               }
           )
-          .then(resp => console.log(resp.json()))
-          .then(resp => console.log(JSON.stringify(resp)))
+          .then(resp => resp.json())
+          .then(resp => JSON.stringify(resp))
           .catch(err => console.log(err));
   };
 
