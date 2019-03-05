@@ -4,10 +4,16 @@ import { Auth } from "aws-amplify";
 export var hackyApiUtility = (function() {
   let hackyApi = {}; // Public object
 
-  hackyApi.createOrg = function(orgDetails) {
+  hackyApi.createOrg = function(orgDetails, admin) {
     elasticsearchUtility.createOrg(orgDetails);
+    //our api expects a list...so we send one.
+    let employeeList = [];
+    employeeList.push(admin);
+    hackyApi.addEmployees(employeeList);
+  };
 
-    //spring stuff to create org
+  hackyApi.createSpringOrg = function (orgDetails) {
+
   };
 
   hackyApi.createUser = function(userDetails, callback) {
@@ -60,7 +66,22 @@ export var hackyApiUtility = (function() {
   };
 
   hackyApi.addEmployees = function(employees) {
-    //spring shit to add employees
+      window
+          .fetch(
+              "http://cs309-pp-7.misc.iastate.edu:8080/employees",
+              {
+                  method: "POST",
+                  mode: "cors",
+                  headers: {
+                      "Access-Control-Allow-Origin": "*",
+                      "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify(employees)
+              }
+          )
+          .then(resp => resp.json())
+          .then(resp => JSON.stringify(resp))
+          .catch(err => console.log(err));
   };
 
   hackyApi.getEmployeesForOrg = function(orgId) {
