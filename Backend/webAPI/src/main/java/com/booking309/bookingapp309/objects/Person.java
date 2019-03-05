@@ -10,7 +10,9 @@ public class Person {
     @Id
     private String pId;
     private String email;
-    private String name;
+    private String username;
+    private String fname;
+    private String lname;
 
     @Length(max = 50)
     public String getpId() {
@@ -29,11 +31,27 @@ public class Person {
         this.email = email;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getFname() {
+        return fname;
+    }
+
+    public void setFname(String fname) {
+        this.fname = fname;
+    }
+
+    public String getLname() {
+        return lname;
+    }
+
+    public void setLname(String lname) {
+        this.lname = lname;
     }
 }
