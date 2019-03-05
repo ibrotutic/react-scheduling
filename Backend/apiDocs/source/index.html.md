@@ -117,7 +117,7 @@ Takes a list of employees, saves them.
 ```shell
 # With shell, you can just pass the correct header with each request
 curl "http://cs309-pp-7.misc.iastate.edu:8080/employees"
-  -H "Content-Type: application/json" -d test.json
+  -H "Content-Type: application/json" -d @test.json
 ```
 
 ```javascript
@@ -198,7 +198,7 @@ Only God can do that. Jk here's an example lol.
 ```shell
 # With shell, you can just pass the correct header with each request
 curl "http://cs309-pp-7.misc.iastate.edu:8080/person"
-  -H "Content-Type: application/json" -d test.json
+  -H "Content-Type: application/json" -d @test.json
 ```
 
 ```javascript
@@ -272,7 +272,7 @@ Save an org.
 ```shell
 # With shell, you can just pass the correct header with each request
 curl "http://cs309-pp-7.misc.iastate.edu:8080/org"
-  -H "Content-Type: application/json" -d test.json
+  -H "Content-Type: application/json" -d @test.json
 ```
 
 ```javascript
@@ -326,3 +326,86 @@ curl "http://cs309-pp-7.misc.iastate.edu:8080/org/admin?adminId=snoopD0gg"
 ### HTTP Request
 
 `GET http://cs309-pp-7.misc.iastate.edu:8080/org/admin?adminId=<ID>`
+
+# Calendar
+
+## Save an appointment
+
+Post an appointment.
+
+> Example request body (test.json)
+
+```json
+{
+  "orgId": "temptMe420",
+  "serviceType": "You know ;)",
+  "address": "Your place",
+  "description": "Its illegal so no cops",
+  "adminId": "foo-bar-baz-pimp"
+}
+```
+
+```shell
+# With shell, you can just pass the correct header with each request
+curl "http://cs309-pp-7.misc.iastate.edu:8080/calendar"
+  -H "Content-Type: application/json" -d @test.json
+```
+
+```javascript
+// todo
+```
+
+> Returns the saved appointment
+
+```json
+{
+  "clientId": "123",
+  "empId": "345",
+  "orgId": "444",
+  "startTime": 234983847,
+  "endTime": 342322324
+}
+```
+
+### HTTP Request
+
+`POST http://cs309-pp-7.misc.iastate.edu:8080/calendar'
+
+## Get appointments for user ID
+
+Returns a list of appointments given a user ID. Will return appointments for both being a client and an employee for this user.
+
+```shell
+# With shell, you can just pass the correct header with each request
+curl "http://cs309-pp-7.misc.iastate.edu:8080/calendar?pid=timmyyyy"
+  -H "Content-Type: application/json"
+```
+
+```javascript
+// todo
+```
+
+> Returns an array of all appointment, or empty
+
+```json
+[
+  {
+    "clientId": "123",
+    "empId": "345",
+    "orgId": "857",
+    "startTime": 234983847,
+    "endTime": 342322324
+  },
+  {
+    "clientId": "123",
+    "empId": "211",
+    "orgId": "444",
+    "startTime": 234983847,
+    "endTime": 342322324
+  }
+]
+```
+
+### HTTP Request
+
+`GET http://cs309-pp-7.misc.iastate.edu:8080/calendar?pid=<ID>`
