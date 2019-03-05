@@ -41,7 +41,8 @@ class OrganizationSchedulingModal extends Component {
     super(props);
     this.state = {
       scheduling: false,
-      loading: true
+      loading: true,
+      employees: {}
     };
     this.close = this.props.props.onClick.bind(this);
 
