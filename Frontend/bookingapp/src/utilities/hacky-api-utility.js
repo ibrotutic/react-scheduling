@@ -1,8 +1,14 @@
 import elasticsearchUtility from "./elastic-search-utility";
 import { Auth } from "aws-amplify";
+import axios from "axios";
 
 export var hackyApiUtility = (function() {
   let hackyApi = {}; // Public object
+
+    var headers = {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+    }
 
   hackyApi.createOrg = function(orgDetails, admin) {
     elasticsearchUtility.createOrg(orgDetails);
@@ -27,35 +33,30 @@ export var hackyApiUtility = (function() {
       }
     })
       .then(resp => {
-        var payload = {
-          cognito: resp
-        };
+          var payload = {
+              cognito: resp
+          };
 
-        var person = {
-          pId: resp.userSub,
-          name: resp.user.username,
-          email: userDetails.email
-        };
+          var person = {
+              pId: resp.userSub,
+              username: resp.user.username,
+              email: userDetails.email,
+              fName: userDetails.fName,
+              lName: userDetails.lName
+          };
 
-        window
-          .fetch("http://cs309-pp-7.misc.iastate.edu:8080/person", {
-            method: "POST",
-            mode: "cors",
-            headers: {
-              "Access-Control-Allow-Origin": "*",
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify(person)
+          axios.post(
+              "http://cs309-pp-7.misc.iastate.edu:8080/employees",
+              person,
+              {headers: headers}
+          ).then(function (response) {
+              callback(payload);
+              console.log(response);
           })
-          .then(resp => resp.json())
-          .then(resp => {
-            callback(payload);
-          })
-          .catch(err => console.log(err));
-      })
-      .catch(err => {
-        console.log(err);
-        callback(null);
+              .catch(function (error) {
+                  callback(null);
+                  console.log(error);
+              });
       });
   };
 
@@ -64,22 +65,16 @@ export var hackyApiUtility = (function() {
   };
 
   hackyApi.addEmployees = function(employees) {
-      window
-          .fetch(
-              "http://cs309-pp-7.misc.iastate.edu:8080/employees",
-              {
-                  method: "POST",
-                  mode: "cors",
-                  headers: {
-                      "Access-Control-Allow-Origin": "*",
-                      "Content-Type": "application/json"
-                  },
-                  body: JSON.stringify(employees)
-              }
-          )
-          .then(resp => resp.json())
-          .then(resp => JSON.stringify(resp))
-          .catch(err => console.log(err));
+      axios.post(
+          "http://cs309-pp-7.misc.iastate.edu:8080/employees",
+          employees,
+          {headers:headers}
+      ).then(function (response) {
+          console.log(response);
+      })
+      .catch(function (error) {
+          console.log(error);
+      });
   };
 
   hackyApi.getEmployeesForOrg = function(orgId) {
