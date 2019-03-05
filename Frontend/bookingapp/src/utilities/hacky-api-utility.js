@@ -36,8 +36,10 @@ export var hackyApiUtility = (function() {
 
         var person = {
           pId: resp.userSub,
-          name: resp.user.username,
-          email: userDetails.email
+          username: resp.user.username,
+          email: userDetails.email, 
+          fname: userDetails.fName,
+          lname: userDetails.lName
         };
 
         window
