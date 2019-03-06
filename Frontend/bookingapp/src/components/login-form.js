@@ -5,7 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { Auth } from "aws-amplify";
 import { connect } from "react-redux";
-import LoadingIndicator from "./loading-indicator"
+import LoadingIndicator from "./loading-indicator";
 
 const styles = theme => ({
   container: {
@@ -49,15 +49,31 @@ class LoginForm extends Component {
 
   loginSubmit = () => {
     this.setState({ loading: true });
-    Auth.signIn(this.state.username, this.state.pw)
-      .then(resp => {
-        var payload = {
-          cognito: resp
-        };
+    this.signInUser();
+  };
 
-        this.props.updateUserData(payload);
-        this.setState({ loading: false, success:true });
-        this.props.closeModal();
+  confirmCodeSubmit = () => {
+    Auth.confirmSignUp(this.state.username, this.state.confirmCode)
+      .then(resp => {
+        if (resp === "SUCCESS") {
+          this.signInUser();
+        }
+      })
+      .catch(err => console.log(err));
+  };
+
+  signInUser = () => {
+    Auth.signIn(this.state.username, this.state.pw)
+      .then(() => {
+        Auth.currentAuthenticatedUser().then(resp => {
+          var payload = {
+            cognito: resp
+          };
+
+          this.props.updateUserData(payload);
+          this.setState({ loading: false, success: true });
+          this.props.closeModal();
+        });
       })
       .catch(err => {
         if (err.code === "UserNotConfirmedException") {
@@ -69,59 +85,42 @@ class LoginForm extends Component {
       });
   };
 
-  confirmCodeSubmit = () => {
-    Auth.confirmSignUp(this.state.username, this.state.confirmCode)
-      .then(resp => {
-        if (resp === "SUCCESS") {
-          Auth.signIn(this.state.username, this.state.pw).then(cognito => {
-            var payload = {
-              cognito: cognito
-            };
-            this.props.updateUserData(payload);
-            this.setState({ success: true });
-          });
-        }
-      })
-      .catch(err => console.log(err));
-  };
-
   render() {
     const { classes } = this.props;
     if (this.state.confirmCodeMode) {
       return (
-          <div>
-            <h2 className={classes.header}>Confirm Code</h2>
-            <h3 className={classes.header}>We've sent a confirmation code to your email.</h3>
-              <Paper className={classes.paper}>
-                <form>
-                  <TextField
-                    type="password"
-                    id="outlined-confirm-code"
-                    label="Confirmation Code"
-                    className={classes.textField}
-                    value={this.state.confirmCode}
-                    onChange={e => this.handleChange(e, "confirmCode")}
-                    margin="normal"
-                    variant="outlined"
-                  />
-                </form>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  className={classes.button}
-                  onClick={() => this.confirmCodeSubmit()}
-                >
-                  Submit
-                </Button>
-              </Paper>
-          </div>
+        <div>
+          <h2 className={classes.header}>Confirm Code</h2>
+          <h3 className={classes.header}>
+            We've sent a confirmation code to your email.
+          </h3>
+          <Paper className={classes.paper}>
+            <form>
+              <TextField
+                type="password"
+                id="outlined-confirm-code"
+                label="Confirmation Code"
+                className={classes.textField}
+                value={this.state.confirmCode}
+                onChange={e => this.handleChange(e, "confirmCode")}
+                margin="normal"
+                variant="outlined"
+              />
+            </form>
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              onClick={() => this.confirmCodeSubmit()}
+            >
+              Submit
+            </Button>
+          </Paper>
+        </div>
       );
     } else if (this.state.loading) {
-      return (
-          <LoadingIndicator/>
-          )
-    }
-    else {
+      return <LoadingIndicator />;
+    } else {
       return (
         <Paper className={classes.paper}>
           <h2 className={classes.header}>Login</h2>
@@ -177,7 +176,7 @@ const mapDispatchToProps = dispatch => {
     },
     closeModal: () => {
       dispatch({
-        type: 'HIDE_MODAL',
+        type: "HIDE_MODAL"
       });
     }
   };
