@@ -7,6 +7,11 @@ const endpointBase = "http://cs309-pp-7.misc.iastate.edu:8080";
 export var hackyApiUtility = (function() {
   let hackyApi = {}; // Public object
 
+    var headers = {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+    };
+
   hackyApi.createOrg = function(orgDetails, admin) {
     elasticsearchUtility.createOrg(orgDetails);
     //our api expects a list...so we send one.
@@ -15,80 +20,76 @@ export var hackyApiUtility = (function() {
     hackyApi.addEmployees(employeeList);
   };
 
-  hackyApi.createSpringOrg = function (orgDetails) {
-
-  };
+  hackyApi.createSpringOrg = function(orgDetails) {};
 
   hackyApi.createUser = function(userDetails, callback) {
     //spring stuff to create user
     Auth.signUp({
-      username: userDetails.username,
-      password: userDetails.pw,
-      attributes: {
-        preferred_username: userDetails.email,
-        email: userDetails.email
-      }
+        username: userDetails.username,
+        password: userDetails.pw,
+        attributes: {
+            preferred_username: userDetails.email,
+            email: userDetails.email
+        }
     })
+        .then(resp => {
+            var payload = {
+                cognito: resp
+            };
+
+            var person = {
+                pId: resp.userSub,
+                username: resp.user.username,
+                email: userDetails.email,
+                fname: userDetails.fname,
+                lname: userDetails.lname
+            };
+
+            axios.post(
+                endpointBase + "/person?pid=" + person.pId,
+                person,
+                {headers: headers}
+            ).then(function (response) {
+                callback(payload);
+                console.log(response);
+            })
+            .catch(function (error) {
+                callback(null);
+                console.log(error);
+            });
+        });
+    };
+
+
+    hackyApi.modifyOrg = function(modifiedOrgDetails) {
+    //spring and elasticsearch stuff to update org
+    };
+
+    hackyApi.addEmployees = function(employees) {
+        axios.post(
+            endpointBase+ "/employees",
+            employees,
+            {headers:headers}
+        ).then(function (response) {
+            console.log(response);
+        })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
+
+    hackyApi.getEmployeesForOrg = function(orgId, callback) {
+    //return list of employees for org
+    axios
+      .get(endpointBase + "/employees/org?orgId=" + orgId)
       .then(resp => {
-        var payload = {
-          cognito: resp
-        };
-
-        var person = {
-          pId: resp.userSub,
-          username: resp.user.username,
-          email: userDetails.email, 
-          fname: userDetails.fName,
-          lname: userDetails.lName
-        };
-
-        window
-          .fetch("http://cs309-pp-7.misc.iastate.edu:8080/person", {
-            method: "POST",
-            mode: "cors",
-            headers: {
-              "Access-Control-Allow-Origin": "*",
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify(person)
-          })
-          .then(resp => resp.json())
-          .then(resp => {
-            callback(payload);
-          })
-          .catch(err => console.log(err));
+        callback(resp.data);
       })
       .catch(err => {
         console.log(err);
         callback(null);
       });
-  };
-
-  hackyApi.modifyOrg = function(modifiedOrgDetails) {
-    //spring and elasticsearch stuff to update org
-  };
-
-  hackyApi.addEmployees = function(employees) {
-      window
-          .fetch(
-              "http://cs309-pp-7.misc.iastate.edu:8080/employees",
-              {
-                  method: "POST",
-                  mode: "cors",
-                  headers: {
-                      "Access-Control-Allow-Origin": "*",
-                      "Content-Type": "application/json"
-                  },
-                  body: JSON.stringify(employees)
-              }
-          )
-          .then(resp => resp.json())
-          .then(resp => JSON.stringify(resp))
-          .catch(err => console.log(err));
-  };
-
-  hackyApi.getEmployeesForOrg = function(orgId) {
-    //return list of employees for org
   };
 
   hackyApi.removeEmployee = function(employeeId, orgId) {
