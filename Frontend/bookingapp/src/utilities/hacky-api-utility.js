@@ -1,7 +1,6 @@
 import elasticsearchUtility from "./elastic-search-utility";
 import axios from "axios";
 import { Auth } from "aws-amplify";
-import axios from "axios";
 
 const endpointBase = "http://cs309-pp-7.misc.iastate.edu:8080";
 
@@ -11,7 +10,7 @@ export var hackyApiUtility = (function() {
     var headers = {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
-    }
+    };
 
   hackyApi.createOrg = function(orgDetails, admin) {
     elasticsearchUtility.createOrg(orgDetails);
@@ -49,7 +48,7 @@ export var hackyApiUtility = (function() {
           };
 
           axios.post(
-              "http://cs309-pp-7.misc.iastate.edu:8080/employees",
+              endpointBase + "/person?pid=" + person.pId,
               person,
               {headers: headers}
           ).then(function (response) {
@@ -69,7 +68,7 @@ export var hackyApiUtility = (function() {
 
   hackyApi.addEmployees = function(employees) {
       axios.post(
-          "http://cs309-pp-7.misc.iastate.edu:8080/employees",
+          endpointBase+ "/employees",
           employees,
           {headers:headers}
       ).then(function (response) {
