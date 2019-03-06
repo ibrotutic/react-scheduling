@@ -15,9 +15,7 @@ export var hackyApiUtility = (function() {
     hackyApi.addEmployees(employeeList);
   };
 
-  hackyApi.createSpringOrg = function (orgDetails) {
-
-  };
+  hackyApi.createSpringOrg = function(orgDetails) {};
 
   hackyApi.createUser = function(userDetails, callback) {
     //spring stuff to create user
@@ -37,7 +35,7 @@ export var hackyApiUtility = (function() {
         var person = {
           pId: resp.userSub,
           username: resp.user.username,
-          email: userDetails.email, 
+          email: userDetails.email,
           fname: userDetails.fName,
           lname: userDetails.lName
         };
@@ -69,26 +67,32 @@ export var hackyApiUtility = (function() {
   };
 
   hackyApi.addEmployees = function(employees) {
-      window
-          .fetch(
-              "http://cs309-pp-7.misc.iastate.edu:8080/employees",
-              {
-                  method: "POST",
-                  mode: "cors",
-                  headers: {
-                      "Access-Control-Allow-Origin": "*",
-                      "Content-Type": "application/json"
-                  },
-                  body: JSON.stringify(employees)
-              }
-          )
-          .then(resp => resp.json())
-          .then(resp => JSON.stringify(resp))
-          .catch(err => console.log(err));
+    window
+      .fetch("http://cs309-pp-7.misc.iastate.edu:8080/employees", {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(employees)
+      })
+      .then(resp => resp.json())
+      .then(resp => JSON.stringify(resp))
+      .catch(err => console.log(err));
   };
 
-  hackyApi.getEmployeesForOrg = function(orgId) {
+  hackyApi.getEmployeesForOrg = function(orgId, callback) {
     //return list of employees for org
+    axios
+      .get(endpointBase + "/employees/org?orgId=" + orgId)
+      .then(resp => {
+        callback(resp.data);
+      })
+      .catch(err => {
+        console.log(err);
+        callback(null);
+      });
   };
 
   hackyApi.removeEmployee = function(employeeId, orgId) {

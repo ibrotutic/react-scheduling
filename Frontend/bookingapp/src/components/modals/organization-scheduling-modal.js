@@ -7,6 +7,7 @@ import EmployeeMenu from "../employee-dropdown";
 import Calendar from "react-calendar";
 import connect from "react-redux/es/connect/connect";
 import LoadingIndicator from "../loading-indicator";
+import hackyApiUtility from "../../utilities/hacky-api-utility";
 
 const styles = theme => ({
   paper: {
@@ -52,26 +53,10 @@ class OrganizationSchedulingModal extends Component {
 
   componentDidMount() {
     this.setState({ loading: true });
-    window
-      .fetch(
-        "http://cs309-pp-7.misc.iastate.edu:8080/employees?orgId=" +
-          this.props.orgInfo.orgId,
-        {
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json"
-          }
-        }
-      )
-      .then(resp => resp.json())
-      .then(resp => {
-        this.setState({ employees: resp });
-        this.setState({ loading: false });
-      })
-      .catch(err => {
-        console.log(err);
-        this.setState({ loading: false });
-      });
+    hackyApiUtility.getEmployeesForOrg(this.props.orgInfo.orgId, resp => {
+      this.setState({ employees: resp });
+      this.setState({ loading: false });
+    });
   }
 
   onClick() {
