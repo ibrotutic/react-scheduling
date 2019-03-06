@@ -43,8 +43,8 @@ export var hackyApiUtility = (function() {
               pId: resp.userSub,
               username: resp.user.username,
               email: userDetails.email,
-              fname: userDetails.fName,
-              lname: userDetails.lName
+              fname: userDetails.fname,
+              lname: userDetails.lname
           };
 
           axios.post(
