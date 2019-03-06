@@ -77,11 +77,11 @@ class EmployeeMenu extends React.Component {
           >
             {this.state.employees.map((employee, index) => (
               <MenuItem
-                key={employee.empId}
+                key={index}
                 selected={index === this.state.selectedIndex}
                 onClick={event => this.handleMenuItemClick(event, index)}
               >
-                {employee.name}
+                {employee.fname + " " + employee.lname}
               </MenuItem>
             ))}
           </Menu>
