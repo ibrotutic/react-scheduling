@@ -59,21 +59,6 @@ export var hackyApiUtility = (function() {
               });
       });
   };
-            axios.post(
-                endpointBase + "/person?pid=" + person.pId,
-                person,
-                {headers: headers}
-            ).then(function (response) {
-                callback(payload);
-                console.log(response);
-            })
-            .catch(function (error) {
-                callback(null);
-                console.log(error);
-            });
-        });
-    };
-
 
     hackyApi.modifyOrg = function(modifiedOrgDetails) {
     //spring and elasticsearch stuff to update org
