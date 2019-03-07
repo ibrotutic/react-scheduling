@@ -64,6 +64,7 @@ class OrganizationSchedulingModal extends Component {
       scheduling: false,
       loading: true,
       employees: {},
+      selectedEmployeeIndex: 0,
       selectedDate: new Date(),
       selectedTime: 0
     };
@@ -97,14 +98,21 @@ class OrganizationSchedulingModal extends Component {
 
   scheduleAppointment = () => {
     if (this.state.selectedTime) {
+      console.log(this.state);
+      console.log(this.props.cognito);
       var date = Math.floor(this.state.selectedDate.getTime() / 1000);
 
       var appointment = {
+        clientId: this.props.cognito.attributes.sub,
+        empId: this.state.employees[this.state.selectedEmployeeIndex].pId,
+        orgId: this.props.orgInfo.orgId,
         startTime: date + this.state.selectedTime.startTime * 60,
         endTime: date + this.state.selectedTime.endTime * 60
       };
 
-      // Insert appointment
+      hackyApiUtility.createAppointment(appointment, () => {
+        this.props.addAppointment({ appointment: appointment });
+      });
     } else {
       alert("Please select a time slot.");
     }
@@ -146,7 +154,12 @@ class OrganizationSchedulingModal extends Component {
           {this.state.loading ? (
             <LoadingIndicator />
           ) : (
-            <EmployeeMenu employees={this.state.employees} />
+            <EmployeeMenu
+              selectedEmployeeIndex={index =>
+                this.handleChange("employeeIndex", index)
+              }
+              employees={this.state.employees}
+            />
           )}
           <Button onClick={this.onClick}>Close</Button>
 
@@ -159,13 +172,25 @@ class OrganizationSchedulingModal extends Component {
 
 function mapStateToProps(state) {
   return {
-    orgInfo: state.modal.orgInfo
+    orgInfo: state.modal.orgInfo,
+    cognito: state.user.cognito
   };
 }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addAppointment: appointment => {
+      dispatch({
+        type: "ADD_APPT",
+        payload: appointment
+      });
+    }
+  };
+};
 
 export default withStyles(styles)(
   connect(
     mapStateToProps,
-    null
+    mapDispatchToProps
   )(OrganizationSchedulingModal)
 );
