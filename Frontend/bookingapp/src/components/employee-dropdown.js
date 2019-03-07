@@ -17,16 +17,8 @@ const styles = theme => ({
 });
 
 class EmployeeMenu extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      employees: props.employees,
-      selectedIndex: 0
-    };
-  }
-
   state = {
+    employees: this.props.employees,
     anchorEl: null,
     selectedIndex: 0
   };
@@ -50,6 +42,11 @@ class EmployeeMenu extends React.Component {
     if (this.state.employees === undefined) {
       return <LoadingIndicator />;
     } else {
+      var emp =
+        this.state.employees.length === 0
+          ? null
+          : this.state.employees[this.state.selectedIndex];
+
       return (
         <div className={classes.root}>
           <List component="nav">
@@ -64,7 +61,7 @@ class EmployeeMenu extends React.Component {
                 secondary={
                   this.state.employees.length === 0
                     ? "No Employees Available"
-                    : this.state.employees[this.state.selectedIndex].name
+                    : emp.fname + " " + emp.lname
                 }
               />
             </ListItem>
@@ -77,11 +74,11 @@ class EmployeeMenu extends React.Component {
           >
             {this.state.employees.map((employee, index) => (
               <MenuItem
-                key={employee.empId}
+                key={index}
                 selected={index === this.state.selectedIndex}
                 onClick={event => this.handleMenuItemClick(event, index)}
               >
-                {employee.name}
+                {employee.fname + " " + employee.lname}
               </MenuItem>
             ))}
           </Menu>

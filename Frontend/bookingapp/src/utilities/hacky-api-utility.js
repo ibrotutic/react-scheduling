@@ -20,19 +20,17 @@ export var hackyApiUtility = (function() {
     hackyApi.addEmployees(employeeList);
   };
 
-  hackyApi.createSpringOrg = function (orgDetails) {
-
-  };
+  hackyApi.createSpringOrg = function(orgDetails) {};
 
   hackyApi.createUser = function(userDetails, callback) {
     //spring stuff to create user
     Auth.signUp({
-      username: userDetails.username,
-      password: userDetails.pw,
-      attributes: {
-        preferred_username: userDetails.email,
-        email: userDetails.email
-      }
+        username: userDetails.username,
+        password: userDetails.pw,
+        attributes: {
+            preferred_username: userDetails.email,
+            email: userDetails.email
+        }
     })
       .then(resp => {
           var payload = {
@@ -61,10 +59,25 @@ export var hackyApiUtility = (function() {
               });
       });
   };
+            axios.post(
+                endpointBase + "/person?pid=" + person.pId,
+                person,
+                {headers: headers}
+            ).then(function (response) {
+                callback(payload);
+                console.log(response);
+            })
+            .catch(function (error) {
+                callback(null);
+                console.log(error);
+            });
+        });
+    };
 
-  hackyApi.modifyOrg = function(modifiedOrgDetails) {
+
+    hackyApi.modifyOrg = function(modifiedOrgDetails) {
     //spring and elasticsearch stuff to update org
-  };
+    };
 
   hackyApi.addEmployees = function(employees) {
       axios.post(
@@ -79,8 +92,18 @@ export var hackyApiUtility = (function() {
       });
   };
 
-  hackyApi.getEmployeesForOrg = function(orgId) {
+
+    hackyApi.getEmployeesForOrg = function(orgId, callback) {
     //return list of employees for org
+    axios
+      .get(endpointBase + "/employees/org?orgId=" + orgId)
+      .then(resp => {
+        callback(resp.data);
+      })
+      .catch(err => {
+        console.log(err);
+        callback(null);
+      });
   };
 
   hackyApi.removeEmployee = function(employeeId, orgId) {
