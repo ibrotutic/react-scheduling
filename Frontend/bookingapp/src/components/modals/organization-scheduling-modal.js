@@ -8,6 +8,7 @@ import Calendar from "react-calendar";
 import connect from "react-redux/es/connect/connect";
 import LoadingIndicator from "../loading-indicator";
 import hackyApiUtility from "../../utilities/hacky-api-utility";
+import SelectTime from "../select-time";
 
 const styles = theme => ({
   paper: {
@@ -29,9 +30,28 @@ function getModalStyle() {
   };
 }
 
-function CalendarComponent(props) {
+function ScheduleComponent(props) {
   if (props.props.scheduling) {
-    return <Calendar />;
+    return (
+      <div>
+        <Typography variant="h5">Select a Date</Typography>
+        <Calendar
+          value={props.props.date}
+          onChange={date => props.props.handleChange("selectedDate", date)}
+        />
+        <Typography variant="h5">Select a Time</Typography>
+        <SelectTime
+          onChange={time => props.props.handleChange("selectedTime", time)}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={props.props.schedule}
+        >
+          Make Appointment
+        </Button>
+      </div>
+    );
   } else {
     return <Button onClick={props.props.clickSchedule}>Schedule</Button>;
   }
@@ -43,7 +63,9 @@ class OrganizationSchedulingModal extends Component {
     this.state = {
       scheduling: false,
       loading: true,
-      employees: {}
+      employees: {},
+      selectedDate: new Date(),
+      selectedTime: 0
     };
     this.close = this.props.props.onClick.bind(this);
 
@@ -53,6 +75,7 @@ class OrganizationSchedulingModal extends Component {
 
   componentDidMount() {
     this.setState({ loading: true });
+
     hackyApiUtility.getEmployeesForOrg(this.props.orgInfo.orgId, resp => {
       this.setState({ employees: resp });
       this.setState({ loading: false });
@@ -68,12 +91,34 @@ class OrganizationSchedulingModal extends Component {
     this.setState({ scheduling: true });
   }
 
+  handleChange = (name, value) => {
+    this.setState({ [name]: value });
+  };
+
+  scheduleAppointment = () => {
+    if (this.state.selectedTime) {
+      var date = Math.floor(this.state.selectedDate.getTime() / 1000);
+
+      var appointment = {
+        startTime: date + this.state.selectedTime.startTime * 60,
+        endTime: date + this.state.selectedTime.endTime * 60
+      };
+
+      // Insert appointment
+    } else {
+      alert("Please select a time slot.");
+    }
+  };
+
   render() {
     const { classes } = this.props;
 
     let calendarProps = {
       clickSchedule: this.clickSchedule,
-      scheduling: this.state.scheduling
+      scheduling: this.state.scheduling,
+      date: this.state.selectedDate,
+      handleChange: this.handleChange,
+      schedule: this.scheduleAppointment
     };
 
     let orgInfo = this.props.orgInfo;
@@ -104,7 +149,8 @@ class OrganizationSchedulingModal extends Component {
             <EmployeeMenu employees={this.state.employees} />
           )}
           <Button onClick={this.onClick}>Close</Button>
-          <CalendarComponent props={calendarProps} />
+
+          <ScheduleComponent props={calendarProps} />
         </div>
       </Modal>
     );
