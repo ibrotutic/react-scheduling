@@ -123,7 +123,7 @@ class SignUpForm extends Component {
                 id="outlined-lname"
                 label="Your Last Name"
                 className={classes.textField}
-                value={this.state.lName}
+                value={this.state.lname}
                 onChange={e => this.handleChange(e, "lname")}
                 margin="normal"
                 variant="outlined"
