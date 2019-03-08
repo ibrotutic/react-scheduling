@@ -32,51 +32,50 @@ export var hackyApiUtility = (function() {
             email: userDetails.email
         }
     })
-        .then(resp => {
-            var payload = {
-                cognito: resp
-            };
+      .then(resp => {
+          var payload = {
+              cognito: resp
+          };
 
-            var person = {
-                pId: resp.userSub,
-                username: resp.user.username,
-                email: userDetails.email,
-                fname: userDetails.fname,
-                lname: userDetails.lname
-            };
+          var person = {
+              pId: resp.userSub,
+              username: resp.user.username,
+              email: userDetails.email,
+              fname: userDetails.fname,
+              lname: userDetails.lname
+          };
 
-            axios.post(
-                endpointBase + "/person?pid=" + person.pId,
-                person,
-                {headers: headers}
-            ).then(function (response) {
-                callback(payload);
-                console.log(response);
-            })
-            .catch(function (error) {
-                callback(null);
-                console.log(error);
-            });
-        });
-    };
-
+          axios.post(
+              endpointBase + "/person?pid=" + person.pId,
+              person,
+              {headers: headers}
+          ).then(function (response) {
+              callback(payload);
+              console.log(response);
+          })
+              .catch(function (error) {
+                  callback(null);
+                  console.log(error);
+              });
+      });
+  };
 
     hackyApi.modifyOrg = function(modifiedOrgDetails) {
     //spring and elasticsearch stuff to update org
     };
 
-    hackyApi.addEmployees = function(employees) {
-        axios.post(
-            endpointBase+ "/employees",
-            employees,
-            {headers:headers}
-        ).then(function (response) {
-            console.log(response);
-        })
-            .catch(function (error) {
-                console.log(error);
-            });
-    };
+  hackyApi.addEmployees = function(employees) {
+      axios.post(
+          endpointBase+ "/employees",
+          employees,
+          {headers:headers}
+      ).then(function (response) {
+          console.log(response);
+      })
+      .catch(function (error) {
+          console.log(error);
+      });
+  };
 
 
     hackyApi.getEmployeesForOrg = function(orgId, callback) {
