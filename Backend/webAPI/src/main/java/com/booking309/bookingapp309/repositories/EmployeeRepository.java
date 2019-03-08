@@ -11,4 +11,6 @@ public interface EmployeeRepository extends CrudRepository<Employee, EmployeeCom
     public List<Employee> findAllByOrgId(String orgId);
 
     public List<Employee> findAllByEmpId(String empId);
+
+    public void deleteByEmpIdAndOrgId(String empId, String orgId);
 }
