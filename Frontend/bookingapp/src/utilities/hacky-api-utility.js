@@ -61,18 +61,16 @@ export var hackyApiUtility = (function() {
 
   hackyApi.modifyOrg = function(modifiedOrgDetails) {
     //spring and elasticsearch stuff to update org
-    };
+  };
 
   hackyApi.addEmployees = function(employees) {
-      axios.post(
-          endpointBase+ "/employees",
-          employees,
-          {headers:headers}
-      ).then(function (response) {
-          console.log(response);
+    axios
+      .post(endpointBase + "/employees", employees, { headers: headers })
+      .then(function(response) {
+        console.log(response);
       })
-      .catch(function (error) {
-          console.log(error);
+      .catch(function(error) {
+        console.log(error);
       });
   };
 

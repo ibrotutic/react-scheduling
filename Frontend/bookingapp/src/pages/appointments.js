@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import hackyApiUtility from "../utilities/hacky-api-utility";
 import { connect } from "react-redux";
+import { AppointmentManager } from "../utilities/appointment-management-utility";
 
 class Appointments extends Component {
   state = {
     userId: "",
-    appts: this.props.appointments
+    appts: this.props.appointments,
+    upcomingAppointments: true
   };
 
   componentDidMount() {
