@@ -12,6 +12,12 @@ export const appointmentReducer = (state = initialApptData, action) => {
           payload.appointments === undefined ? [] : payload.appointments
       };
       break;
+    case "ADD_APPT":
+      state = {
+        ...state,
+        appointments: [...state.appointments, payload.appointment]
+      };
+      break;
     default:
       break;
   }

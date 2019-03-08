@@ -28,7 +28,10 @@ class EmployeeMenu extends React.Component {
   };
 
   handleMenuItemClick = (event, index) => {
-    this.setState({ selectedIndex: index, anchorEl: null });
+    this.setState({ selectedIndex: index, anchorEl: null }, () => {
+      if (this.props.selectedEmployeeIndex)
+        this.props.selectedEmployeeIndex(this.state.selectedIndex);
+    });
   };
 
   handleClose = () => {

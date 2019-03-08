@@ -8,6 +8,7 @@ import Calendar from "react-calendar";
 import connect from "react-redux/es/connect/connect";
 import LoadingIndicator from "../loading-indicator";
 import hackyApiUtility from "../../utilities/hacky-api-utility";
+import SelectTime from "../select-time";
 
 const styles = theme => ({
   paper: {
@@ -29,9 +30,28 @@ function getModalStyle() {
   };
 }
 
-function CalendarComponent(props) {
+function ScheduleComponent(props) {
   if (props.props.scheduling) {
-    return <Calendar />;
+    return (
+      <div>
+        <Typography variant="h5">Select a Date</Typography>
+        <Calendar
+          value={props.props.date}
+          onChange={date => props.props.handleChange("selectedDate", date)}
+        />
+        <Typography variant="h5">Select a Time</Typography>
+        <SelectTime
+          onChange={time => props.props.handleChange("selectedTime", time)}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={props.props.schedule}
+        >
+          Make Appointment
+        </Button>
+      </div>
+    );
   } else {
     return <Button onClick={props.props.clickSchedule}>Schedule</Button>;
   }
@@ -43,7 +63,10 @@ class OrganizationSchedulingModal extends Component {
     this.state = {
       scheduling: false,
       loading: true,
-      employees: {}
+      employees: {},
+      selectedEmployeeIndex: 0,
+      selectedDate: new Date(),
+      selectedTime: 0
     };
     this.close = this.props.props.onClick.bind(this);
 
@@ -53,6 +76,7 @@ class OrganizationSchedulingModal extends Component {
 
   componentDidMount() {
     this.setState({ loading: true });
+
     hackyApiUtility.getEmployeesForOrg(this.props.orgInfo.orgId, resp => {
       this.setState({ employees: resp });
       this.setState({ loading: false });
@@ -68,12 +92,41 @@ class OrganizationSchedulingModal extends Component {
     this.setState({ scheduling: true });
   }
 
+  handleChange = (name, value) => {
+    this.setState({ [name]: value });
+  };
+
+  scheduleAppointment = () => {
+    if (this.state.selectedTime) {
+      console.log(this.state);
+      console.log(this.props.cognito);
+      var date = Math.floor(this.state.selectedDate.getTime() / 1000);
+
+      var appointment = {
+        clientId: this.props.cognito.attributes.sub,
+        empId: this.state.employees[this.state.selectedEmployeeIndex].pId,
+        orgId: this.props.orgInfo.orgId,
+        startTime: date + this.state.selectedTime.startTime * 60,
+        endTime: date + this.state.selectedTime.endTime * 60
+      };
+
+      hackyApiUtility.createAppointment(appointment, () => {
+        this.props.addAppointment({ appointment: appointment });
+      });
+    } else {
+      alert("Please select a time slot.");
+    }
+  };
+
   render() {
     const { classes } = this.props;
 
     let calendarProps = {
       clickSchedule: this.clickSchedule,
-      scheduling: this.state.scheduling
+      scheduling: this.state.scheduling,
+      date: this.state.selectedDate,
+      handleChange: this.handleChange,
+      schedule: this.scheduleAppointment
     };
 
     let orgInfo = this.props.orgInfo;
@@ -101,10 +154,16 @@ class OrganizationSchedulingModal extends Component {
           {this.state.loading ? (
             <LoadingIndicator />
           ) : (
-            <EmployeeMenu employees={this.state.employees} />
+            <EmployeeMenu
+              selectedEmployeeIndex={index =>
+                this.handleChange("employeeIndex", index)
+              }
+              employees={this.state.employees}
+            />
           )}
           <Button onClick={this.onClick}>Close</Button>
-          <CalendarComponent props={calendarProps} />
+
+          <ScheduleComponent props={calendarProps} />
         </div>
       </Modal>
     );
@@ -113,13 +172,25 @@ class OrganizationSchedulingModal extends Component {
 
 function mapStateToProps(state) {
   return {
-    orgInfo: state.modal.orgInfo
+    orgInfo: state.modal.orgInfo,
+    cognito: state.user.cognito
   };
 }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addAppointment: appointment => {
+      dispatch({
+        type: "ADD_APPT",
+        payload: appointment
+      });
+    }
+  };
+};
 
 export default withStyles(styles)(
   connect(
     mapStateToProps,
-    null
+    mapDispatchToProps
   )(OrganizationSchedulingModal)
 );
