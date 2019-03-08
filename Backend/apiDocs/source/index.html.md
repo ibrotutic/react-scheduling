@@ -147,6 +147,19 @@ curl "http://cs309-pp-7.misc.iastate.edu:8080/employees"
 
 `POST http://cs309-pp-7.misc.iastate.edu:8080/employees`
 
+## Delete an employee
+
+Deletes a specefied employee record. Does not delete the person's info, just the mapping b/w org and person.
+
+```shell
+curl "http://cs309-pp-7.misc.iastate.edu:8080/employees?empId=foo&&orgId=bar"
+  -X DELETE
+```
+
+### HTTP Request
+
+`DELETE http://cs309-pp-7.misc.iastate.edu:8080/employees`
+
 # Person
 
 ## Get a person

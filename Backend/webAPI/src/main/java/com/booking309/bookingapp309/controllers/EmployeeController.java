@@ -50,4 +50,10 @@ public class EmployeeController {
 
         return employees;
     }
+
+    @CrossOrigin
+    @DeleteMapping("/employees")
+    public @ResponseBody void deleteEmployee(@RequestParam String empId, String orgId){
+        empRepository.deleteByEmpIdAndOrgId(empId, orgId);
+    }
 }
