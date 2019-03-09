@@ -1,6 +1,16 @@
 import React, { Component } from "react";
 import hackyApiUtility from "../utilities/hacky-api-utility";
 import { connect } from "react-redux";
+import AppointmentCard from "../components/appt-card";
+
+const styles = {
+  resultsContainer: {
+    display: "flex",
+    justifyContent: "center",
+    height: "700px",
+    overflowY: "scroll"
+  }
+};
 
 class Appointments extends Component {
   state = {
@@ -39,11 +49,9 @@ class Appointments extends Component {
     if (this.state.appts && this.state.appts.length !== 0) {
       return this.state.appts.map(appt => {
         return (
-          <div key={appt.id}>
-            <div>{appt.id}</div>
-            <div>{appt.startTime}</div>
-            <div>{appt.endTime}</div>
-          </div>
+          <li key={appt.id} style={{ marginBottom: "10px" }}>
+            <AppointmentCard props={appt} />
+          </li>
         );
       });
     }
@@ -54,9 +62,8 @@ class Appointments extends Component {
       return <div>Must be signed in to see your appointments.</div>;
     }
     return (
-      <div>
-        <h2>Appointments Page</h2>
-        {this.getAppointmentsDiv()}
+      <div style={styles.resultsContainer}>
+        <ul style={{ listStyleType: "none" }}>{this.getAppointmentsDiv()}</ul>
       </div>
     );
   }

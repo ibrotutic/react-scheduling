@@ -27,7 +27,7 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
-          <ModalRoot/>
+          <ModalRoot />
           <Navbar />
           <NavController />
         </div>

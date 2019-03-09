@@ -12,16 +12,16 @@ import Search from "./search";
 
 const styles = {
   root: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   grow: {
     flexGrow: 1
   },
   positionLeft: {
-    float: "left",
+    float: "left"
   },
   positionRight: {
-    float: "right",
+    float: "right"
   },
   menuButton: {
     marginLeft: -12,
@@ -70,7 +70,7 @@ class ButtonAppBar extends Component {
             <Typography variant="h6" color="inherit" className={classes.grow}>
               Booking App
             </Typography>
-            <Search/>
+            <Search />
             {this.props.user.cognito !== null &&
             this.props.user.cognito !== undefined &&
             this.props.user.username !== "" ? (
@@ -116,15 +116,15 @@ const mapDispatchToProps = dispatch => {
     },
     createLoginModal: () => {
       dispatch({
-        type: 'SHOW_MODAL',
-        modalType: 'LOGIN'
-      })
+        type: "SHOW_MODAL",
+        modalType: "LOGIN"
+      });
     },
     createSignUpModal: () => {
       dispatch({
-        type: 'SHOW_MODAL',
-        modalType: 'SIGN_UP'
-      })
+        type: "SHOW_MODAL",
+        modalType: "SIGN_UP"
+      });
     }
   };
 };

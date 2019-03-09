@@ -109,24 +109,24 @@ class SignUpForm extends Component {
               variant="outlined"
             />
             <TextField
-                type="fname"
-                id="outlined-fname"
-                label="Your First Name"
-                className={classes.textField}
-                value={this.state.fname}
-                onChange={e => this.handleChange(e, "fname")}
-                margin="normal"
-                variant="outlined"
+              type="fname"
+              id="outlined-fname"
+              label="Your First Name"
+              className={classes.textField}
+              value={this.state.fname}
+              onChange={e => this.handleChange(e, "fname")}
+              margin="normal"
+              variant="outlined"
             />
             <TextField
-                type="lname"
-                id="outlined-lname"
-                label="Your Last Name"
-                className={classes.textField}
-                value={this.state.lname}
-                onChange={e => this.handleChange(e, "lname")}
-                margin="normal"
-                variant="outlined"
+              type="lname"
+              id="outlined-lname"
+              label="Your Last Name"
+              className={classes.textField}
+              value={this.state.lname}
+              onChange={e => this.handleChange(e, "lname")}
+              margin="normal"
+              variant="outlined"
             />
             <TextField
               type="password"
