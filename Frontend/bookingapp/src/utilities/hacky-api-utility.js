@@ -18,9 +18,26 @@ export var hackyApiUtility = (function() {
     let employeeList = [];
     employeeList.push(admin);
     hackyApi.addEmployees(employeeList);
+    console.log(orgDetails);
+    hackyApi.createSpringOrg(orgDetails);
   };
 
-  hackyApi.createSpringOrg = function(orgDetails) {};
+  hackyApi.createSpringOrg = function(orgDetails, callback) {
+    orgDetails.serviceType = orgDetails.service;
+    delete orgDetails.service;
+    axios
+      .post(endpointBase + "/org", orgDetails, {
+        headers: headers
+      })
+      .then(function(response) {
+        console.log("Spring create success:" + response);
+        callback(null);
+      })
+      .catch(function(error) {
+        console.log("Spring create error:" + error);
+        callback(null);
+      });
+  };
 
   hackyApi.createUser = function(userDetails, callback) {
     //spring stuff to create user
@@ -74,21 +91,22 @@ export var hackyApiUtility = (function() {
       });
   };
 
-  hackyApi.addEmployees = function(employees) {
-    axios
-      .post(endpointBase + "/employees", employees, { headers: headers })
-      .then(function(response) {
-        console.log(response);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-  };
-
   hackyApi.getEmployeesForOrg = function(orgId, callback) {
     //return list of employees for org
     axios
       .get(endpointBase + "/employees/org?orgId=" + orgId)
+      .then(resp => {
+        callback(resp.data);
+      })
+      .catch(err => {
+        console.log(err);
+        callback(null);
+      });
+  };
+
+  hackyApi.getPersonForId = function(personId, callback) {
+    axios
+      .get(endpointBase + "/person?pid=" + personId)
       .then(resp => {
         callback(resp.data);
       })
