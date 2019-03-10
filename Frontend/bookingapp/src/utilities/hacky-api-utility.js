@@ -148,6 +148,19 @@ export var hackyApiUtility = (function() {
       });
   };
 
+  hackyApi.getOrgForId = function(orgId, callback) {
+    axios
+      .get(endpointBase + "/org?orgId=" + orgId)
+      .then(resp => {
+        callback(resp.data);
+      })
+      .catch(err => {
+        console.log(err);
+        var empty = [];
+        callback(empty);
+      });
+  };
+
   return hackyApi; // expose externally
 })();
 
