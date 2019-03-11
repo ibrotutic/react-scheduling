@@ -16,6 +16,7 @@ import javax.persistence.Id;
 public class Organization {
     @Id
     private String orgId;
+    private String name;
     private String serviceType;
     private String address;
     private String description;
@@ -60,5 +61,13 @@ public class Organization {
 
     public void setAdminId(String adminId) {
         this.adminId = adminId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
