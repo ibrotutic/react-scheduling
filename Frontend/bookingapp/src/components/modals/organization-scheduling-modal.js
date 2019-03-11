@@ -49,7 +49,7 @@ function ScheduleComponent(props) {
           onClick={props.props.schedule}
         >
           Make Appointment
-        </Button>{" "}
+        </Button>
       </div>
     );
   } else {
