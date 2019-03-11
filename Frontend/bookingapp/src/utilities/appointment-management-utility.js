@@ -3,11 +3,9 @@ const AppointmentManager = {
     const currentTimeSinceEpoch = new Date().getTime();
 
     if (appointments) {
-      let pastAppointments = appointments.filter(function(appointment) {
-        return appointment.endTime >= currentTimeSinceEpoch;
+      return appointments.filter(function(appointment) {
+        return appointment.endTime <= currentTimeSinceEpoch / 1000;
       });
-
-      return pastAppointments;
     }
 
     return null;
@@ -17,11 +15,9 @@ const AppointmentManager = {
     const currentTimeSinceEpoch = new Date().getTime();
 
     if (appointments) {
-      let upcomingAppointments = appointments.filter(function(appointment) {
-        return appointment.endTime < currentTimeSinceEpoch;
+      return appointments.filter(function(appointment) {
+        return appointment.endTime > currentTimeSinceEpoch / 1000;
       });
-
-      return upcomingAppointments;
     }
 
     return null;

@@ -5,11 +5,10 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import hackyApiUtility from "../utilities/hacky-api-utility";
-import LoadingIndicator from "./modals/organization-scheduling-modal";
 
 const styles = {
   card: {
-    maxWidth: 400
+    width: 400
   },
   left: {
     textAlign: "left"
@@ -35,7 +34,8 @@ class AppointmentCard extends Component {
       appt: props.props,
       employeeLoading: true,
       orgLoading: true,
-      employee: []
+      employee: [],
+      org: []
     };
   }
 
@@ -46,17 +46,20 @@ class AppointmentCard extends Component {
   }
 
   setOrg = orgId => {
-    //set org here...
+    hackyApiUtility.getOrgForId(orgId, resp => {
+      this.setState({ org: resp, orgLoading: false });
+    });
   };
 
   setEmployee = empId => {
     hackyApiUtility.getPersonForId(empId, resp => {
-      let person = {
-        name: resp.fname + " " + resp.lname,
-        contact: resp.email
-      };
-      this.setState({ employee: person, employeeLoading: false });
-      console.log(this.state);
+      if (resp.fname && resp.lname) {
+        let person = {
+          name: resp.fname + " " + resp.lname,
+          contact: resp.email
+        };
+        this.setState({ employee: person, employeeLoading: false });
+      }
     });
   };
 
@@ -94,13 +97,13 @@ class AppointmentCard extends Component {
             {this.state.date}
           </Typography>
           <Typography variant="h6" component="h6" style={styles.left}>
-            Ibro's Barbershop
+            {this.state.org.name}
           </Typography>
           <Typography variant="h6" component="h6" style={styles.left}>
             {this.state.timeBox}
           </Typography>
           <Typography variant="h6" component="h6" style={styles.left}>
-            With: {this.state.employee.name}
+            {this.state.employee.name}
           </Typography>
         </CardContent>
       </Card>

@@ -30,12 +30,10 @@ export var hackyApiUtility = (function() {
         headers: headers
       })
       .then(function(response) {
-        console.log("Spring create success:" + response);
-        callback(null);
+        console.log("Spring create success:" + response.toString());
       })
       .catch(function(error) {
-        console.log("Spring create error:" + error);
-        callback(null);
+        console.log("Spring create error:" + error.toString());
       });
   };
 
@@ -127,7 +125,13 @@ export var hackyApiUtility = (function() {
   hackyApi.createAppointment = function(appointment, callback) {
     axios
       .post(endpointBase + "/calendar", appointment, { headers: headers })
-      .then(resp => callback(resp.data))
+      .then(resp => {
+        if (resp.data) {
+          callback(resp.data);
+        } else {
+          callback(null);
+        }
+      })
       .catch(err => {
         console.log(err);
         callback(null);

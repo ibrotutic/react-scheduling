@@ -49,10 +49,13 @@ function ScheduleComponent(props) {
           onClick={props.props.schedule}
         >
           Make Appointment
-        </Button>
+        </Button>{" "}
       </div>
     );
   } else {
+    if (props.props.employeeError) {
+      return <h6 style={{ color: "red" }}>Employee error.</h6>;
+    }
     return <Button onClick={props.props.clickSchedule}>Schedule</Button>;
   }
 }
@@ -89,7 +92,9 @@ class OrganizationSchedulingModal extends Component {
   }
 
   clickSchedule() {
-    this.setState({ scheduling: true });
+    if (this.state.employees.length > 0) {
+      this.setState({ scheduling: true });
+    }
   }
 
   handleChange = (name, value) => {
@@ -100,9 +105,9 @@ class OrganizationSchedulingModal extends Component {
     if (this.state.selectedTime) {
       console.log(this.state);
       console.log(this.props.cognito);
-      var date = Math.floor(this.state.selectedDate.getTime() / 1000);
+      let date = Math.floor(this.state.selectedDate.getTime() / 1000);
 
-      var appointment = {
+      let appointment = {
         clientId: this.props.cognito.attributes.sub,
         empId: this.state.employees[this.state.selectedEmployeeIndex].pId,
         orgId: this.props.orgInfo.orgId,
@@ -123,12 +128,13 @@ class OrganizationSchedulingModal extends Component {
 
     let calendarProps = {
       clickSchedule: this.clickSchedule,
+      employeeError: this.state.employees.length === 0 && !this.state.loading,
       scheduling: this.state.scheduling,
       date: this.state.selectedDate,
       handleChange: this.handleChange,
       schedule: this.scheduleAppointment
     };
-
+    console.log(calendarProps.employeeError);
     let orgInfo = this.props.orgInfo;
 
     return (
