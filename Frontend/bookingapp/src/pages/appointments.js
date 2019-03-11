@@ -51,10 +51,23 @@ class Appointments extends Component {
     return new Promise(function(resolve, reject) {
       hackyApiUtility.getPersonForId(appt.empId, resp => {
         if (resp !== undefined) {
-          appt.employee = resp;
+          appt.name = resp;
           resolve(resp);
         } else {
           reject("Couldn't Load Employee");
+        }
+      });
+    });
+  };
+
+  loadClient = function(appt) {
+    return new Promise(function(resolve, reject) {
+      hackyApiUtility.getPersonForId(appt.clientId, resp => {
+        if (resp !== undefined) {
+          appt.name = resp;
+          resolve(resp);
+        } else {
+          reject("Couldn't Load Client");
         }
       });
     });
@@ -77,13 +90,13 @@ class Appointments extends Component {
   };
 
   loadAppointments = apptList => {
-    let employeePromises = this.loadEmpData(apptList);
+    let namePromises = this.loadNameData(apptList);
     let orgPromises = this.loadOrgData(apptList);
-    Promise.all(employeePromises).then(values => {
+    Promise.all(namePromises).then(values => {
       console.log(values);
       apptList.forEach(function(appt, index) {
-        delete appt.employee;
-        appt.employee = values[index].fname + " " + values[index].lname;
+        delete appt.name;
+        appt.name = values[index].fname + " " + values[index].lname;
         return appt;
       });
       Promise.all(orgPromises).then(values => {
@@ -106,9 +119,13 @@ class Appointments extends Component {
     });
   };
 
-  loadEmpData = appts => {
+  loadNameData = appts => {
     return appts.map(appt => {
-      return this.loadEmp(appt);
+      if (this.state.userId === appt.clientId) {
+        return this.loadEmp(appt);
+      } else {
+        return this.loadClient(appt);
+      }
     });
   };
 

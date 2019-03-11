@@ -26,13 +26,12 @@ const styles = {
 };
 
 class AppointmentCard extends Component {
-  __didMount = false;
   constructor(props) {
     //console.log(props);
     super(props);
     this.state = {
       appt: props.props,
-      employee: props.props.employee,
+      name: props.props.name,
       org: props.props.org
     };
   }
@@ -85,7 +84,7 @@ class AppointmentCard extends Component {
             {this.state.timeBox}
           </Typography>
           <Typography variant="h6" component="h6" style={styles.left}>
-            With: {this.state.employee ? this.state.employee : ""}
+            With: {this.state.name ? this.state.name : ""}
           </Typography>
         </CardContent>
       </Card>
