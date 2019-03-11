@@ -49,7 +49,7 @@ function ScheduleComponent(props) {
           onClick={props.props.schedule}
         >
           Make Appointment
-        </Button>{" "}
+        </Button>
       </div>
     );
   } else {
@@ -68,7 +68,7 @@ class OrganizationSchedulingModal extends Component {
       loading: true,
       employees: {},
       selectedEmployeeIndex: 0,
-      selectedDate: new Date(),
+      selectedDate: this.getDefaultDate(),
       selectedTime: 0
     };
     this.close = this.props.props.onClick.bind(this);
@@ -91,6 +91,16 @@ class OrganizationSchedulingModal extends Component {
     this.close();
   }
 
+  getDefaultDate = () => {
+    var date = new Date(Date.now());
+    date.setHours(0);
+    date.setMinutes(0);
+    date.setSeconds(0);
+    date.setMilliseconds(0);
+
+    return date;
+  };
+
   clickSchedule() {
     if (this.state.employees.length > 0) {
       this.setState({ scheduling: true });
@@ -103,8 +113,6 @@ class OrganizationSchedulingModal extends Component {
 
   scheduleAppointment = () => {
     if (this.state.selectedTime) {
-      console.log(this.state);
-      console.log(this.props.cognito);
       let date = Math.floor(this.state.selectedDate.getTime() / 1000);
 
       let appointment = {
