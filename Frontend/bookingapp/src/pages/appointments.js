@@ -34,6 +34,32 @@ class Appointments extends Component {
     this.requestAppointments();
   }
 
+  loadOrg = function(appt) {
+    return new Promise(function(resolve, reject) {
+      hackyApiUtility.getOrgForId(appt.orgId, resp => {
+        if (resp !== undefined) {
+          appt.org = resp;
+          resolve(resp);
+        } else {
+          reject("Couldn't Load Org");
+        }
+      });
+    });
+  };
+
+  loadEmp = function(appt) {
+    return new Promise(function(resolve, reject) {
+      hackyApiUtility.getPersonForId(appt.empId, resp => {
+        if (resp !== undefined) {
+          appt.employee = resp;
+          resolve(resp);
+        } else {
+          reject("Couldn't Load Employee");
+        }
+      });
+    });
+  };
+
   requestAppointments = () => {
     if (this.props.cognito && this.state.userId === "") {
       this.setState({ userId: this.props.cognito.attributes.sub });
@@ -51,9 +77,39 @@ class Appointments extends Component {
   };
 
   loadAppointments = apptList => {
-    this.setState({ appts: apptList, loading: false });
-    this.filterAppointments(apptList);
-    this.props.loadAppointmentsData({ appointments: apptList });
+    let employeePromises = this.loadEmpData(apptList);
+    let orgPromises = this.loadOrgData(apptList);
+    Promise.all(employeePromises).then(values => {
+      console.log(values);
+      apptList.forEach(function(appt, index) {
+        delete appt.employee;
+        appt.employee = values[index].fname + " " + values[index].lname;
+        return appt;
+      });
+      Promise.all(orgPromises).then(values => {
+        apptList.forEach(function(appt, index) {
+          delete appt.org;
+          appt.org = values[index];
+          return appt;
+        });
+      });
+      this.setState({ appts: apptList });
+      this.props.loadAppointmentsData({ appointments: apptList });
+      this.filterAppointments(this.state.appts);
+      this.setState({ loading: false });
+    });
+  };
+
+  loadOrgData = appts => {
+    return appts.map(appt => {
+      return this.loadOrg(appt);
+    });
+  };
+
+  loadEmpData = appts => {
+    return appts.map(appt => {
+      return this.loadEmp(appt);
+    });
   };
 
   filterAppointments = apptList => {
@@ -87,7 +143,11 @@ class Appointments extends Component {
   render() {
     if (!this.props.cognito) {
       return <div>Must be signed in to see your appointments.</div>;
-    } else if (this.state.appts.length === 0 && !this.state.loading) {
+    } else if (
+      this.state.appts &&
+      this.state.appts.length === 0 &&
+      !this.state.loading
+    ) {
       return <h5>No appointments to show.</h5>;
     } else if (this.state.loading) {
       return <LoadingIndicator />;
@@ -111,7 +171,6 @@ class Appointments extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state.appointment.appointments);
   return {
     appointments: state.appointment.appointments,
     cognito: state.user.cognito

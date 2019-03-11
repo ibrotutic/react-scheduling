@@ -4,7 +4,6 @@ import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import hackyApiUtility from "../utilities/hacky-api-utility";
 
 const styles = {
   card: {
@@ -27,41 +26,20 @@ const styles = {
 };
 
 class AppointmentCard extends Component {
+  __didMount = false;
   constructor(props) {
+    //console.log(props);
     super(props);
-
     this.state = {
       appt: props.props,
-      employeeLoading: true,
-      orgLoading: true,
-      employee: [],
-      org: []
+      employee: props.props.employee,
+      org: props.props.org
     };
   }
 
   componentDidMount() {
-    this.createDates(this.state.appt, this.state);
-    this.setEmployee(this.state.appt.empId);
-    this.setOrg(this.state.appt.orgId);
+    this.createDates();
   }
-
-  setOrg = orgId => {
-    hackyApiUtility.getOrgForId(orgId, resp => {
-      this.setState({ org: resp, orgLoading: false });
-    });
-  };
-
-  setEmployee = empId => {
-    hackyApiUtility.getPersonForId(empId, resp => {
-      if (resp.fname && resp.lname) {
-        let person = {
-          name: resp.fname + " " + resp.lname,
-          contact: resp.email
-        };
-        this.setState({ employee: person, employeeLoading: false });
-      }
-    });
-  };
 
   createDates = () => {
     let appt = this.state.appt;
@@ -84,8 +62,10 @@ class AppointmentCard extends Component {
         hour: "numeric",
         minute: "numeric"
       });
-
-    this.setState({ timeBox: timeBox, date: date });
+    this.setState({
+      timeBox: timeBox,
+      date: date
+    });
   };
 
   render() {
@@ -97,13 +77,15 @@ class AppointmentCard extends Component {
             {this.state.date}
           </Typography>
           <Typography variant="h6" component="h6" style={styles.left}>
-            {this.state.org.name}
+            {this.state.org && this.state.org.name
+              ? this.state.org.name + " - " + this.state.org.serviceType
+              : ""}
           </Typography>
           <Typography variant="h6" component="h6" style={styles.left}>
             {this.state.timeBox}
           </Typography>
           <Typography variant="h6" component="h6" style={styles.left}>
-            With: {this.state.employee.name}
+            With: {this.state.employee ? this.state.employee : ""}
           </Typography>
         </CardContent>
       </Card>
