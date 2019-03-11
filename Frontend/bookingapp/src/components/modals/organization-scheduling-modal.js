@@ -117,6 +117,8 @@ class OrganizationSchedulingModal extends Component {
 
       hackyApiUtility.createAppointment(appointment, () => {
         this.props.addAppointment({ appointment: appointment });
+        alert("Success");
+        this.setState({ scheduling: false });
       });
     } else {
       alert("Please select a time slot.");
