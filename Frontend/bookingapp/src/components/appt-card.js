@@ -103,7 +103,7 @@ class AppointmentCard extends Component {
             {this.state.timeBox}
           </Typography>
           <Typography variant="h6" component="h6" style={styles.left}>
-            {this.state.employee.name}
+            With: {this.state.employee.name}
           </Typography>
         </CardContent>
       </Card>
