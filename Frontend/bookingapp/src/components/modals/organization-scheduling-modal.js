@@ -53,6 +53,9 @@ function ScheduleComponent(props) {
       </div>
     );
   } else {
+    if (props.props.employeeError) {
+      return <h6 style={{ color: "red" }}>Employee error.</h6>;
+    }
     return <Button onClick={props.props.clickSchedule}>Schedule</Button>;
   }
 }
@@ -65,7 +68,7 @@ class OrganizationSchedulingModal extends Component {
       loading: true,
       employees: {},
       selectedEmployeeIndex: 0,
-      selectedDate: new Date(),
+      selectedDate: this.getDefaultDate(),
       selectedTime: 0
     };
     this.close = this.props.props.onClick.bind(this);
@@ -88,8 +91,20 @@ class OrganizationSchedulingModal extends Component {
     this.close();
   }
 
+  getDefaultDate = () => {
+    var date = new Date(Date.now());
+    date.setHours(0);
+    date.setMinutes(0);
+    date.setSeconds(0);
+    date.setMilliseconds(0);
+
+    return date;
+  };
+
   clickSchedule() {
-    this.setState({ scheduling: true });
+    if (this.state.employees.length > 0) {
+      this.setState({ scheduling: true });
+    }
   }
 
   handleChange = (name, value) => {
@@ -98,11 +113,9 @@ class OrganizationSchedulingModal extends Component {
 
   scheduleAppointment = () => {
     if (this.state.selectedTime) {
-      console.log(this.state);
-      console.log(this.props.cognito);
-      var date = Math.floor(this.state.selectedDate.getTime() / 1000);
+      let date = Math.floor(this.state.selectedDate.getTime() / 1000);
 
-      var appointment = {
+      let appointment = {
         clientId: this.props.cognito.attributes.sub,
         empId: this.state.employees[this.state.selectedEmployeeIndex].pId,
         orgId: this.props.orgInfo.orgId,
@@ -112,6 +125,8 @@ class OrganizationSchedulingModal extends Component {
 
       hackyApiUtility.createAppointment(appointment, () => {
         this.props.addAppointment({ appointment: appointment });
+        alert("Success");
+        this.setState({ scheduling: false });
       });
     } else {
       alert("Please select a time slot.");
@@ -123,12 +138,13 @@ class OrganizationSchedulingModal extends Component {
 
     let calendarProps = {
       clickSchedule: this.clickSchedule,
+      employeeError: this.state.employees.length === 0 && !this.state.loading,
       scheduling: this.state.scheduling,
       date: this.state.selectedDate,
       handleChange: this.handleChange,
       schedule: this.scheduleAppointment
     };
-
+    console.log(calendarProps.employeeError);
     let orgInfo = this.props.orgInfo;
 
     return (

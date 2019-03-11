@@ -18,9 +18,24 @@ export var hackyApiUtility = (function() {
     let employeeList = [];
     employeeList.push(admin);
     hackyApi.addEmployees(employeeList);
+    console.log(orgDetails);
+    hackyApi.createSpringOrg(orgDetails);
   };
 
-  hackyApi.createSpringOrg = function(orgDetails) {};
+  hackyApi.createSpringOrg = function(orgDetails, callback) {
+    orgDetails.serviceType = orgDetails.service;
+    delete orgDetails.service;
+    axios
+      .post(endpointBase + "/org", orgDetails, {
+        headers: headers
+      })
+      .then(function(response) {
+        console.log("Spring create success:" + response.toString());
+      })
+      .catch(function(error) {
+        console.log("Spring create error:" + error.toString());
+      });
+  };
 
   hackyApi.createUser = function(userDetails, callback) {
     //spring stuff to create user
@@ -61,19 +76,6 @@ export var hackyApiUtility = (function() {
 
   hackyApi.modifyOrg = function(modifiedOrgDetails) {
     //spring and elasticsearch stuff to update org
-    };
-
-  hackyApi.addEmployees = function(employees) {
-      axios.post(
-          endpointBase+ "/employees",
-          employees,
-          {headers:headers}
-      ).then(function (response) {
-          console.log(response);
-      })
-      .catch(function (error) {
-          console.log(error);
-      });
   };
 
   hackyApi.addEmployees = function(employees) {
@@ -100,6 +102,18 @@ export var hackyApiUtility = (function() {
       });
   };
 
+  hackyApi.getPersonForId = function(personId, callback) {
+    axios
+      .get(endpointBase + "/person?pid=" + personId)
+      .then(resp => {
+        callback(resp.data);
+      })
+      .catch(err => {
+        console.log(err);
+        callback(null);
+      });
+  };
+
   hackyApi.removeEmployee = function(employeeId, orgId) {
     //remove an employee from a given orgid
   };
@@ -111,7 +125,13 @@ export var hackyApiUtility = (function() {
   hackyApi.createAppointment = function(appointment, callback) {
     axios
       .post(endpointBase + "/calendar", appointment, { headers: headers })
-      .then(resp => callback(resp.data))
+      .then(resp => {
+        if (resp.data) {
+          callback(resp.data);
+        } else {
+          callback(null);
+        }
+      })
       .catch(err => {
         console.log(err);
         callback(null);
@@ -127,6 +147,19 @@ export var hackyApiUtility = (function() {
       .catch(err => {
         console.log(err);
 
+        var empty = [];
+        callback(empty);
+      });
+  };
+
+  hackyApi.getOrgForId = function(orgId, callback) {
+    axios
+      .get(endpointBase + "/org?orgId=" + orgId)
+      .then(resp => {
+        callback(resp.data);
+      })
+      .catch(err => {
+        console.log(err);
         var empty = [];
         callback(empty);
       });

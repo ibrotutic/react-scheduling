@@ -1,11 +1,29 @@
 import React, { Component } from "react";
 import hackyApiUtility from "../utilities/hacky-api-utility";
 import { connect } from "react-redux";
+import AppointmentCard from "../components/appt-card";
+import AppointmentManager from "../utilities/appointment-management-utility";
+import LoadingIndicator from "../components/loading-indicator";
+import Button from "@material-ui/core/Button";
+
+const styles = {
+  resultsContainer: {
+    display: "flex",
+    justifyContent: "center",
+    height: "700px",
+    overflowY: "scroll"
+  }
+};
 
 class Appointments extends Component {
   state = {
     userId: "",
-    appts: this.props.appointments
+    appts: this.props.appointments,
+    showUpcoming: true,
+    loading: true,
+    showPast: false,
+    upcomingAppts: [],
+    pastAppts: []
   };
 
   componentDidMount() {
@@ -16,34 +34,107 @@ class Appointments extends Component {
     this.requestAppointments();
   }
 
+  loadOrg = function(appt) {
+    return new Promise(function(resolve, reject) {
+      hackyApiUtility.getOrgForId(appt.orgId, resp => {
+        if (resp !== undefined) {
+          appt.org = resp;
+          resolve(resp);
+        } else {
+          reject("Couldn't Load Org");
+        }
+      });
+    });
+  };
+
+  loadEmp = function(appt) {
+    return new Promise(function(resolve, reject) {
+      hackyApiUtility.getPersonForId(appt.empId, resp => {
+        if (resp !== undefined) {
+          appt.employee = resp;
+          resolve(resp);
+        } else {
+          reject("Couldn't Load Employee");
+        }
+      });
+    });
+  };
+
   requestAppointments = () => {
     if (this.props.cognito && this.state.userId === "") {
       this.setState({ userId: this.props.cognito.attributes.sub });
 
-      if (!this.props.appointments.length) {
-        hackyApiUtility.getAppointments(
-          this.props.cognito.attributes.sub,
-          this.loadAppointments
-        );
-      }
+      hackyApiUtility.getAppointments(
+        this.props.cognito.attributes.sub,
+        this.loadAppointments
+      );
     }
   };
 
-  loadAppointments = apptList => {
-    this.setState({ appts: apptList });
+  toggleFilter = () => {
+    this.setState({ showUpcoming: !this.state.showUpcoming });
+    this.requestAppointments();
+  };
 
-    this.props.loadAppointmentsData({ appointments: apptList });
+  loadAppointments = apptList => {
+    let employeePromises = this.loadEmpData(apptList);
+    let orgPromises = this.loadOrgData(apptList);
+    Promise.all(employeePromises).then(values => {
+      console.log(values);
+      apptList.forEach(function(appt, index) {
+        delete appt.employee;
+        appt.employee = values[index].fname + " " + values[index].lname;
+        return appt;
+      });
+      Promise.all(orgPromises).then(values => {
+        apptList.forEach(function(appt, index) {
+          delete appt.org;
+          appt.org = values[index];
+          return appt;
+        });
+      });
+      this.setState({ appts: apptList });
+      this.props.loadAppointmentsData({ appointments: apptList });
+      this.filterAppointments(this.state.appts);
+      this.setState({ loading: false });
+    });
+  };
+
+  loadOrgData = appts => {
+    return appts.map(appt => {
+      return this.loadOrg(appt);
+    });
+  };
+
+  loadEmpData = appts => {
+    return appts.map(appt => {
+      return this.loadEmp(appt);
+    });
+  };
+
+  filterAppointments = apptList => {
+    let upcomingAppts = AppointmentManager.getUpcomingAppointments(apptList);
+    let pastAppts = AppointmentManager.getPastAppointments(apptList);
+    this.setState({ upcomingAppts: upcomingAppts });
+    this.setState({ pastAppts: pastAppts });
+  };
+
+  getAppointmentsToShow = () => {
+    if (this.state.showUpcoming) {
+      return this.state.upcomingAppts;
+    } else {
+      return this.state.pastAppts;
+    }
   };
 
   getAppointmentsDiv = () => {
-    if (this.state.appts && this.state.appts.length !== 0) {
-      return this.state.appts.map(appt => {
+    let appointmentsToShow = this.getAppointmentsToShow();
+    if (appointmentsToShow && appointmentsToShow.length !== 0) {
+      return appointmentsToShow.map(appt => {
         return (
-          <div key={appt.id}>
-            <div>{appt.id}</div>
-            <div>{appt.startTime}</div>
-            <div>{appt.endTime}</div>
-          </div>
+          <li key={appt.id} style={{ marginBottom: "10px" }}>
+            <AppointmentCard props={appt} />
+          </li>
         );
       });
     }
@@ -52,18 +143,34 @@ class Appointments extends Component {
   render() {
     if (!this.props.cognito) {
       return <div>Must be signed in to see your appointments.</div>;
+    } else if (
+      this.state.appts &&
+      this.state.appts.length === 0 &&
+      !this.state.loading
+    ) {
+      return <h5>No appointments to show.</h5>;
+    } else if (this.state.loading) {
+      return <LoadingIndicator />;
+    } else {
+      return (
+        <div>
+          <Button onClick={this.toggleFilter}>
+            {!this.state.showUpcoming
+              ? "Show future appointments"
+              : "Show past appointments"}
+          </Button>
+          <div style={styles.resultsContainer}>
+            <ul style={{ listStyleType: "none" }}>
+              {this.getAppointmentsDiv()}
+            </ul>
+          </div>
+        </div>
+      );
     }
-    return (
-      <div>
-        <h2>Appointments Page</h2>
-        {this.getAppointmentsDiv()}
-      </div>
-    );
   }
 }
 
 const mapStateToProps = state => {
-  console.log(state.appointment.appointments);
   return {
     appointments: state.appointment.appointments,
     cognito: state.user.cognito

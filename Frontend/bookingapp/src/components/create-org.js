@@ -3,7 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
-import hackyApiUtility from '../utilities/hacky-api-utility'
+import hackyApiUtility from "../utilities/hacky-api-utility";
 import connect from "react-redux/es/connect/connect";
 
 const uuidv4 = require("uuid/v4");
@@ -39,7 +39,7 @@ class CreateOrg extends Component {
     super(props);
 
     this.state = {
-      success: false,
+      success: false
     };
   }
 
@@ -61,7 +61,7 @@ class CreateOrg extends Component {
       description: this.state.description,
       tags: this.state.tags
     };
-    
+
     hackyApiUtility.createOrg(org, admin);
     this.setState({ success: true });
   };
@@ -159,8 +159,8 @@ const mapStateToProps = state => {
 };
 
 export default withStyles(styles)(
-    connect(
-        mapStateToProps,
-        null
-    )(CreateOrg)
+  connect(
+    mapStateToProps,
+    null
+  )(CreateOrg)
 );
