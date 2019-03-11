@@ -105,11 +105,11 @@ class Appointments extends Component {
           appt.org = values[index];
           return appt;
         });
+        this.setState({ appts: apptList });
+        this.props.loadAppointmentsData({ appointments: apptList });
+        this.filterAppointments(this.state.appts);
+        this.setState({ loading: false });
       });
-      this.setState({ appts: apptList });
-      this.props.loadAppointmentsData({ appointments: apptList });
-      this.filterAppointments(this.state.appts);
-      this.setState({ loading: false });
     });
   };
 
