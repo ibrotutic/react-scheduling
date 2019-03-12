@@ -1,7 +1,6 @@
 import React from "react";
+import Home from "./home";
 
-const Search = () => (
-    <h1>Page for searching...</h1>
-);
+const Search = () => <Home />;
 
-export default Search
+export default Search;

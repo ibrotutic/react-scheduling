@@ -115,19 +115,23 @@ class OrganizationSchedulingModal extends Component {
     if (this.state.selectedTime) {
       let date = Math.floor(this.state.selectedDate.getTime() / 1000);
 
-      let appointment = {
-        clientId: this.props.cognito.attributes.sub,
-        empId: this.state.employees[this.state.selectedEmployeeIndex].pId,
-        orgId: this.props.orgInfo.orgId,
-        startTime: date + this.state.selectedTime.startTime * 60,
-        endTime: date + this.state.selectedTime.endTime * 60
-      };
+      if (this.props.cognito) {
+        let appointment = {
+          clientId: this.props.cognito.attributes.sub,
+          empId: this.state.employees[this.state.selectedEmployeeIndex].pId,
+          orgId: this.props.orgInfo.orgId,
+          startTime: date + this.state.selectedTime.startTime * 60,
+          endTime: date + this.state.selectedTime.endTime * 60
+        };
 
-      hackyApiUtility.createAppointment(appointment, () => {
-        this.props.addAppointment({ appointment: appointment });
-        alert("Success");
-        this.setState({ scheduling: false });
-      });
+        hackyApiUtility.createAppointment(appointment, () => {
+          this.props.addAppointment({ appointment: appointment });
+          alert("Success");
+          this.setState({ scheduling: false });
+        });
+      } else {
+        alert("Please login");
+      }
     } else {
       alert("Please select a time slot.");
     }
