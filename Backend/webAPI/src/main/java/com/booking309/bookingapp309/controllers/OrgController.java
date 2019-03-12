@@ -43,4 +43,10 @@ public class OrgController {
     List<Organization> getOrgAdminInfo(@RequestParam String adminId) {
         return orgRepository.findAllByAdminId(adminId);
     }
+
+    @CrossOrigin
+    @DeleteMapping("/org")
+    public @ResponseBody void deleteCalendar(@RequestParam String orgId){
+        orgRepository.deleteByOrgId(orgId);
+    }
 }

@@ -28,4 +28,10 @@ public class CalendarController {
         
         return appointment;
     }
+
+    @CrossOrigin
+    @DeleteMapping("/calendar")
+    public @ResponseBody void deleteCalendar(@RequestParam int id){
+        appointmentRepository.deleteById(id);
+    }
 }

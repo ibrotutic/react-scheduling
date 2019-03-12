@@ -23,5 +23,11 @@ public class PersonController {
 
         return person;
     }
+
+    @CrossOrigin
+    @DeleteMapping("/person")
+    public @ResponseBody void deleteCalendar(@RequestParam String pId){
+        personRepository.deleteBypId(pId);
+    }
 }
 
