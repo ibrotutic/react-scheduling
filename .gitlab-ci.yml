@@ -1,0 +1,24 @@
+image: trion/ng-cli-karma
+
+cache:
+  paths:
+    - node_modules/
+
+before_script:
+ - apt-get update -qq && apt-get install -y -qq sshpass
+
+deploy_react_app:
+  stage: deploy
+  environment: Staging
+  only:
+    - master
+  script:
+    - rm ./package-lock.json
+    - npm install
+    - npm run-script build
+    - cd build/
+    - ls
+    - sshpass -V
+    - export SSHPASS=$USER_PASS 
+    - sshpass -e scp -o stricthostkeychecking=no -r . jdveatch@cs309-pp-7.misc.iastate.edu:/var/www/html
+    
