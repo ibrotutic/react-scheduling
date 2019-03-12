@@ -2,9 +2,6 @@ import React, { Component } from "react";
 import Background from "../background.jpg";
 import Search from "../components/search";
 import Icon from "../icon.svg";
-import LoginCard from "../components/login-card";
-import SignUpCard from "../components/signup-card";
-import { Auth } from "aws-amplify";
 
 var styles = {
   background: {
