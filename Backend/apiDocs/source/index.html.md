@@ -234,6 +234,24 @@ curl "http://cs309-pp-7.misc.iastate.edu:8080/person"
 
 `POST http://cs309-pp-7.misc.iastate.edu:8080/person`
 
+## Delete a person
+
+Delete a person by pId.
+
+```shell
+# With shell, you can just pass the correct header with each request
+curl "http://cs309-pp-7.misc.iastate.edu:8080/person?pid=420" -X DELETE
+  -H "Content-Type: application/json"
+```
+
+```javascript
+// todo
+```
+
+### HTTP Request
+
+`DELETE http://cs309-pp-7.misc.iastate.edu:8080/person?pid=420'
+
 # Organization
 
 ## Get an org
@@ -340,6 +358,24 @@ curl "http://cs309-pp-7.misc.iastate.edu:8080/org/admin?adminId=snoopD0gg"
 
 `GET http://cs309-pp-7.misc.iastate.edu:8080/org/admin?adminId=<ID>`
 
+## Delete an org
+
+Deletes an org given the orgId
+
+```shell
+# With shell, you can just pass the correct header with each request
+curl "http://cs309-pp-7.misc.iastate.edu:8080/org?orgIdsnoopD0gg" -X DELETE
+  -H "Content-Type: application/json"
+```
+
+```javascript
+// todo
+```
+
+### HTTP REQUEST
+
+`DELETE http://cs309-pp-7.misc.iastate.edu:8080/org?orgId=<ID>`
+
 # Calendar
 
 ## Save an appointment
@@ -383,6 +419,24 @@ curl "http://cs309-pp-7.misc.iastate.edu:8080/calendar"
 ### HTTP Request
 
 `POST http://cs309-pp-7.misc.iastate.edu:8080/calendar'
+
+## Delete an appointment
+
+Delete an appointment.
+
+```shell
+# With shell, you can just pass the correct header with each request
+curl "http://cs309-pp-7.misc.iastate.edu:8080/calendar?id=420" -X DELETE
+  -H "Content-Type: application/json"
+```
+
+```javascript
+// todo
+```
+
+### HTTP Request
+
+`DELETE http://cs309-pp-7.misc.iastate.edu:8080/calendar?id=34'
 
 ## Get appointments for user ID
 
