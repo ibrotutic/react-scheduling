@@ -12,6 +12,7 @@ import Today from "@material-ui/icons/CalendarTodaySharp";
 import Search from "@material-ui/icons/Search";
 import Alarm from "@material-ui/icons/Alarm";
 import Settings from "@material-ui/icons/Settings";
+import Dashboard from "@material-ui/icons/Dashboard";
 import { Link } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import { connect } from "react-redux";
@@ -55,9 +56,9 @@ class NavbarDrawer extends React.Component {
         <div>
           <Divider />
           <ListItem button key="manage-orgs" component={Link} to="manage-orgs">
-            {/* <ListItemIcon>
-              
-            </ListItemIcon> */}
+            <ListItemIcon>
+              <Dashboard />
+            </ListItemIcon>
             <ListItemText primary={"Manage my Orgs"} />
           </ListItem>
         </div>
