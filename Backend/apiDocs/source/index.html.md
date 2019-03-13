@@ -147,6 +147,48 @@ curl "http://cs309-pp-7.misc.iastate.edu:8080/employees"
 
 `POST http://cs309-pp-7.misc.iastate.edu:8080/employees`
 
+## Save a single employee
+
+Takes a single employee, saves them.
+
+> I would highly recommend placing your test requests in a file, this doc will use test.json, windows parses escape characters wierdly
+
+> Example request json
+
+```json
+{
+  "empId": "123",
+  "orgId": "73629",
+  "status": "nothing lol"
+}
+```
+
+```shell
+# With shell, you can just pass the correct header with each request
+curl "http://cs309-pp-7.misc.iastate.edu:8080/employees" -X PUT
+  -H "Content-Type: application/json" -d @test.json
+```
+
+```javascript
+// todo
+```
+
+> The response will return the employee entered
+
+> Example response json
+
+```json
+{
+  "empId": "123",
+  "orgId": "73629",
+  "status": "nothing lol"
+}
+```
+
+### HTTP Request
+
+`PUT http://cs309-pp-7.misc.iastate.edu:8080/employees`
+
 ## Delete an employee
 
 Deletes a specefied employee record. Does not delete the person's info, just the mapping b/w org and person.
