@@ -54,6 +54,7 @@ class CreateOrg extends Component {
     };
 
     var org = {
+      adminId: adminId,
       orgId: orgId,
       name: this.state.companyName,
       address: this.state.address,
