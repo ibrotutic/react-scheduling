@@ -31,12 +31,36 @@ class NavbarDrawer extends React.Component {
     return unformattedRoute.toLowerCase().replace(" ", "");
   };
 
-  showCreateOrgIfLoggedIn = () => {
-    if (this.props.cognito) {
+  showOrgInfo = () => {
+    if (
+      this.props.cognito &&
+      this.props.orgs !== undefined &&
+      !this.props.orgs.length
+    ) {
       return (
         <Button onClick={this.props.createOrgSignUpModal}>
           Own a company? Sign up.
         </Button>
+      );
+    }
+  };
+
+  showOwnedOrgs = () => {
+    if (
+      this.props.cognito &&
+      this.props.orgs !== undefined &&
+      this.props.orgs.length
+    ) {
+      return (
+        <div>
+          <Divider />
+          <ListItem button key="manage-orgs" component={Link} to="manage-orgs">
+            {/* <ListItemIcon>
+              
+            </ListItemIcon> */}
+            <ListItemText primary={"Manage my Orgs"} />
+          </ListItem>
+        </div>
       );
     }
   };
@@ -94,10 +118,11 @@ class NavbarDrawer extends React.Component {
               </ListItem>
             )
           )}
+          {this.showOwnedOrgs()}
           <Divider />
           {this.displaySignOut(this.props.cognito)}
           <Divider />
-          {this.showCreateOrgIfLoggedIn()}
+          {this.showOrgInfo()}
         </List>
       </div>
     );
@@ -120,7 +145,8 @@ NavbarDrawer.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    cognito: state.user.cognito
+    cognito: state.user.cognito,
+    orgs: state.user.orgs
   };
 };
 
