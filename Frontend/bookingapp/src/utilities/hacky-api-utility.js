@@ -165,6 +165,19 @@ export var hackyApiUtility = (function() {
       });
   };
 
+  hackyApi.getOrgsForAdmin = function(adminId) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(endpointBase + "/org/admin?adminId=" + adminId)
+        .then(resp => {
+          resolve(resp);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  };
+
   return hackyApi; // expose externally
 })();
 
