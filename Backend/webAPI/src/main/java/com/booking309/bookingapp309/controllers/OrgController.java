@@ -46,7 +46,7 @@ public class OrgController {
 
     @CrossOrigin
     @DeleteMapping("/org")
-    public @ResponseBody void deleteCalendar(@RequestParam String orgId){
+    public @ResponseBody void deleteOrg(@RequestParam String orgId){
         orgRepository.deleteByOrgId(orgId);
     }
 }
