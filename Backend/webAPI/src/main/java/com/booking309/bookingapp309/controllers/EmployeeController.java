@@ -52,6 +52,14 @@ public class EmployeeController {
     }
 
     @CrossOrigin
+    @PutMapping("/employees")
+    public @ResponseBody Employee addSingleEmployee(@RequestBody Employee emp) {
+        empRepository.save(emp);
+
+        return emp;
+    }
+
+    @CrossOrigin
     @DeleteMapping("/employees")
     public @ResponseBody void deleteEmployee(@RequestParam String empId, String orgId){
         empRepository.deleteByEmpIdAndOrgId(empId, orgId);
