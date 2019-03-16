@@ -2,7 +2,8 @@ export const initialUserData = {
   user: {
     email: "",
     username: "",
-    userId: ""
+    userId: "",
+    orgs: undefined
   }
 };
 
@@ -20,6 +21,12 @@ export const userReducer = (state = initialUserData, action) => {
       state = {
         ...state,
         cognito: null
+      };
+      break;
+    case "LOAD_ORGS":
+      state = {
+        ...state,
+        orgs: payload.orgs
       };
       break;
     default:

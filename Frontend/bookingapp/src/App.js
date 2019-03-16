@@ -8,20 +8,26 @@ import { connect } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import ModalRoot from "./components/modal-root";
 import elasticsearchUtility from "./utilities/elastic-search-utility";
+import hackyApiUtility from "./utilities/hacky-api-utility";
 
 Amplify.configure(awsmobile);
 
 class App extends Component {
   componentDidMount() {
     elasticsearchUtility.startClient();
-    Auth.currentAuthenticatedUser(user => {
-      var payload = {
-        cognito: user
-      };
-      this.props.updateUserData(payload);
-    }).catch(err => {
-      this.props.clearUserData();
-    });
+    Auth.currentAuthenticatedUser()
+      .then(user => {
+        var payload = {
+          cognito: user
+        };
+        this.props.updateUserData(payload);
+        hackyApiUtility
+          .getOrgsForAdmin(user.attributes.sub)
+          .then(orgs => this.props.loadOrgs(orgs.data));
+      })
+      .catch(err => {
+        this.props.clearUserData();
+      });
   }
   render() {
     return (
@@ -54,6 +60,12 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: "SIGN_OUT_USER",
         payload: {}
+      });
+    },
+    loadOrgs: orgs => {
+      dispatch({
+        type: "LOAD_ORGS",
+        payload: { orgs: orgs }
       });
     }
   };

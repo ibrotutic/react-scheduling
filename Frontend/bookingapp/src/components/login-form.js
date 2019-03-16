@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import { Auth } from "aws-amplify";
 import { connect } from "react-redux";
 import LoadingIndicator from "./loading-indicator";
+import hackyApiUtility from "../utilities/hacky-api-utility";
 
 const styles = theme => ({
   container: {
@@ -71,6 +72,9 @@ class LoginForm extends Component {
           };
 
           this.props.updateUserData(payload);
+          hackyApiUtility
+            .getOrgsForAdmin(resp.attributes.sub)
+            .then(orgs => this.props.loadOrgs(orgs.data));
           this.setState({ loading: false, success: true });
           this.props.closeModal();
         });
@@ -177,6 +181,12 @@ const mapDispatchToProps = dispatch => {
     closeModal: () => {
       dispatch({
         type: "HIDE_MODAL"
+      });
+    },
+    loadOrgs: orgs => {
+      dispatch({
+        type: "LOAD_ORGS",
+        payload: { orgs: orgs }
       });
     }
   };
