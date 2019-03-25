@@ -36,7 +36,7 @@ class NavbarDrawer extends React.Component {
     if (
       this.props.cognito &&
       this.props.orgs !== undefined &&
-      this.props.orgs.length == 0
+      this.props.orgs.length === 0
     ) {
       return (
         <Button onClick={this.props.createOrgSignUpModal}>
