@@ -27,8 +27,9 @@ function getModalStyle() {
     left: `50%`,
     top: `50%`,
     transform: `translate(-50%, -50%)`,
-	overflowY: "auto",
-	maxHeight: "85vh"
+    overflowY: "auto",
+    maxHeight: "85vh",
+    maxWidth: "95%"
   };
 }
 
