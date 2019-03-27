@@ -39,16 +39,12 @@ class ModalRoot extends React.Component {
   }
 }
 
-function closeModal() {
-  return {
-    type: "HIDE_MODAL"
-  };
-}
-
 const mapDispatchToProps = dispatch => {
   return {
     hideModal: () => {
-      dispatch(closeModal());
+      dispatch({
+        type: "HIDE_MODAL"
+      });
     }
   };
 };
