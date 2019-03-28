@@ -4,14 +4,23 @@ import com.booking309.bookingapp309.objects.Appointment;
 import com.booking309.bookingapp309.objects.Person;
 import com.booking309.bookingapp309.repositories.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpOutputMessage;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 @RestController
 public class CalendarController {
     @Autowired
     private AppointmentRepository appointmentRepository;
+    @Autowired
+    private SimpMessagingTemplate simp;
 
     @CrossOrigin
     @GetMapping("/calendar")
@@ -23,9 +32,14 @@ public class CalendarController {
     @CrossOrigin
     @PostMapping("/calendar")
     public @ResponseBody
-    Appointment putAppointmentByPerson(@RequestBody Appointment appointment) {
+    Appointment putAppointment(@RequestBody Appointment appointment) {
         appointmentRepository.save(appointment);
-        
+        subscribeAppointment(appointment);
+
         return appointment;
+    }
+
+    private void subscribeAppointment(Appointment appointment) {
+        simp.convertAndSendToUser(appointment.getEmpId(),  "/queue/notification/appt", appointment);
     }
 }
