@@ -36,7 +36,6 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
-          <Button onClick={this.sendMessage}>click</Button>
           <ModalRoot />
           <Navbar />
           <NavController />
