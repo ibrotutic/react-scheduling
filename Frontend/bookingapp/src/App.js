@@ -9,6 +9,8 @@ import { BrowserRouter } from "react-router-dom";
 import ModalRoot from "./components/modal-root";
 import elasticsearchUtility from "./utilities/elastic-search-utility";
 import hackyApiUtility from "./utilities/hacky-api-utility";
+import SockJsClient from "react-stomp";
+import { Button } from "@material-ui/core";
 
 Amplify.configure(awsmobile);
 
@@ -29,13 +31,25 @@ class App extends Component {
         this.props.clearUserData();
       });
   }
+
   render() {
     return (
       <BrowserRouter>
         <div className="App">
+          <Button onClick={this.sendMessage}>click</Button>
           <ModalRoot />
           <Navbar />
           <NavController />
+          {/* <SockJsClient
+            url="http://localhost:8080/appointment"
+            topics={["/topic/appt", "/topic/appt/1234"]}
+            ref={client => {
+              this.clientRef = client;
+            }}
+            onMessage={msg => {
+              console.log(msg);
+            }}
+          /> */}
         </div>
       </BrowserRouter>
     );

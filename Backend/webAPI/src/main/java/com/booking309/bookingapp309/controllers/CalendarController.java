@@ -6,7 +6,10 @@ import com.booking309.bookingapp309.repositories.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpOutputMessage;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +43,7 @@ public class CalendarController {
     }
 
     private void subscribeAppointment(Appointment appointment) {
-        simp.convertAndSendToUser(appointment.getEmpId(),  "/queue/notification/appt", appointment);
+        System.out.println(appointment.getEmpId());
+        simp.convertAndSend("/topic/appt/" + appointment.getEmpId(), appointment);
     }
 }
