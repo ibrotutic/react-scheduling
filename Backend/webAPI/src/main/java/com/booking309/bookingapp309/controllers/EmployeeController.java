@@ -26,7 +26,7 @@ public class EmployeeController {
      * A method that returns an organization of Response type as a JSON object
      *
      * @param orgId Id of the org to fetch
-     * @return returns the organization information (id, service type, address, description)
+     * @return returns all people in an org
      */
     @CrossOrigin
     @GetMapping("/employees/org")
