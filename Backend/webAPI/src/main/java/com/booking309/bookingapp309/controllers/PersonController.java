@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 public class PersonController {
     private PersonRepository personRepository;
 
+    @Autowired
     public PersonController(PersonRepository personRepository) {
         this.personRepository = personRepository;
     }
