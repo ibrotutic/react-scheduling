@@ -14,8 +14,12 @@ import java.util.List;
  */
 @RestController
 public class OrgController {
-    @Autowired
     private OrgRepository orgRepository;
+
+    @Autowired
+    public OrgController(OrgRepository orgRepository) {
+        this.orgRepository = orgRepository;
+    }
 
     /**
      * A method that returns an organization of Response type as a JSON object

@@ -13,10 +13,14 @@ import java.util.stream.Collectors;
 
 @RestController
 public class EmployeeController {
-    @Autowired
     private EmployeeRepository empRepository;
-    @Autowired
     private PersonRepository personRepository;
+
+    @Autowired
+    public EmployeeController(EmployeeRepository employeeRepository, PersonRepository personRepository) {
+        this.empRepository = employeeRepository;
+        this.personRepository = personRepository;
+    }
 
     /**
      * A method that returns an organization of Response type as a JSON object

@@ -5,13 +5,19 @@ import com.booking309.bookingapp309.objects.Person;
 import com.booking309.bookingapp309.repositories.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.List;
 
+@EnableWebMvc
 @RestController
 public class CalendarController {
-    @Autowired
     private AppointmentRepository appointmentRepository;
+
+    @Autowired
+    public CalendarController(AppointmentRepository appointmentRepository) {
+        this.appointmentRepository = appointmentRepository;
+    }
 
     @CrossOrigin
     @GetMapping("/calendar")
