@@ -16,9 +16,7 @@ public class Appointment {
     private long startTime;
     private long endTime;
 
-    public int getId() {
-        return id;
-    }
+    public int getId() { return id; }
 
     public void setId(int id) {
         this.id = id;
