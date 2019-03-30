@@ -49,7 +49,6 @@ public class CalendarController {
     }
 
     private void subscribeAppointment(Appointment appointment) {
-        System.out.println(appointment.getEmpId());
         simp.convertAndSend("/topic/appt/" + appointment.getEmpId(), appointment);
     }
 }
