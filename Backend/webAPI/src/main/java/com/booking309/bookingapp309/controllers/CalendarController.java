@@ -13,17 +13,23 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
+@EnableWebMvc
 @RestController
 public class CalendarController {
-    @Autowired
     private AppointmentRepository appointmentRepository;
     @Autowired
     private SimpMessagingTemplate simp;
+
+    @Autowired
+    public CalendarController(AppointmentRepository appointmentRepository) {
+        this.appointmentRepository = appointmentRepository;
+    }
 
     @CrossOrigin
     @GetMapping("/calendar")
