@@ -7,8 +7,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class PersonController {
-    @Autowired
     private PersonRepository personRepository;
+
+    @Autowired
+    public PersonController(PersonRepository personRepository) {
+        this.personRepository = personRepository;
+    }
 
     @CrossOrigin
     @GetMapping("/person")

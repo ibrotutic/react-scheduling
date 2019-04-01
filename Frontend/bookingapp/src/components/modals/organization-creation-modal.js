@@ -1,16 +1,28 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
 import Button from "@material-ui/core/Button";
 import CreateOrg from "../create-org";
+import Modal from "@material-ui/core/Modal";
+
+function getModalStyle() {
+  return {
+    position: `absolute`,
+    left: `50%`,
+    top: `50%`,
+    transform: `translate(-50%, -50%)`,
+    overflowY: "auto",
+    maxHeight: "85vh",
+    maxWidth: "95%"
+  };
+}
 
 const styles = theme => ({
-  dailog: {
-    width: theme.spacing.unit * 50
-  },
   paper: {
+    position: "absolute",
+    width: theme.spacing.unit * 50,
     backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing.unit * 4,
     outline: "none"
   }
 });
@@ -31,19 +43,17 @@ class OrganizationCreationModal extends Component {
     const { classes } = this.props;
 
     return (
-      <Dialog
+      <Modal
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
         open={true}
         onClose={this.onClick}
-        maxWidth="lg"
-        className={classes.paper}
       >
-        <DialogContent>
+        <div style={getModalStyle()} className={classes.paper}>
           <CreateOrg />
           <Button onClick={this.onClick}>Close</Button>
-        </DialogContent>
-      </Dialog>
+        </div>
+      </Modal>
     );
   }
 }
