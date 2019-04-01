@@ -46,7 +46,6 @@ class App extends Component {
   };
 
   render() {
-    console.log(this.props.cognito ? this.props.cognito.attributes.sub : "");
     return (
       <BrowserRouter>
         <div className="App">
