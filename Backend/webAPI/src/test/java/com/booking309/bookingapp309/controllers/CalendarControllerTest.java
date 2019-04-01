@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +24,13 @@ public class CalendarControllerTest {
 
     @Mock
     private AppointmentRepository mockedAppointmentRepository;
+    @Mock
+    private SimpMessagingTemplate mockedSimpMessageingTemplate;
     private CalendarController calendarController;
 
     @Before
     public void setUp() {
-        calendarController = new CalendarController(mockedAppointmentRepository);
+        calendarController = new CalendarController(mockedAppointmentRepository, mockedSimpMessageingTemplate);
     }
 
     @Test
@@ -44,7 +47,7 @@ public class CalendarControllerTest {
     public void putAppointmentByPerson() {
         Appointment appointment = createRandomAppointment();
 
-        assertThat(calendarController.putAppointmentByPerson(appointment), is(appointment));
+        assertThat(calendarController.putAppointment(appointment), is(appointment));
     }
 
     private Appointment createRandomAppointment() {
