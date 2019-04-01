@@ -32,7 +32,8 @@ public class RatingsController {
 
     @CrossOrigin
     @PostMapping("/rating/org")
-    public @ResponseBody List<Rating> getOrgRating(@RequestParam String orgId) {
+    public @ResponseBody
+    List<Rating> getOrgRating(@RequestParam String orgId) {
         return appointmentRepository.findAllByOrgId(orgId).stream()
                 .map(appointment -> ratingsRepository.findByAppointmentId(appointment.getId()))
                 .filter(Objects::nonNull)
@@ -41,15 +42,9 @@ public class RatingsController {
 
     @CrossOrigin
     @PostMapping("/rating")
-    public @ResponseBody Rating putOrgInfo(@RequestBody Rating rating) {
+    public @ResponseBody
+    Rating putOrgInfo(@RequestBody Rating rating) {
         ratingsRepository.save(rating);
         return rating;
     }
-
-//    @CrossOrigin
-//    @PutMapping("/rating")
-//    public @ResponseBody Rating  addSingleEmployee(@RequestBody Rating r) {
-//        ratingsRepository.save(r);
-//        return r;
-//    }
 }
