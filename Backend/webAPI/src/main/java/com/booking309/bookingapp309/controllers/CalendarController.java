@@ -23,12 +23,12 @@ import java.util.List;
 @RestController
 public class CalendarController {
     private AppointmentRepository appointmentRepository;
-    @Autowired
     private SimpMessagingTemplate simp;
 
     @Autowired
-    public CalendarController(AppointmentRepository appointmentRepository) {
+    public CalendarController(AppointmentRepository appointmentRepository, SimpMessagingTemplate simp) {
         this.appointmentRepository = appointmentRepository;
+        this.simp = simp;
     }
 
     @CrossOrigin

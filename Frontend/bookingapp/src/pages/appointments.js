@@ -93,7 +93,6 @@ class Appointments extends Component {
     let namePromises = this.loadNameData(apptList);
     let orgPromises = this.loadOrgData(apptList);
     Promise.all(namePromises).then(values => {
-      console.log(values);
       apptList.forEach(function(appt, index) {
         delete appt.name;
         appt.name = values[index].fname + " " + values[index].lname;
