@@ -6,15 +6,27 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import ViewOrgManagement from "../components/org-management/view-org-mgmt";
 import ViewOrgEmployees from "../components/org-management/view-org-emp";
+import EditOrgEmployees from "../components/org-management/edit-org-emp";
+import EditOrgManagement from "../components/org-management/edit-org-mgmt";
 
 class ManageOrgs extends Component {
   state = {
     activeOrg: 0,
-    tab: 0
+    tab: 0,
+    orgEdit: false,
+    empEdit: false
   };
 
   handleChange = (event, value) => {
     this.setState({ tab: value });
+  };
+
+  handleOrgEditMode = () => {
+    this.setState({ orgEdit: !this.state.orgEdit });
+  };
+
+  handleEmplEditMode = () => {
+    this.setState({ orgEdit: !this.state.empEdit });
   };
 
   getCorrectTab = () => {
@@ -23,9 +35,18 @@ class ManageOrgs extends Component {
 
     switch (tab) {
       case 0:
-        return <ViewOrgManagement org={org} />;
+        return this.state.orgEdit ? (
+          <EditOrgManagement org={org} exitEdit={this.handleOrgEditMode} />
+        ) : (
+          <ViewOrgManagement org={org} editMode={this.handleOrgEditMode} />
+        );
       case 1:
-        return <ViewOrgEmployees org={org} />;
+        return this.state.empEdit ? (
+          <EditOrgEmployees org={org} exitEdit={this.handleEmplEditMode} />
+        ) : (
+          <ViewOrgEmployees org={org} editMode={this.handleEmplEditMode} />
+        );
+
       default:
         return <div>Unknown Tab</div>;
     }
