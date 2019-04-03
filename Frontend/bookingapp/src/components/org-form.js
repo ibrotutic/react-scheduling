@@ -215,7 +215,7 @@ class OrgForm extends Component {
                 id="outlined-pw"
                 label="Service Type"
                 className={classes.textField}
-                value={this.state.pw}
+                value={this.state.serviceType}
                 onChange={e => this.handleChange(e, "serviceType")}
                 margin="normal"
                 variant="outlined"
@@ -225,7 +225,7 @@ class OrgForm extends Component {
                 id="outlined-con-pw"
                 label="Tags"
                 className={classes.textField}
-                value={this.state.confirm_pw}
+                value={this.state.tags}
                 onChange={e => this.handleChange(e, "tags")}
                 margin="normal"
                 variant="outlined"
@@ -235,6 +235,7 @@ class OrgForm extends Component {
                 label="Description"
                 multiline
                 className={classes.textField}
+                value={this.state.description}
                 onChange={e => this.handleChange(e, "description")}
                 margin="normal"
                 variant="outlined"
@@ -247,7 +248,15 @@ class OrgForm extends Component {
             className={classes.button}
             onClick={() => this.submitForm()}
           >
-            Sign Up Company
+            {this.props.edit ? "Save Changes" : "Sign Up"}
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            onClick={() => this.props.cancel()}
+          >
+            Cancel
           </Button>
         </Paper>
       </div>
