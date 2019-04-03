@@ -18,7 +18,6 @@ export var hackyApiUtility = (function() {
     let employeeList = [];
     employeeList.push(admin);
     hackyApi.addEmployees(employeeList);
-    console.log(orgDetails);
     hackyApi.createSpringOrg(orgDetails);
   };
 
@@ -74,8 +73,20 @@ export var hackyApiUtility = (function() {
     });
   };
 
-  hackyApi.modifyOrg = function(modifiedOrgDetails) {
+  hackyApi.saveOrg = function(modifiedOrgDetails) {
     //spring and elasticsearch stuff to update org
+    return new Promise((resolve, reject) => {
+      axios
+        .post(endpointBase + "/org", modifiedOrgDetails, {
+          headers: headers
+        })
+        .then(function(response) {
+          resolve(response);
+        })
+        .catch(function(error) {
+          reject(error);
+        });
+    });
   };
 
   hackyApi.addEmployees = function(employees) {
