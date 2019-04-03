@@ -11,7 +11,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -45,12 +47,21 @@ public class OrgControllerTest {
 
     @Test
     public void getOrgAdminInfo() {
-        when(mockOrgRepository.findAllByAdminId(adminId)).thenReturn(createTestOrgList());
+        List<Organization> expectedOrgList = createTestOrgList();
+        when(mockOrgRepository.findAllByAdminId(adminId)).thenReturn(expectedOrgList);
 
-        List<Organization> returnedOrgs = orgController.getOrgAdminInfo(adminId);
+        List<Organization> actualOrgList = orgController.getOrgAdminInfo(adminId);
 
-        assertEquals(2, returnedOrgs.size());
+        assertEquals(expectedOrgList.size(), actualOrgList.size());
+        assertThat(actualOrgList, is(expectedOrgList));
         verify(mockOrgRepository, times(1)).findAllByAdminId(adminId);
+    }
+
+    @Test
+    public void putOrgInfo() {
+        Organization organization = createTestOrg();
+
+        assertThat(orgController.putOrgInfo(organization), is(organization));
     }
 
     private Organization createTestOrg() {
@@ -77,7 +88,7 @@ public class OrgControllerTest {
         testOrg1.setAddress("100 ISU Ave");
         testOrg1.setDescription("I tutor stuff");
         testOrg1.setAdminId(adminId);
-        testOrg1.setOrgId("132-435-532");
+        testOrg1.setOrgId(orgId);
 
         testOrg2.setName("Ibro's Other Cool Org");
         testOrg2.setServiceType("Hacker");
