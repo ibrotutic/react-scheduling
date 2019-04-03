@@ -5,6 +5,7 @@ import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import hackyApiUtility from "../utilities/hacky-api-utility";
 import connect from "react-redux/es/connect/connect";
+import Grid from "@material-ui/core/Grid"
 
 const uuidv4 = require("uuid/v4");
 
@@ -13,12 +14,14 @@ const styles = theme => ({
     display: "flex",
     flexWrap: "wrap"
   },
+  paperDiv: {
+    width: "70%"
+  },
   header: {
     textAlign: "center"
   },
   textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit
+    width: "100%"
   },
   dense: {
     marginTop: 16
@@ -30,8 +33,12 @@ const styles = theme => ({
   paper: {
     margin: "auto",
     maxWidth: "400px",
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
+  gridPaper: {
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  },
 });
 
 class CreateOrg extends Component {
@@ -39,7 +46,14 @@ class CreateOrg extends Component {
     super(props);
 
     this.state = {
-      success: false
+      success: false,
+      address: "",
+      address2: "",
+      city: "",
+      zipcode: "",
+      state: "",
+      lat:"",
+      long:"",
     };
   }
 
@@ -89,6 +103,7 @@ class CreateOrg extends Component {
         <h2 className={classes.header}>Create A Business</h2>
         <Paper className={classes.paper}>
           {/* Name, address, tags, service, description */}
+          <div className={classes.paperDiv}>
           <form>
             <TextField
               id="username"
@@ -99,16 +114,68 @@ class CreateOrg extends Component {
               margin="normal"
               variant="outlined"
             />
-            <TextField
-              type="address"
-              id="outlined-address"
-              label="Address"
-              className={classes.textField}
-              value={this.state.email}
-              onChange={e => this.handleChange(e, "address")}
-              margin="normal"
-              variant="outlined"
-            />
+            <Grid container spacing={classes.dense.marginTop}>
+              <Grid item xs={12}>
+                <TextField
+                    type="address"
+                    id="outlined-address"
+                    label="Address"
+                    className={classes.textField}
+                    value={this.state.address}
+                    onChange={e => this.handleChange(e, "address")}
+                    margin="normal"
+                    variant="outlined"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                    type="address2"
+                    id="outlined-address"
+                    label="Address 2"
+                    className={classes.textField}
+                    value={this.state.address2}
+                    onChange={e => this.handleChange(e, "address2")}
+                    margin="normal"
+                    variant="outlined"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                    type="city"
+                    id="outlined-address"
+                    label="City"
+                    className={classes.textField}
+                    value={this.state.city}
+                    onChange={e => this.handleChange(e, "city")}
+                    margin="normal"
+                    variant="outlined"
+                />
+              </Grid>
+              <Grid item xs={6} sm={3}>
+                <TextField
+                    type="state"
+                    id="outlined-address"
+                    label="State"
+                    className={classes.textField}
+                    value={this.state.state}
+                    onChange={e => this.handleChange(e, "state")}
+                    margin="normal"
+                    variant="outlined"
+                />
+              </Grid>
+              <Grid item xs={6} sm={3}>
+                <TextField
+                    type="zipcode"
+                    id="outlined-address"
+                    label="Zip Code"
+                    className={classes.textField}
+                    value={this.state.zipcode}
+                    onChange={e => this.handleChange(e, "zipcode")}
+                    margin="normal"
+                    variant="outlined"
+                />
+              </Grid>
+            </Grid>
             <TextField
               type="text"
               id="outlined-pw"
@@ -139,6 +206,7 @@ class CreateOrg extends Component {
               variant="outlined"
             />
           </form>
+          </div>
           <Button
             variant="contained"
             color="primary"
