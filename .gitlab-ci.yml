@@ -39,6 +39,9 @@ api-docs-deploy:
         - bundle install
         - bundle exec middleman build
         - cp -r build/* ../../../var/www/apiDocs/
+    when: manual
+    only:
+        - master
         
 web-api-deploy:
     stage: deploy
