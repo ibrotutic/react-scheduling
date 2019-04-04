@@ -14,7 +14,7 @@ maven-build:
 react-app-build:
     stage: build
     tags:
-        - backend_spring_runner
+        - node_runner
     script:
         - cd Frontend/bookingapp
         - npm install
@@ -65,7 +65,7 @@ web-api-deploy:
 react-app-deploy:
     stage: deploy
     tags:
-        - backend_spring_runner
+        - node_runner
     script:
         - cd Frontend/bookingapp
         - rm -rf /var/www/html/*
