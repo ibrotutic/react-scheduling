@@ -40,7 +40,6 @@ public class EmployeeControllerTest {
         Person person = createPerson();
 
         Mockito.when(mockEmployeeRepository.findAllByOrgId(ORG_ID)).thenReturn(employeeList);
-        Mockito.when(mockPersonRepository.findBypId(Mockito.anyString())).thenReturn(person);
 
         List<Person> expectedPersonList = createExpectedPersonList(person, employeeList.size());
 
