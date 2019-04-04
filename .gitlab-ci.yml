@@ -10,15 +10,6 @@ maven-build:
     script:
         - cd Backend/webAPI
         - mvn package -B
-
-react-app-build:
-    stage: build
-    tags:
-        - node_runner
-    script:
-        - cd Frontend/bookingapp
-        - npm install
-        - npm run-script build
         
 maven-test:
     stage: test
@@ -67,6 +58,8 @@ react-app-deploy:
     tags:
         - node_runner
     script:
-        - cd Frontend/bookingapp
+    - cd Frontend/bookingapp
+        - npm install
+        - npm run-script build
         - rm -rf /var/www/html/*
         - cp -r build/* /var/www/html/
