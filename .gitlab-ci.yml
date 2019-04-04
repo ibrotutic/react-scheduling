@@ -19,24 +19,24 @@ maven-test:
         - cd Backend/webAPI
         - mvn test
 
-api-docs-build:
-    stage: build
-    tags:
-        - backend_spring_runner
-    script:
-        - cd Backend/apiDocs
-        - source /opt/rh/rh-ruby23/enable
-        - gem install bundler
-        - bundle install
-        - bundle exec middleman build
+#api-docs-build:
+#    stage: build
+#    tags:
+#        - backend_spring_runner
+#    script:
+#        - cd Backend/apiDocs
+#        - source /opt/rh/rh-ruby23/enable
+#        - gem install bundler
+#        - bundle install
+#        - bundle exec middleman build
         
-api-docs-deploy:
-    stage: deploy
-    tags:
-        - backend_spring_runner
-    script:
-        - cd Backend/apiDocs
-        - cp -r build/* ../../../var/www/apiDocs/
+#api-docs-deploy:
+#    stage: deploy
+#    tags:
+#        - backend_spring_runner
+#    script:
+#        - cd Backend/apiDocs
+#        - cp -r build/* ../../../var/www/apiDocs/
         
 web-api-deploy:
     stage: deploy
