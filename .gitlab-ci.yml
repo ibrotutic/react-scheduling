@@ -32,3 +32,6 @@ autoDeploySpring:
         - sudo mv target/*.jar /home/webAPI/web-api.jar
         - sudo systemctl stop system-web-api
         - sudo systemctl start system-web-api
+    when: manual
+    only:
+        - master
