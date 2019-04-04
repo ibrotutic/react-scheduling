@@ -27,8 +27,9 @@ function getModalStyle() {
     left: `50%`,
     top: `50%`,
     transform: `translate(-50%, -50%)`,
-	overflowY: "auto",
-	maxHeight: "85vh"
+    overflowY: "auto",
+    maxHeight: "85vh",
+    maxWidth: "95%"
   };
 }
 
@@ -45,13 +46,21 @@ function ScheduleComponent(props) {
         <SelectTime
           onChange={time => props.props.handleChange("selectedTime", time)}
         />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={props.props.schedule}
-        >
-          Make Appointment
-        </Button>
+        <div style={{ float: "left" }}>
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ float: "left" }}
+            onClick={props.props.schedule}
+          >
+            Make Appointment
+          </Button>
+        </div>
+        <div style={{ float: "right" }}>
+          <Button style={{ float: "right" }} onClick={props.props.hideModal}>
+            Cancel
+          </Button>
+        </div>
       </div>
     );
   } else {
@@ -104,8 +113,10 @@ class OrganizationSchedulingModal extends Component {
   };
 
   clickSchedule() {
-    if (this.state.employees.length > 0) {
+    if (this.state.employees.length > 0 && this.props.cognito) {
       this.setState({ scheduling: true });
+    } else if (!this.props.cognito) {
+      this.props.createLoginModal();
     }
   }
 
@@ -129,10 +140,9 @@ class OrganizationSchedulingModal extends Component {
         hackyApiUtility.createAppointment(appointment, () => {
           this.props.addAppointment({ appointment: appointment });
           alert("Success");
-          this.setState({ scheduling: false });
         });
       } else {
-        alert("Please login");
+        alert("Please login before attempting to schedule.");
       }
     } else {
       alert("Please select a time slot.");
@@ -148,7 +158,8 @@ class OrganizationSchedulingModal extends Component {
       scheduling: this.state.scheduling,
       date: this.state.selectedDate,
       handleChange: this.handleChange,
-      schedule: this.scheduleAppointment
+      schedule: this.scheduleAppointment,
+      hideModal: this.props.hideModal
     };
     console.log(calendarProps.employeeError);
     let orgInfo = this.props.orgInfo;
@@ -183,8 +194,11 @@ class OrganizationSchedulingModal extends Component {
               employees={this.state.employees}
             />
           )}
-          <Button onClick={this.onClick}>Close</Button>
-
+          {!this.state.scheduling ? (
+            <Button onClick={this.onClick}>Close</Button>
+          ) : (
+            ""
+          )}
           <ScheduleComponent props={calendarProps} />
         </div>
       </Modal>
@@ -205,6 +219,17 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: "ADD_APPT",
         payload: appointment
+      });
+    },
+    createLoginModal: () => {
+      dispatch({
+        type: "SHOW_MODAL",
+        modalType: "LOGIN"
+      });
+    },
+    hideModal: () => {
+      dispatch({
+        type: "HIDE_MODAL"
       });
     }
   };

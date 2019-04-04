@@ -4,12 +4,14 @@ import OrganizationSchedulingModal from "./modals/organization-scheduling-modal"
 import OrganizationCreationModal from "./modals/organization-creation-modal";
 import LoginModal from "./modals/login-modal";
 import SignUpModal from "./modals/sign-up-modal";
+import notificationModal from "./modals/notification-modal";
 
 const MODAL_COMPONENTS = {
   ORG_SELECT: OrganizationSchedulingModal,
   ORG_CREATE: OrganizationCreationModal,
   LOGIN: LoginModal,
-  SIGN_UP: SignUpModal
+  SIGN_UP: SignUpModal,
+  NOTIFICATION: notificationModal
   /* other modals */
 };
 
@@ -39,16 +41,12 @@ class ModalRoot extends React.Component {
   }
 }
 
-function closeModal() {
-  return {
-    type: "HIDE_MODAL"
-  };
-}
-
 const mapDispatchToProps = dispatch => {
   return {
     hideModal: () => {
-      dispatch(closeModal());
+      dispatch({
+        type: "HIDE_MODAL"
+      });
     }
   };
 };
