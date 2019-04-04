@@ -1,5 +1,7 @@
 stages:
     - mavenbuild
+    - apidocsbuild
+    - reactbuild
     - autoDeploy
     
 maven-build:
@@ -9,6 +11,16 @@ maven-build:
     script:
         - cd Backend/webAPI
         - mvn package -B
+        
+apidocsbuild:
+    stage: apidocsbuild
+    tags:
+        - backend_spring_runner
+    script:
+        - cd Backend/apiDocs
+        - scl enable rh-ruby23 bash
+        - bundler exec middleman build
+        - cp -r build/* ../../../var/www/apiDocs/
         
 autoDeploySpring:
     stage: autoDeploy
