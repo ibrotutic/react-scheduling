@@ -8,9 +8,9 @@ import { connect } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import ModalRoot from "./components/modal-root";
 import elasticsearchUtility from "./utilities/elastic-search-utility";
-import hackyApiUtility from "./utilities/hacky-api-utility";
+import hackyApiUtility, { endpointBase } from "./utilities/hacky-api-utility";
 import SockJsClient from "react-stomp";
-import { Button } from "@material-ui/core";
+import AppointmentManager from "./utilities/appointment-management-utility";
 
 Amplify.configure(awsmobile);
 
@@ -32,6 +32,19 @@ class App extends Component {
       });
   }
 
+  notifyAppointment = appointment => {
+    var info = {
+      title: "New Appointment",
+      message:
+        "You have a new appointment scheduled for " +
+        AppointmentManager.parseAppointmentDate(appointment.startTime)
+    };
+    this.props.showNotificationModal({
+      info,
+      modalType: "NOTIFICATION"
+    });
+  };
+
   render() {
     return (
       <BrowserRouter>
@@ -39,16 +52,18 @@ class App extends Component {
           <ModalRoot />
           <Navbar />
           <NavController />
-          {/* <SockJsClient
-            url="http://localhost:8080/appointment"
-            topics={["/topic/appt", "/topic/appt/1234"]}
+          <SockJsClient
+            url={endpointBase + "/appointment"}
+            topics={[
+              "/topic/appt",
+              "/topic/appt/" +
+                (this.props.cognito ? this.props.cognito.attributes.sub : "")
+            ]}
             ref={client => {
               this.clientRef = client;
             }}
-            onMessage={msg => {
-              console.log(msg);
-            }}
-          /> */}
+            onMessage={appointment => this.notifyAppointment(appointment)}
+          />
         </div>
       </BrowserRouter>
     );
@@ -57,12 +72,24 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    cognito: state.user
+    cognito: state.user.cognito
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    showNotificationModal: notificationInfo => {
+      dispatch({
+        type: "SHOW_MODAL",
+        modalType: notificationInfo.modalType,
+        notificationInfo: notificationInfo.info
+      });
+    },
+    hideModal: () => {
+      dispatch({
+        type: "HIDE_MODAL"
+      });
+    },
     updateUserData: userData => {
       dispatch({
         type: "LOAD_USER",

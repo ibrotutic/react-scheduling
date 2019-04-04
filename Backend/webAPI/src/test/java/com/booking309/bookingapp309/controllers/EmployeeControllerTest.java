@@ -19,7 +19,7 @@ import java.util.Random;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class EmployeeControllerTest {
     private static final String ORG_ID = "1234-4567-69";
 

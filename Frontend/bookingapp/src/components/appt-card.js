@@ -4,6 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
+import AppointmentManager from "../utilities/appointment-management-utility";
 
 const styles = {
   card: {
@@ -41,26 +42,13 @@ class AppointmentCard extends Component {
   }
 
   createDates = () => {
-    let appt = this.state.appt;
-    let startTime = new Date(appt.startTime * 1000);
-    let endTime = new Date(appt.endTime * 1000);
-    let date = startTime.toLocaleString("en-us", {
-      weekday: "long",
-      month: "long",
-      day: "numeric",
-      year: "numeric"
-    });
+    let { appt } = this.state;
+    let startTime = AppointmentManager.parseAppointmentTime(appt.startTime);
+    let endTime = AppointmentManager.parseAppointmentTime(appt.endTime);
+    let date = AppointmentManager.parseAppointmentDate(appt.startTime);
 
-    let timeBox =
-      startTime.toLocaleString("en-us", {
-        hour: "numeric",
-        minute: "numeric"
-      }) +
-      " to " +
-      endTime.toLocaleString("en-us", {
-        hour: "numeric",
-        minute: "numeric"
-      });
+    let timeBox = startTime + " to " + endTime;
+
     this.setState({
       timeBox: timeBox,
       date: date
