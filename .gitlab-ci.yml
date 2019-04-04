@@ -25,7 +25,7 @@ api-docs-build:
         - backend_spring_runner
     script:
         - cd Backend/apiDocs
-        - scl enable rh-ruby23 bash
+        - sudo scl enable rh-ruby23 bash
         - gem install bundler
         - bundle install
         - bundle exec middleman build
