@@ -11,10 +11,10 @@ const OrgField = props => (
 );
 
 class ViewOrgManagement extends Component {
-  state = { org: this.props.org };
   render() {
-    console.log(this.state.org);
-    const { org } = this.state;
+    const { org } = this.props;
+    console.log("View org");
+    console.log(org);
 
     return (
       <div style={{ overflowX: "hidden", padding: "20px" }}>

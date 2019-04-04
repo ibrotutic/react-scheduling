@@ -8,17 +8,23 @@ import ViewOrgManagement from "../components/org-management/view-org-mgmt";
 import ViewOrgEmployees from "../components/org-management/view-org-emp";
 import EditOrgEmployees from "../components/org-management/edit-org-emp";
 import EditOrgManagement from "../components/org-management/edit-org-mgmt";
+import SimpleDialog from "../components/choose-org-dialog";
 
 class ManageOrgs extends Component {
   state = {
     activeOrg: 0,
     tab: 0,
     orgEdit: false,
-    empEdit: false
+    empEdit: false,
+    chooseOrgActive: false
   };
 
   handleChange = (event, value) => {
     this.setState({ tab: value });
+  };
+
+  handleChooseOrgMode = () => {
+    this.setState({ chooseOrgActive: !this.state.chooseOrgActive });
   };
 
   handleOrgEditMode = () => {
@@ -27,6 +33,11 @@ class ManageOrgs extends Component {
 
   handleEmplEditMode = () => {
     this.setState({ orgEdit: !this.state.empEdit });
+  };
+
+  handleChooseOrg = index => {
+    this.setState({ activeOrg: index || this.state.activeOrg });
+    this.handleChooseOrgMode();
   };
 
   getCorrectTab = () => {
@@ -58,10 +69,22 @@ class ManageOrgs extends Component {
 
     if (orgs) {
       var org = orgs[activeOrg];
+
       return (
         <div>
           <h3>{org.name}</h3>
-          <Link component="button">Change Selected Org</Link>
+          <Link component="button" onClick={this.handleChooseOrgMode}>
+            Change Selected Org
+          </Link>
+          <SimpleDialog
+            orgs={orgs}
+            open={this.state.chooseOrgActive}
+            onClose={this.handleChooseOrg}
+            onCreateNew={() => {
+              this.props.showCreateOrgModal();
+              this.handleChooseOrg(0);
+            }}
+          />
           <Paper square>
             <Tabs
               value={tab}
@@ -96,6 +119,12 @@ const mapDispatchToProps = dispatch => {
         type: "SHOW_MODAL",
         modalType: notificationInfo.modalType,
         notificationInfo: notificationInfo.info
+      });
+    },
+    showCreateOrgModal: () => {
+      dispatch({
+        type: "SHOW_MODAL",
+        modalType: "ORG_CREATE"
       });
     },
     hideModal: () => {

@@ -104,7 +104,7 @@ class OrgForm extends Component {
     hackyApiUtility
       .saveOrg(org)
       .then(() => this.props.onSuccess())
-      .catch(() => this.props.onError());
+      .catch(err => console.log(err));
   };
 
   handleChange = (event, name) => {
@@ -140,10 +140,11 @@ class OrgForm extends Component {
           <div className={classes.paperDiv}>
             <form>
               <TextField
+                type="text"
                 id="name"
-                label={this.state.companyName === "" ? "Company Name" : ""}
+                label={"Company Name"}
                 className={classes.textField}
-                value={this.state.companyName}
+                value={this.state.companyName || ""}
                 onChange={e => this.handleChange(e, "companyName")}
                 margin="normal"
                 variant="outlined"
@@ -155,7 +156,7 @@ class OrgForm extends Component {
                     id="outlined-address"
                     label="Address"
                     className={classes.textField}
-                    value={this.state.address}
+                    value={this.state.address || ""}
                     onChange={e => this.handleChange(e, "address")}
                     margin="normal"
                     variant="outlined"
@@ -167,7 +168,7 @@ class OrgForm extends Component {
                     id="outlined-address"
                     label="Address 2"
                     className={classes.textField}
-                    value={this.state.address2}
+                    value={this.state.address2 || ""}
                     onChange={e => this.handleChange(e, "address2")}
                     margin="normal"
                     variant="outlined"
@@ -179,7 +180,7 @@ class OrgForm extends Component {
                     id="outlined-address"
                     label="City"
                     className={classes.textField}
-                    value={this.state.city}
+                    value={this.state.city || ""}
                     onChange={e => this.handleChange(e, "city")}
                     margin="normal"
                     variant="outlined"
@@ -191,7 +192,7 @@ class OrgForm extends Component {
                     id="outlined-address"
                     label="State"
                     className={classes.textField}
-                    value={this.state.state}
+                    value={this.state.state || ""}
                     onChange={e => this.handleChange(e, "state")}
                     margin="normal"
                     variant="outlined"
@@ -203,7 +204,7 @@ class OrgForm extends Component {
                     id="outlined-address"
                     label="Zip Code"
                     className={classes.textField}
-                    value={this.state.zipcode}
+                    value={this.state.zipcode || ""}
                     onChange={e => this.handleChange(e, "zipcode")}
                     margin="normal"
                     variant="outlined"
@@ -215,7 +216,7 @@ class OrgForm extends Component {
                 id="outlined-pw"
                 label="Service Type"
                 className={classes.textField}
-                value={this.state.serviceType}
+                value={this.state.serviceType || ""}
                 onChange={e => this.handleChange(e, "serviceType")}
                 margin="normal"
                 variant="outlined"
@@ -225,7 +226,7 @@ class OrgForm extends Component {
                 id="outlined-con-pw"
                 label="Tags"
                 className={classes.textField}
-                value={this.state.tags}
+                value={this.state.tags || ""}
                 onChange={e => this.handleChange(e, "tags")}
                 margin="normal"
                 variant="outlined"
@@ -235,7 +236,7 @@ class OrgForm extends Component {
                 label="Description"
                 multiline
                 className={classes.textField}
-                value={this.state.description}
+                value={this.state.description || ""}
                 onChange={e => this.handleChange(e, "description")}
                 margin="normal"
                 variant="outlined"

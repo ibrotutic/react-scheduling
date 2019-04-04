@@ -7,7 +7,12 @@ class EditOrgManagement extends Component {
   render() {
     return (
       <div>
-        <OrgForm org={this.props.org} edit cancel={this.props.exitEdit} />
+        <OrgForm
+          org={this.props.org}
+          edit
+          onSuccess={this.props.exitEdit}
+          cancel={this.props.exitEdit}
+        />
       </div>
     );
   }
