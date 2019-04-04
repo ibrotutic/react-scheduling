@@ -1,8 +1,4 @@
 import React, { Component } from "react";
-import TextField from "@material-ui/core/TextField";
-import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
-import { withStyles } from "@material-ui/core/styles";
 import connect from "react-redux/es/connect/connect";
 import OrgForm from "../components/org-form";
 
