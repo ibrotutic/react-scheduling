@@ -5,7 +5,7 @@ stages:
 maven-build:
     stage: mavenbuild
     tags:
-        - spring
+        - backend_spring_runner
     script:
         - cd Backend/webAPI
         - mvn package -B
@@ -13,7 +13,7 @@ maven-build:
 autoDeploySpring:
     stage: autoDeploy
     tags:
-        - spring
+        - backend_spring_runner
     script:
         - cd Backend/webAPI
         - mvn package
