@@ -13,7 +13,7 @@ maven-build:
 autoDeploySpring:
     stage: autoDeploy
     tags:
-        - shell
+        - spring
     script:
         - cd Backend/webAPI
         - mvn package
