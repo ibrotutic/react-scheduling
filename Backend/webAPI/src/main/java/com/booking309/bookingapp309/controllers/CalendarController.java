@@ -48,15 +48,14 @@ public class CalendarController {
         return appointment;
     }
 
-<<<<<<< Backend/webAPI/src/main/java/com/booking309/bookingapp309/controllers/CalendarController.java
+
     @CrossOrigin
     @DeleteMapping("/calendar")
     public @ResponseBody void deleteCalendar(@RequestParam int id){
         appointmentRepository.deleteById(id);
     }
-=======
+
     private void subscribeAppointment(Appointment appointment) {
         simp.convertAndSend("/topic/appt/" + appointment.getEmpId(), appointment);
->>>>>>> Backend/webAPI/src/main/java/com/booking309/bookingapp309/controllers/CalendarController.java
     }
 }
