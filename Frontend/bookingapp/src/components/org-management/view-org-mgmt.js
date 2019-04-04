@@ -13,8 +13,6 @@ const OrgField = props => (
 class ViewOrgManagement extends Component {
   render() {
     const { org } = this.props;
-    console.log("View org");
-    console.log(org);
 
     return (
       <div style={{ overflowX: "hidden", padding: "20px" }}>

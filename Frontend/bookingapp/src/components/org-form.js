@@ -91,6 +91,7 @@ class OrgForm extends Component {
     };
 
     hackyApiUtility.createOrg(org, admin);
+    this.props.addOrg(org);
     this.setState({ success: true });
   };
 
@@ -271,9 +272,22 @@ const mapStateToProps = state => {
   };
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    addOrg: org => {
+      dispatch({
+        type: "ADD_ORG",
+        payload: {
+          org
+        }
+      });
+    }
+  };
+};
+
 export default withStyles(styles)(
   connect(
     mapStateToProps,
-    null
+    mapDispatchToProps
   )(OrgForm)
 );

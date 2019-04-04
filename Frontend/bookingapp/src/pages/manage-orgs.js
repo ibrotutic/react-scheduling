@@ -40,9 +40,9 @@ class ManageOrgs extends Component {
     this.handleChooseOrgMode();
   };
 
-  getCorrectTab = () => {
+  getCorrectTab = orgs => {
     const { tab, activeOrg } = this.state;
-    const org = this.props.orgs[activeOrg];
+    const org = orgs[activeOrg];
 
     switch (tab) {
       case 0:
@@ -64,8 +64,8 @@ class ManageOrgs extends Component {
   };
 
   render() {
-    const { orgs } = this.props;
     const { activeOrg, tab } = this.state;
+    var orgs = this.props.orgs;
 
     if (orgs) {
       var org = orgs[activeOrg];
@@ -96,7 +96,7 @@ class ManageOrgs extends Component {
               <Tab label="Manage Employees" />
             </Tabs>
           </Paper>
-          {this.getCorrectTab()}
+          {this.getCorrectTab(orgs)}
         </div>
       );
     } else {
