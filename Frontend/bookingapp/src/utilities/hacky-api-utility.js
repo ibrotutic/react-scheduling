@@ -2,7 +2,8 @@ import elasticsearchUtility from "./elastic-search-utility";
 import axios from "axios";
 import { Auth } from "aws-amplify";
 
-export const endpointBase = "http://cs309-pp-7.misc.iastate.edu:8080";
+// export const endpointBase = "http://cs309-pp-7.misc.iastate.edu:8080";
+export const endpointBase = "http://localhost:8080";
 
 export var hackyApiUtility = (function() {
   let hackyApi = {}; // Public object
@@ -100,6 +101,23 @@ export var hackyApiUtility = (function() {
       });
   };
 
+  hackyApi.addEmployeeByEmail = function(email, orgId) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(
+          endpointBase + `/employees/org?orgId=${orgId}&email=${email}`,
+          {},
+          { headers: headers }
+        )
+        .then(function(response) {
+          resolve(response.data);
+        })
+        .catch(function(error) {
+          reject(error);
+        });
+    });
+  };
+
   hackyApi.getEmployeesForOrg = function(orgId, callback) {
     //return list of employees for org
     axios
@@ -127,6 +145,17 @@ export var hackyApiUtility = (function() {
 
   hackyApi.removeEmployee = function(employeeId, orgId) {
     //remove an employee from a given orgid
+    return new Promise((resolve, reject) => {
+      axios
+        .delete(endpointBase + `/employees?empId=${employeeId}&orgId=${orgId}`)
+        .then(emp => {
+          resolve(emp.data);
+        })
+        .catch(err => {
+          console.log(err);
+          reject(err);
+        });
+    });
   };
 
   hackyApi.modifyUser = function(userId) {
