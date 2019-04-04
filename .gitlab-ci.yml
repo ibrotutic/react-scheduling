@@ -1,19 +1,26 @@
 stages:
-    - mavenbuild
-    - apidocsbuild
-    - reactbuild
-    - autoDeploy
+    - build
+    - test
+    - deploy
     
 maven-build:
-    stage: mavenbuild
+    stage: build
     tags:
         - backend_spring_runner
     script:
         - cd Backend/webAPI
         - mvn package -B
         
+maven-test:
+    stage: test
+    tags:
+        - backend_spring_runner
+    script:
+        - cd Backend/webAPI
+        - mvn test
+
 apidocsbuild:
-    stage: apidocsbuild
+    stage: build
     tags:
         - backend_spring_runner
     script:
@@ -23,7 +30,7 @@ apidocsbuild:
         - cp -r build/* ../../../var/www/apiDocs/
         
 autoDeploySpring:
-    stage: autoDeploy
+    stage: deploy
     tags:
         - backend_spring_runner
     script:
