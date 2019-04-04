@@ -26,7 +26,9 @@ apidocsbuild:
     script:
         - cd Backend/apiDocs
         - scl enable rh-ruby23 bash
-        - bundler exec middleman build
+        - gem install bundler
+        - bundle install
+        - bundle exec middleman build
         - cp -r build/* ../../../var/www/apiDocs/
         
 autoDeploySpring:
