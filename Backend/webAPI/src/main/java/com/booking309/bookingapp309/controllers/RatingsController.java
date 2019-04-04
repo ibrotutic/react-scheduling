@@ -4,6 +4,7 @@ package com.booking309.bookingapp309.controllers;
 import com.booking309.bookingapp309.objects.Employee;
 import com.booking309.bookingapp309.objects.Rating;
 import com.booking309.bookingapp309.repositories.AppointmentRepository;
+import com.booking309.bookingapp309.repositories.OrgRepository;
 import com.booking309.bookingapp309.repositories.RatingsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,11 +15,15 @@ import java.util.stream.Collectors;
 
 @RestController
 public class RatingsController {
+    private RatingsRepository ratingsRepository;
+    private AppointmentRepository appointmentRepository;
 
     @Autowired
-    private RatingsRepository ratingsRepository;
-    @Autowired
-    private AppointmentRepository appointmentRepository;
+    public RatingsController(RatingsRepository ratingsRepository, AppointmentRepository appointmentRepository) {
+        this.ratingsRepository = ratingsRepository;
+        this.appointmentRepository = appointmentRepository;
+    }
+
 
     @CrossOrigin
     @GetMapping("/rating/employees")
