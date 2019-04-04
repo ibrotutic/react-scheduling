@@ -1,0 +1,22 @@
+stages:
+    - mavenbuild
+    - autoDeploy
+    
+maven-build:
+    stage: mavenbuild
+    tags:
+        - shell
+    script:
+        - cd Backend/webAPI
+        - mvn package -B
+        
+autoDeploySpring:
+    stage: autoDeploy
+    tags:
+        - shell
+    script:
+        - cd Backend/webAPI
+        - mvn package
+        - sudo mv target/*.jar /home/webAPI/web-api.jar
+        - sudo systemctl stop system-web-api
+        - sudo systemctl start system-web-api
