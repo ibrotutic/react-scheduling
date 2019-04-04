@@ -10,6 +10,15 @@ maven-build:
     script:
         - cd Backend/webAPI
         - mvn package -B
+
+react-app-build:
+    stage: build
+    tags:
+        - backend_spring_runner
+    script:
+        - cd Frontend/bookingapp
+        - npm install
+        - npm run-script build
         
 maven-test:
     stage: test
@@ -25,6 +34,7 @@ maven-test:
 #        - backend_spring_runner
 #    script:
 #        - cd Backend/apiDocs
+    # v ISSUE RIGHT HERE v
 #        - source /opt/rh/rh-ruby23/enable
 #        - gem install bundler
 #        - bundle install
@@ -51,3 +61,12 @@ web-api-deploy:
     when: manual
     only:
         - master
+        
+react-app-deploy:
+    stage: deploy
+    tags:
+        - backend_spring_runner
+    script:
+        - cd Frontend/bookingapp
+        - rm -rf /var/www/html/*
+        - cp -r build/* /var/www/html/
