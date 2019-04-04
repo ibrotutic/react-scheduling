@@ -19,7 +19,7 @@ maven-test:
         - cd Backend/webAPI
         - mvn test
 
-apidocsbuild:
+api-docs-build:
     stage: build
     tags:
         - backend_spring_runner
@@ -29,9 +29,16 @@ apidocsbuild:
         - gem install bundler
         - bundle install
         - bundle exec middleman build
+        
+api-docs-deploy:
+    stage: deploy
+    tags:
+        - backend_spring_runner
+    script:
+        - cd Backend/apiDocs
         - cp -r build/* ../../../var/www/apiDocs/
         
-autoDeploySpring:
+web-api-deploy:
     stage: deploy
     tags:
         - backend_spring_runner
