@@ -89,7 +89,9 @@ public class OrgControllerWebMockTest {
 
     @Test
     public void testOrgDeleteReturnsSuccess() throws Exception {
-        MockHttpServletResponse response = this.mockMvc.perform(delete("/org?orgId={orgId}", orgId)).andReturn().getResponse();
+        MockHttpServletResponse response = this.mockMvc.perform(delete("/org?orgId={orgId}", orgId))
+                .andReturn()
+                .getResponse();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         verify(mockOrgRepository, times(1)).deleteByOrgId(orgId);
