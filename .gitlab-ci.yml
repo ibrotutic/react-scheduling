@@ -65,6 +65,7 @@ react-app-deploy:
         - cd Frontend/bookingapp
         - npm install
         - npm run-script build
+        - rm -rf /var/www/html/*
         - cp -r build/* /var/www/html/
     when: manual
     only:
