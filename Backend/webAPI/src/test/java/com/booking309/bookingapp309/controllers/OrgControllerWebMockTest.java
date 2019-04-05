@@ -61,7 +61,6 @@ public class OrgControllerWebMockTest {
     @Test
     public void postValidOrgReturnsSuccess() throws Exception {
         Organization testOrg = createTestOrg();
-        when(mockOrgRepository.findByOrgId(orgId)).thenReturn(testOrg);
 
         this.mockMvc.perform( MockMvcRequestBuilders
                 .post("/org")
@@ -77,8 +76,6 @@ public class OrgControllerWebMockTest {
         List<Organization> orgList = new ArrayList<>();
         Organization testOrg = createTestOrg();
         orgList.add(testOrg);
-
-        when(mockOrgRepository.findAllByAdminId(adminId)).thenReturn(orgList);
 
         MockHttpServletResponse response = this.mockMvc.perform(get("/org?orgId={orgId}", orgId))
                 .andReturn()
