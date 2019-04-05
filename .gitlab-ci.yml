@@ -62,7 +62,7 @@ react-app-deploy:
     tags:
         - node_runner
     script:
-    - cd Frontend/bookingapp
+        - cd Frontend/bookingapp
         - npm install
         - npm run-script build
         - rm -rf /var/www/html/*
