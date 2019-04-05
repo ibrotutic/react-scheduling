@@ -60,7 +60,7 @@ web-api-deploy:
 react-app-deploy:
     stage: deploy
     tags:
-        - node_runner
+        - backend_spring_runner
     script:
         - cd Frontend/bookingapp
         - npm install
