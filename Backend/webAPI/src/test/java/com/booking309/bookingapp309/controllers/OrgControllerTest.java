@@ -23,7 +23,6 @@ public class OrgControllerTest {
 
     @Mock
     private OrgRepository mockOrgRepository;
-    @Mock
     private OrgController orgController;
 
     @Before
