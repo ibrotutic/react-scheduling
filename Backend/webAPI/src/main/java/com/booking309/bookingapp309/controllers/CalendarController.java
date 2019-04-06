@@ -6,6 +6,7 @@ import com.booking309.bookingapp309.repositories.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpOutputMessage;
+import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -15,6 +16,7 @@ import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
@@ -42,10 +44,20 @@ public class CalendarController {
     @PostMapping("/calendar")
     public @ResponseBody
     Appointment putAppointment(@RequestBody Appointment appointment) {
-        appointmentRepository.save(appointment);
-        subscribeAppointment(appointment);
+        long epoch = System.currentTimeMillis()/1000;
+        if(appointment.getStartTime() >= epoch) {
+            appointmentRepository.save(appointment);
+            subscribeAppointment(appointment);
+            return appointment;
+        }
+        else{
+            throw new IllegalArgumentException();
+        }
+    }
 
-        return appointment;
+    @ExceptionHandler(IllegalArgumentException.class)
+    void handleBadRequests(HttpServletResponse response) throws IOException {
+        response.sendError(HttpStatus.BAD_REQUEST.value(), "Cannot schedule appointments in the past");
     }
 
 
