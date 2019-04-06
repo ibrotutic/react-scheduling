@@ -57,7 +57,7 @@ class SimpleCard extends Component {
 
   calcHaversine(lat1, lon1, lat2, lon2)
   {
-    let R = 6371; // km
+    let R = 6371;
     let dLat = this.toRadians(lat2-lat1);
     let dLon = this.toRadians(lon2-lon1);
     let lat1rad = this.toRadians(lat1);
