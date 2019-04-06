@@ -30,6 +30,11 @@ class App extends Component {
       .catch(err => {
         this.props.clearUserData();
       });
+    navigator.geolocation.getCurrentPosition(
+        position => {
+          this.props.loadLocation(position.coords);
+        }
+    );
   }
 
   notifyAppointment = appointment => {
@@ -106,6 +111,12 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: "LOAD_ORGS",
         payload: { orgs: orgs }
+      });
+    },
+    loadLocation: location => {
+      dispatch({
+        type: "LOAD_LOCATION",
+        payload: location
       });
     }
   };

@@ -6,6 +6,10 @@ import { withStyles } from "@material-ui/core/styles";
 import hackyApiUtility from "../utilities/hacky-api-utility";
 import connect from "react-redux/es/connect/connect";
 import Grid from "@material-ui/core/Grid"
+import Geocode from "react-geocode";
+
+const geocodeApi = "AIzaSyA9QRVSEzwiZHEDUBwbXJrq4SmslBUmGiU";
+
 
 const uuidv4 = require("uuid/v4");
 
@@ -44,6 +48,7 @@ const styles = theme => ({
 class CreateOrg extends Component {
   constructor(props) {
     super(props);
+    Geocode.setApiKey(geocodeApi);
 
     this.state = {
       success: false,
@@ -72,13 +77,52 @@ class CreateOrg extends Component {
       orgId: orgId,
       name: this.state.companyName,
       address: this.state.address,
+      address2: this.state.address2,
+      zipcode: this.state.zipcode,
+      state: this.state.state,
+      city: this.state.city,
       service: this.state.serviceType,
       description: this.state.description,
       tags: this.state.tags
     };
 
-    hackyApiUtility.createOrg(org, admin);
-    this.setState({ success: true });
+    if (this.validateFields(org)) {
+      this.geocodeAndCreateOrg(org, admin);
+    }
+    else {
+      alert("Check your inputs")
+    }
+  };
+
+  async geocodeAndCreateOrg(org, admin) {
+    let address = this.generateAddress(org);
+    try {
+      let coord = await Geocode.fromAddress(address);
+      const {lat, lng} = coord.results[0].geometry.location;
+      org.cLat = lat;
+      org.cLong = lng;
+      hackyApiUtility.createOrg(org, admin);
+      this.setState({ success: true });
+    }
+    catch {
+      alert("Are you sure that address is real?");
+    }
+  }
+
+  validateFields = (org) => {
+    let validForm = true;
+    Object.entries(org).forEach(([key, value]) => {
+      if (key !== "address2") {
+        if (value === "") {
+          validForm = false;
+        }
+      }
+    });
+    return validForm;
+  };
+
+  generateAddress = (org) => {
+    return org.address + "," + org.city + "," + org.state + "," + org.zipcode;
   };
 
   handleChange = (event, name) => {

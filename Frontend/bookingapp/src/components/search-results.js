@@ -19,9 +19,10 @@ const styles = {
   }
 };
 
-const Result = ({ results }) => {
+const Result = ({results}) => {
   if (results && results.length > 0) {
-    return results.map(hit => (
+    return results.map(hit =>
+        (
       <li
         key={hit.orgId}
         style={{
@@ -37,6 +38,7 @@ const Result = ({ results }) => {
 };
 
 class SearchResults extends Component {
+
   render() {
     return (
       <div style={styles.resultsContainer}>
@@ -49,7 +51,7 @@ class SearchResults extends Component {
 }
 
 function mapStateToProps(state) {
-  return { results: state.results };
+  return {results: state.results};
 }
 
 export default connect(mapStateToProps)(SearchResults);
