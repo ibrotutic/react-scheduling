@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import connect from "react-redux/es/connect/connect";
 import SimpleCard from "../components/simple-card";
+import GeocodingUtil from "../utilities/geocoding-utils"
 
 const styles = {
   resultsContainer: {
@@ -38,20 +39,48 @@ const Result = ({results}) => {
 };
 
 class SearchResults extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      results: {}
+    }
+  }
+
+  generateDistances(results) {
+    if(results && results.length > 0) {
+      results.map(result => {
+        result.distance = GeocodingUtil.getDistance(result.cLat, result.cLong, this.props.location);
+        return result;
+      });
+      this.setState({results: results})
+    }
+  }
+
+  componentWillReceiveProps(nextProps, nextContext){
+    this.generateDistances(nextProps.results);
+  };
+
+  getResultList() {
+    if (this.state.results && this.state.results.length !== 0) {
+      return (
+          <ul style={styles.list}>
+            <Result results={this.state.results} />
+          </ul>
+      )
+    }
+  }
 
   render() {
     return (
       <div style={styles.resultsContainer}>
-        <ul style={styles.list}>
-          <Result results={this.props.results} />
-        </ul>
+        {this.getResultList()}
       </div>
     );
   }
 }
 
 function mapStateToProps(state) {
-  return {results: state.results};
+  return {results: state.results, location:state.user.location};
 }
 
 export default connect(mapStateToProps)(SearchResults);
