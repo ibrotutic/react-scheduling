@@ -64,7 +64,6 @@ class OrgForm extends Component {
   componentDidMount() {
     if (this.props.edit) {
       const { org } = this.props;
-      console.log(org);
       this.setState({
         org,
         companyName: org.name,
