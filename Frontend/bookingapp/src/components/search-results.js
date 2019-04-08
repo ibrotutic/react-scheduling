@@ -42,7 +42,7 @@ class SearchResults extends Component {
   constructor(props){
     super(props);
     this.state = {
-      results: {}
+      results: {},
     }
   }
 
@@ -52,8 +52,18 @@ class SearchResults extends Component {
         result.distance = GeocodingUtil.getDistance(result.cLat, result.cLong, this.props.location);
         return result;
       });
-      this.setState({results: results})
+      this.setState({results: results});
     }
+    else {
+      this.setState({results: {}});
+    }
+  }
+
+  applySorting(field, ascending) {
+    return null;
+  }
+  componentDidMount() {
+    this.generateDistances(this.props.results);
   }
 
   componentWillReceiveProps(nextProps, nextContext){
