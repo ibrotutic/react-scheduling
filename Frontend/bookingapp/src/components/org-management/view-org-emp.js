@@ -5,7 +5,6 @@ import {
   Button,
   Dialog,
   Paper,
-  Typography,
   TextField,
   DialogTitle
 } from "@material-ui/core";

@@ -1,6 +1,4 @@
 import elasticsearch from "elasticsearch";
-import axios from "axios";
-import {endpointBase} from "./hacky-api-utility";
 
 export var elasticsearchUtility = (function() {
   let client; // Private Variable
