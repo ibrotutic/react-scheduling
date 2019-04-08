@@ -101,6 +101,7 @@ public class OrgControllerWebMockTest {
         testOrg.setServiceType("Tutor");
         testOrg.setAddress("100 ISU Ave");
         testOrg.setDescription("I tutor stuff");
+        testOrg.setDocumentId("1");
         testOrg.setAdminId(adminId);
         testOrg.setOrgId(orgId);
 

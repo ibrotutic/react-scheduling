@@ -40,6 +40,7 @@ public class OrgControllerTest {
         assertEquals("Tutor", returnedOrg.getServiceType());
         assertEquals("100 ISU Ave", returnedOrg.getAddress());
         assertEquals("I tutor stuff", returnedOrg.getDescription());
+        assertEquals("1", returnedOrg.getDocumentId());
         assertEquals(adminId, returnedOrg.getAdminId());
         assertEquals(orgId, returnedOrg.getOrgId());
     }
@@ -70,6 +71,7 @@ public class OrgControllerTest {
         testOrg.setServiceType("Tutor");
         testOrg.setAddress("100 ISU Ave");
         testOrg.setDescription("I tutor stuff");
+        testOrg.setDocumentId("1");
         testOrg.setAdminId(adminId);
         testOrg.setOrgId(orgId);
 
@@ -88,6 +90,7 @@ public class OrgControllerTest {
         testOrg1.setDescription("I tutor stuff");
         testOrg1.setAdminId(adminId);
         testOrg1.setOrgId(orgId);
+        testOrg1.setDocumentId("1");
 
         testOrg2.setName("Ibro's Other Cool Org");
         testOrg2.setServiceType("Hacker");
@@ -95,6 +98,7 @@ public class OrgControllerTest {
         testOrg2.setDescription("I hack stuff");
         testOrg2.setAdminId(adminId);
         testOrg2.setOrgId("132-555-666");
+        testOrg2.setDocumentId("2");
 
         orgList.add(testOrg1);
         orgList.add(testOrg2);
