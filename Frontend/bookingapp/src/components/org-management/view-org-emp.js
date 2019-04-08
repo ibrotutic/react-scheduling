@@ -6,7 +6,8 @@ import {
   Dialog,
   Paper,
   Typography,
-  TextField
+  TextField,
+  DialogTitle
 } from "@material-ui/core";
 
 const EmployeeSection = props => {
@@ -119,23 +120,31 @@ class ViewOrgEmployees extends Component {
         <div>{this.getEmployeeSections()}</div>
         <Dialog open={this.state.addEmployee} onClose={this.handleAddEmployee}>
           <Paper>
-            <Typography>New Employee's Email</Typography>
-            <TextField
-              type="email"
-              id="outlined-email"
-              label="Email"
-              // className={classes.textField}
-              value={this.state.email}
-              onChange={e => this.handleEmailChange(e)}
-              margin="normal"
-              variant="outlined"
-            />
-            <Button variant="contained" onClick={this.addEmployee}>
-              Add Employee
-            </Button>
-            <Button variant="contained" onClick={this.handleAddEmployee}>
-              Cancel
-            </Button>
+            <DialogTitle>New Employee's Email</DialogTitle>
+            <div style={{ textAlign: "center" }}>
+              <TextField
+                type="email"
+                id="outlined-email"
+                label="Email"
+                // className={classes.textField}
+                value={this.state.email}
+                onChange={e => this.handleEmailChange(e)}
+                margin="normal"
+                variant="outlined"
+              />
+            </div>
+            <div style={{ margin: "10px", textAlign: "center" }}>
+              <Button
+                variant="contained"
+                onClick={this.addEmployee}
+                style={{ marginRight: "10px" }}
+              >
+                Add Employee
+              </Button>
+              <Button variant="contained" onClick={this.handleAddEmployee}>
+                Cancel
+              </Button>
+            </div>
           </Paper>
         </Dialog>
         <Button variant="contained" onClick={this.handleAddEmployee}>
