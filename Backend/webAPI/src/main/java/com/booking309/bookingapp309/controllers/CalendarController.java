@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -43,15 +44,15 @@ public class CalendarController {
     @CrossOrigin
     @PostMapping("/calendar")
     public @ResponseBody
-    Appointment putAppointment(@RequestBody Appointment appointment) {
-        long epoch = System.currentTimeMillis()/1000;
-        if(appointment.getStartTime() >= epoch) {
+    ResponseEntity<Appointment> putAppointment(@RequestBody Appointment appointment) {
+        boolean validAppointment = appointmentStartTimeIsValid(appointment);
+        if (validAppointment) {
             appointmentRepository.save(appointment);
             subscribeAppointment(appointment);
-            return appointment;
+            return ResponseEntity.ok(appointment);
         }
-        else{
-            throw new IllegalArgumentException();
+        else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(appointment);
         }
     }
 
@@ -69,5 +70,10 @@ public class CalendarController {
 
     private void subscribeAppointment(Appointment appointment) {
         simp.convertAndSend("/topic/appt/" + appointment.getEmpId(), appointment);
+    }
+
+    private boolean appointmentStartTimeIsValid(Appointment appointment) {
+        long epoch = System.currentTimeMillis()/1000;
+        return appointment.getStartTime() >= epoch;
     }
 }

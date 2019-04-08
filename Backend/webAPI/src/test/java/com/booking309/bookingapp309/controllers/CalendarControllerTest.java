@@ -9,6 +9,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.ArrayList;
@@ -44,10 +46,17 @@ public class CalendarControllerTest {
     }
 
     @Test
-    public void putAppointmentByPerson() {
-        Appointment appointment = createRandomAppointment();
+    public void putAppointmentInFutureByPersonReturnsSuccess() {
+        Appointment appointment = createValidFutureAppointment();
 
-        assertThat(calendarController.putAppointment(appointment), is(appointment));
+        assertThat(calendarController.putAppointment(appointment), is(ResponseEntity.ok(appointment)));
+    }
+
+    @Test
+    public void putAppointmentInPastByPersonReturnsBadRequest() {
+        Appointment appointment = createInvalidPastAppointment();
+
+        assertThat(calendarController.putAppointment(appointment), is(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(appointment)));
     }
 
     private Appointment createRandomAppointment() {
@@ -61,6 +70,42 @@ public class CalendarControllerTest {
         appointment.setEmpId(randString.nextString());
         appointment.setOrgId(randString.nextString());
         appointment.setEndTime(rand.nextLong());
+
+
+        return appointment;
+    }
+
+    private Appointment createInvalidPastAppointment() {
+        long epoch = System.currentTimeMillis()/1000;
+        Appointment appointment = new Appointment();
+
+        Random rand = new Random();
+        RandomString randString = new RandomString();
+
+        appointment.setId(rand.nextInt());
+        appointment.setClientId(randString.nextString());
+        appointment.setEmpId(randString.nextString());
+        appointment.setOrgId(randString.nextString());
+        appointment.setStartTime(epoch-1100);
+        appointment.setEndTime(epoch+-1000);
+
+
+        return appointment;
+    }
+
+    private Appointment createValidFutureAppointment() {
+        long epoch = System.currentTimeMillis()/1000;
+        Appointment appointment = new Appointment();
+
+        Random rand = new Random();
+        RandomString randString = new RandomString();
+
+        appointment.setId(rand.nextInt());
+        appointment.setClientId(randString.nextString());
+        appointment.setEmpId(randString.nextString());
+        appointment.setOrgId(randString.nextString());
+        appointment.setStartTime(epoch+10000);
+        appointment.setEndTime(epoch+11000);
 
 
         return appointment;
