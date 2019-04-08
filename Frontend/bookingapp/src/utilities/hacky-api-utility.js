@@ -18,7 +18,6 @@ export var hackyApiUtility = (function() {
     let employeeList = [];
     employeeList.push(admin);
     hackyApi.addEmployees(employeeList);
-    console.log(orgDetails);
     hackyApi.createSpringOrg(orgDetails);
   };
 
@@ -74,8 +73,20 @@ export var hackyApiUtility = (function() {
     });
   };
 
-  hackyApi.modifyOrg = function(modifiedOrgDetails) {
+  hackyApi.saveOrg = function(modifiedOrgDetails) {
     //spring and elasticsearch stuff to update org
+    return new Promise((resolve, reject) => {
+      axios
+        .post(endpointBase + "/org", modifiedOrgDetails, {
+          headers: headers
+        })
+        .then(function(response) {
+          resolve(response);
+        })
+        .catch(function(error) {
+          reject(error);
+        });
+    });
   };
 
   hackyApi.addEmployees = function(employees) {
@@ -87,6 +98,23 @@ export var hackyApiUtility = (function() {
       .catch(function(error) {
         console.log(error);
       });
+  };
+
+  hackyApi.addEmployeeByEmail = function(email, orgId) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(
+          endpointBase + `/employees/org?orgId=${orgId}&email=${email}`,
+          {},
+          { headers: headers }
+        )
+        .then(function(response) {
+          resolve(response.data);
+        })
+        .catch(function(error) {
+          reject(error);
+        });
+    });
   };
 
   hackyApi.getEmployeesForOrg = function(orgId, callback) {
@@ -116,6 +144,17 @@ export var hackyApiUtility = (function() {
 
   hackyApi.removeEmployee = function(employeeId, orgId) {
     //remove an employee from a given orgid
+    return new Promise((resolve, reject) => {
+      axios
+        .delete(endpointBase + `/employees?empId=${employeeId}&orgId=${orgId}`)
+        .then(emp => {
+          resolve(emp.data);
+        })
+        .catch(err => {
+          console.log(err);
+          reject(err);
+        });
+    });
   };
 
   hackyApi.modifyUser = function(userId) {

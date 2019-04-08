@@ -17,6 +17,8 @@ import java.util.Random;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CalendarControllerTest {
@@ -48,6 +50,14 @@ public class CalendarControllerTest {
         Appointment appointment = createRandomAppointment();
 
         assertThat(calendarController.putAppointment(appointment), is(appointment));
+    }
+
+    @Test
+    public void employeeIsNotifiedOfNewAppointment() {
+        Appointment appointment = createRandomAppointment();
+
+        calendarController.putAppointment(appointment);
+        verify(mockedSimpMessageingTemplate, times(1)).convertAndSend("/topic/appt/" + appointment.getEmpId(), appointment);
     }
 
     private Appointment createRandomAppointment() {

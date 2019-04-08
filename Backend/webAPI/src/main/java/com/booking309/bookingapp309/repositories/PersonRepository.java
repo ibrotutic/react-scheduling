@@ -7,7 +7,7 @@ import javax.transaction.Transactional;
 
 public interface PersonRepository extends CrudRepository<Person, String> {
     Person findBypId(String pId);
-
+    Person findByEmail(String email);
     @Transactional
     void deleteBypId(String pId);
 }

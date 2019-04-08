@@ -8,6 +8,7 @@ import Results from "./results";
 import Search from "./search";
 import React from "react";
 import PageNotFound from "./page-not-found";
+import ManageOrgs from "./manage-orgs";
 
 const NavController = () => (
   <Switch>
@@ -17,6 +18,7 @@ const NavController = () => (
     <Route exact path="/search" component={Search} />
     <Route exact path="/" component={Home} />
     <Route exact path="/settings" component={Settings} />
+    <Route exact path="/manage-orgs" component={ManageOrgs} />
     <Route path="/results" component={Results} />
     <Route component={PageNotFound} />
   </Switch>

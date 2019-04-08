@@ -91,6 +91,36 @@ curl "http://cs309-pp-7.misc.iastate.edu:8080/employees/org?orgId=youtellme"
 
 `GET http://cs309-pp-7.misc.iastate.edu:8080/employees/org?orgId=<ID>`
 
+## Add an employee by email to org
+
+Adds an employee to the org specefied by email address
+
+```shell
+# With shell, you can just pass the correct header with each request
+curl "http://cs309-pp-7.misc.iastate.edu:8080/employees/org?orgId=youtellme&email=yournewboss@douche.com"
+  -H "Content-Type: application/json"
+```
+
+```javascript
+// todo
+```
+
+> Returns employee that was saved
+
+```json
+  {
+    "pId": "1234",
+    "email": "horton@hearsawho.com",
+    "username": "timmyb24df",
+    "fname": "Horton",
+    "lname": "Whoville"
+  }
+```
+
+### HTTP Request
+
+`POST http://cs309-pp-7.misc.iastate.edu:8080/employees/org?orgId=<ID>&email=<EMAIL>`
+
 ## Save employees
 
 Takes a list of employees, saves them.

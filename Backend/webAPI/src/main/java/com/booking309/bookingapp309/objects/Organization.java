@@ -28,6 +28,7 @@ public class Organization {
     private String state;
     private String tags;
     private String zipCode;
+    private String documentId;
 
     @Length(max = 50)
     public String getOrgId() {
@@ -132,5 +133,13 @@ public class Organization {
 
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
+    }
+
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 }
