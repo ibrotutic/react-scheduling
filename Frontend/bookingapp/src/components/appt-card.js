@@ -5,6 +5,8 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import AppointmentManager from "../utilities/appointment-management-utility";
+import DirectionIcon from "@material-ui/icons/Directions"
+import Button from "@material-ui/core/Button";
 
 const styles = {
   card: {
@@ -35,6 +37,7 @@ class AppointmentCard extends Component {
       name: props.props.name,
       org: props.props.org
     };
+    this.mapsSelector= this.mapsSelector.bind(this);
   }
 
   componentDidMount() {
@@ -55,6 +58,13 @@ class AppointmentCard extends Component {
     });
   };
 
+  mapsSelector() {
+    let lat = this.state.org.cLat;
+    let long = this.state.org.cLong;
+
+    window.open("https://maps.google.com/maps?daddr="+lat+","+long+"&saddr=My+Location");
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -74,6 +84,11 @@ class AppointmentCard extends Component {
           <Typography variant="h6" component="h6" style={styles.left}>
             With: {this.state.name ? this.state.name : ""}
           </Typography>
+          {this.state.org.cLat !== 0 && this.state.cLong !== 0 ?
+              <Button onClick={this.mapsSelector}><DirectionIcon fontSize={"large"}/></Button>
+              :
+              null
+          }
         </CardContent>
       </Card>
     );

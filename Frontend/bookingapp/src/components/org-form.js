@@ -6,7 +6,9 @@ import { withStyles } from "@material-ui/core/styles";
 import hackyApiUtility from "../utilities/hacky-api-utility";
 import connect from "react-redux/es/connect/connect";
 import Grid from "@material-ui/core/Grid";
+import Geocode from "react-geocode";
 
+const geocodeApi = "AIzaSyA9QRVSEzwiZHEDUBwbXJrq4SmslBUmGiU";
 const uuidv4 = require("uuid/v4");
 
 const styles = theme => ({
@@ -15,9 +17,7 @@ const styles = theme => ({
     flexWrap: "wrap"
   },
   paperDiv: {
-    width: "70%",
-    textAlign: "center",
-    margin: "auto"
+    width: "70%"
   },
   header: {
     textAlign: "center"
@@ -46,13 +46,14 @@ const styles = theme => ({
 class OrgForm extends Component {
   constructor(props) {
     super(props);
+    Geocode.setApiKey(geocodeApi);
 
     this.state = {
       success: false,
       address: "",
       address2: "",
       city: "",
-      zipcode: "",
+      zipCode: "",
       state: "",
       lat: "",
       long: ""
@@ -62,11 +63,18 @@ class OrgForm extends Component {
   componentDidMount() {
     if (this.props.edit) {
       const { org } = this.props;
+      console.log(org);
       this.setState({
         org,
         companyName: org.name,
         description: org.description,
         address: org.address,
+        address2: org.address2,
+        city: org.city,
+        state: org.state,
+        zipCode: org.zipCode,
+        lat: org.clat,
+        long: org.clong,
         serviceType: org.serviceType
       });
     }
@@ -87,27 +95,78 @@ class OrgForm extends Component {
       orgId: orgId,
       name: this.state.companyName,
       address: this.state.address,
-      service: this.state.serviceType,
+      address2: this.state.address2,
+      zipCode: this.state.zipCode,
+      state: this.state.state,
+      city: this.state.city,
+      serviceType: this.state.serviceType,
       description: this.state.description,
       tags: this.state.tags
     };
 
-    hackyApiUtility.createOrg(org, admin);
-    this.props.addOrg(org);
-    this.setState({ success: true });
+    if (this.validateFields(org)) {
+      this.geocodeAndCreateOrg(org, admin);
+    } else {
+      alert("Check your inputs");
+    }
   };
 
-  saveOrg = () => {
+  async geocodeAndCreateOrg(org, admin) {
+    let address = this.generateAddress(org);
+    try {
+      let coord = await Geocode.fromAddress(address);
+      const { lat, lng } = coord.results[0].geometry.location;
+      org.cLat = lat;
+      org.cLong = lng;
+      hackyApiUtility.createOrg(org, admin);
+      this.setState({ success: true });
+    } catch {
+      alert("Are you sure that address is real?");
+    }
+  }
+
+  saveOrg = async () => {
     var org = this.state.org;
     org.name = this.state.companyName;
     org.address = this.state.address;
+    org.address2 = this.state.address2;
+    org.zipCode = this.state.zipCode;
+    org.state = this.state.state;
+    org.city = this.state.city;
     org.serviceType = this.state.serviceType;
     org.description = this.state.description;
+    org.tags = this.state.tags;
 
-    hackyApiUtility
-      .saveOrg(org)
-      .then(() => this.props.onSuccess())
-      .catch(err => console.log(err));
+    let address = this.generateAddress(org);
+    try {
+      let coord = await Geocode.fromAddress(address);
+      const { lat, lng } = coord.results[0].geometry.location;
+      org.cLat = lat;
+      org.cLong = lng;
+
+      hackyApiUtility
+        .saveOrg(org)
+        .then(() => this.props.onSuccess())
+        .catch(err => console.log(err));
+    } catch {
+      alert("Are you sure that address is real?");
+    }
+  };
+
+  validateFields = org => {
+    let validForm = true;
+    Object.entries(org).forEach(([key, value]) => {
+      if (key !== "address2") {
+        if (value === "") {
+          validForm = false;
+        }
+      }
+    });
+    return validForm;
+  };
+
+  generateAddress = org => {
+    return org.address + "," + org.city + "," + org.state + "," + org.zipCode;
   };
 
   handleChange = (event, name) => {
@@ -203,12 +262,12 @@ class OrgForm extends Component {
                 </Grid>
                 <Grid item xs={6} sm={3}>
                   <TextField
-                    type="zipcode"
+                    type="zipCode"
                     id="outlined-address"
                     label="Zip Code"
                     className={classes.textField}
-                    value={this.state.zipcode || ""}
-                    onChange={e => this.handleChange(e, "zipcode")}
+                    value={this.state.zipCode || ""}
+                    onChange={e => this.handleChange(e, "zipCode")}
                     margin="normal"
                     variant="outlined"
                   />
