@@ -39,6 +39,23 @@ public class EmployeeController {
     }
 
     @CrossOrigin
+    @PostMapping("/employees/org")
+    public @ResponseBody Person addEmployeeByEmail(@RequestParam String email, @RequestParam String orgId) {
+        Person person = personRepository.findByEmail(email);
+		
+		if (person != null) {
+			Employee employee = new Employee();
+
+			employee.setOrgId(orgId);
+			employee.setEmpId(person.getpId());
+
+			empRepository.save(employee);
+		}
+		
+        return person;
+    }
+
+    @CrossOrigin
     @GetMapping("/employees")
     public @ResponseBody
     List<Employee> getOrgs(@RequestParam String empId) {

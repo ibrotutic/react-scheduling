@@ -50,8 +50,7 @@ class OrganizationCreationModal extends Component {
         onClose={this.onClick}
       >
         <div style={getModalStyle()} className={classes.paper}>
-          <CreateOrg />
-          <Button onClick={this.onClick}>Close</Button>
+          <CreateOrg cancel={this.onClick} />
         </div>
       </Modal>
     );

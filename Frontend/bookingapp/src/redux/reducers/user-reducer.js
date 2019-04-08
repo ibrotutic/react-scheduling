@@ -29,6 +29,14 @@ export const userReducer = (state = initialUserData, action) => {
         orgs: payload.orgs
       };
       break;
+    case "ADD_ORG":
+      var newOrgs = [...state.orgs, payload.org];
+
+      state = {
+        ...state,
+        orgs: newOrgs
+      };
+      break;
     case "LOAD_LOCATION":
       state = {
         ...state,
