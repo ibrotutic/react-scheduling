@@ -29,6 +29,12 @@ export const userReducer = (state = initialUserData, action) => {
         orgs: payload.orgs
       };
       break;
+    case "LOAD_LOCATION":
+      state = {
+        ...state,
+        location: payload
+      };
+      break;
     default:
       break;
   }

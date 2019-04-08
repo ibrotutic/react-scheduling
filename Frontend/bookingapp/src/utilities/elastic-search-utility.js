@@ -58,7 +58,12 @@ export var elasticsearchUtility = (function() {
         result.description = hit._source.description;
         result.orgId = hit._source.orgId;
         result.address = hit._source.address;
+        result.city = hit._source.city;
+        result.zipcopde = hit._source.zipcode;
+        result.state = hit._source.state;
         result.tags = hit._source.tags;
+        result.cLat = hit._source.cLat;
+        result.cLong = hit._source.cLong;
 
         return result;
       });

@@ -28,11 +28,13 @@ class SimpleCard extends Component {
         service: props.props.service,
         description: props.props.description,
         orgId: props.props.orgId,
-        address: props.props.address,
-        tags: props.props.tags
+        address: props.props.address + ", " + props.props.city +  ", " + props.props.state,
+        tags: props.props.tags,
+        lat: props.props.cLat,
+        long: props.props.cLong,
+        distance: props.props.distance
       }
     };
-
     this.onClick = this.onClick.bind(this);
   }
 
@@ -58,7 +60,12 @@ class SimpleCard extends Component {
               <Typography component="p">
                 {this.state.orgInfo.description}
               </Typography>
-              <Typography component="p">{this.state.orgInfo.orgId}</Typography>
+              <Typography component="p">
+                {this.state.orgInfo.address}
+              </Typography>
+              <Typography component="p">
+                Distance: {this.state.orgInfo.distance}
+              </Typography>
             </CardContent>
           </CardActionArea>
         </Card>
@@ -89,7 +96,7 @@ const mapDispatchToProps = dispatch => {
 
 export default withStyles(styles)(
   connect(
-    null,
+      null,
     mapDispatchToProps
   )(SimpleCard)
 );
