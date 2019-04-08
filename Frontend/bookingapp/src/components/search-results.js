@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import connect from "react-redux/es/connect/connect";
 import SimpleCard from "../components/simple-card";
 import GeocodingUtil from "../utilities/geocoding-utils"
+import ComplexCard from "./complex-card";
+import {isMobile} from 'react-device-detect';
 
 const styles = {
   resultsContainer: {
@@ -30,7 +32,7 @@ const Result = ({results}) => {
           marginBottom: "10px"
         }}
       >
-        <SimpleCard props={hit} />
+        {isMobile ? <SimpleCard props={hit}/> : <ComplexCard props={hit}/>}
       </li>
     ));
   }
@@ -42,7 +44,7 @@ class SearchResults extends Component {
   constructor(props){
     super(props);
     this.state = {
-      results: {}
+      results: {},
     }
   }
 
@@ -52,8 +54,18 @@ class SearchResults extends Component {
         result.distance = GeocodingUtil.getDistance(result.cLat, result.cLong, this.props.location);
         return result;
       });
-      this.setState({results: results})
+      this.setState({results: results});
     }
+    else {
+      this.setState({results: {}});
+    }
+  }
+
+  applySorting(field, ascending) {
+    return null;
+  }
+  componentDidMount() {
+    this.generateDistances(this.props.results);
   }
 
   componentWillReceiveProps(nextProps, nextContext){
