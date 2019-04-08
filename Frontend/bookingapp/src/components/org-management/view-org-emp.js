@@ -13,7 +13,6 @@ import {
 const EmployeeSection = props => {
   const emp = props.employee;
   const orgId = props.org.orgId;
-  console.log(emp);
 
   return (
     <div
@@ -36,13 +35,17 @@ const EmployeeSection = props => {
       >
         <div style={{ paddingTop: "5px" }}>{`${emp.fname} ${emp.lname}`}</div>
         <div style={{ color: "grey", paddingTop: "5px" }}>{emp.email}</div>
-        <Button
-          variant="contained"
-          onClick={() => props.removeEmployee(emp, orgId)}
-          style={{ width: "10vw" }}
-        >
-          Delete
-        </Button>
+        {props.admin ? (
+          <div style={{ fontStyle: "italic", paddingTop: "5px" }}>Admin</div>
+        ) : (
+          <Button
+            variant="contained"
+            onClick={() => props.removeEmployee(emp, orgId)}
+            style={{ width: "10vw" }}
+          >
+            Delete
+          </Button>
+        )}
       </Paper>
     </div>
   );
@@ -69,6 +72,7 @@ class ViewOrgEmployees extends Component {
         employee={emp}
         org={this.state.org}
         removeEmployee={this.removeEmployee}
+        admin={emp.pId === this.props.org.adminId}
       />
     ));
   };
