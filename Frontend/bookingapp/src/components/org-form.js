@@ -65,7 +65,6 @@ class OrgForm extends Component {
   componentDidMount() {
     if (this.props.edit) {
       const { org } = this.props;
-      console.log(org);
       this.setState({
         org,
         companyName: org.name,
@@ -78,7 +77,8 @@ class OrgForm extends Component {
         lat: org.clat,
         long: org.clong,
         serviceType: org.serviceType,
-        tags: org.tags
+        tags: org.tags,
+        documentId: org.documentId,
       });
     }
   }
@@ -104,7 +104,8 @@ class OrgForm extends Component {
       city: this.state.city,
       serviceType: this.state.serviceType,
       description: this.state.description,
-      tags: this.state.tags
+      tags: this.state.tags,
+      documentId: this.state.documentId
     };
 
     if (this.validateFields(org)) {
@@ -138,7 +139,8 @@ class OrgForm extends Component {
     org.city = this.state.city;
     org.serviceType = this.state.serviceType;
     org.description = this.state.description;
-    org.tags = this.state.tags;
+    org.tags = this.state.tags
+    org.documentId = this.state.documentId;
 
     let address = this.generateAddress(org);
     try {
