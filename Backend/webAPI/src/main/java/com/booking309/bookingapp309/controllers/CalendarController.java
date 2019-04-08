@@ -55,13 +55,7 @@ public class CalendarController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(appointment);
         }
     }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    void handleBadRequests(HttpServletResponse response) throws IOException {
-        response.sendError(HttpStatus.BAD_REQUEST.value(), "Cannot schedule appointments in the past");
-    }
-
-
+    
     @CrossOrigin
     @DeleteMapping("/calendar")
     public @ResponseBody void deleteCalendar(@RequestParam int id){
