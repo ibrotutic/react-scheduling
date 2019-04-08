@@ -1,15 +1,22 @@
 import React, { Component } from "react";
 import connect from "react-redux/es/connect/connect";
 import SimpleCard from "../components/simple-card";
-import GeocodingUtil from "../utilities/geocoding-utils"
+import GeocodingUtil from "../utilities/geocoding-utils";
+import SortingUtils from "../utilities/sorting-utils"
 import ComplexCard from "./complex-card";
 import {isMobile} from 'react-device-detect';
+import Sorting from './sorting';
+
 
 const styles = {
+  parentDiv: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+  },
   resultsContainer: {
     display: "flex",
     justifyContent: "center",
-    height: "100%",
     overflowY: "scroll"
   },
   list: {
@@ -45,7 +52,8 @@ class SearchResults extends Component {
     super(props);
     this.state = {
       results: {},
-    }
+    };
+    this.sortBy = this.sortBy.bind(this);
   }
 
   generateDistances(results) {
@@ -61,9 +69,17 @@ class SearchResults extends Component {
     }
   }
 
-  applySorting(field, ascending) {
-    return null;
+  sortBy(field, direction) {
+    if (field === "Distance") {
+      let sortedArray = SortingUtils.sortByDistance(this.props.results, direction);
+      this.setState({results:sortedArray});
+    }
+    else if (field === "Name") {
+      let sortedArray = SortingUtils.sortByName(this.props.results, direction);
+      this.setState({results:sortedArray});
+    }
   }
+
   componentDidMount() {
     this.generateDistances(this.props.results);
   }
@@ -84,9 +100,12 @@ class SearchResults extends Component {
 
   render() {
     return (
-      <div style={styles.resultsContainer}>
-        {this.getResultList()}
-      </div>
+        <div style={styles.parentDiv}>
+          {this.state.results && this.state.results.length > 0 ? <Sorting sortBy={this.sortBy}/> : null}
+          <div style={styles.resultsContainer}>
+            {this.getResultList()}
+          </div>
+        </div>
     );
   }
 }
