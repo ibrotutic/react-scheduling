@@ -2,11 +2,16 @@ import React, { Component } from "react";
 import { Button } from "@material-ui/core";
 
 const OrgField = props => (
-  <div style={{ width: "100vw", minHeight: "50px", padding: "10px 0px" }}>
-    <div style={{ width: "400px" }}>
-      <div style={{ float: "left", fontWeight: "bold" }}>{props.name}</div>
-      <div style={{ float: "right" }}>{props.value}</div>
-    </div>
+  <div
+    style={{
+      minHeight: "50px",
+      padding: "10px 0px",
+      width: "400px",
+      margin: "auto"
+    }}
+  >
+    <div style={{ float: "left", fontWeight: "bold" }}>{props.name}</div>
+    <div style={{ float: "right" }}>{props.value}</div>
   </div>
 );
 

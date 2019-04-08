@@ -15,7 +15,9 @@ const styles = theme => ({
     flexWrap: "wrap"
   },
   paperDiv: {
-    width: "70%"
+    width: "70%",
+    textAlign: "center",
+    margin: "auto"
   },
   header: {
     textAlign: "center"

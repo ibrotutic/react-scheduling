@@ -15,14 +15,34 @@ const EmployeeSection = props => {
   console.log(emp);
 
   return (
-    <div>
-      <div>{`${emp.fname} ${emp.lname}`}</div>
-      <Button
-        variant="contained"
-        onClick={() => props.removeEmployee(emp, orgId)}
+    <div
+      style={{
+        width: "45vw",
+        minWidth: "369px",
+        textAlign: "center",
+        padding: "10px",
+        margin: "auto"
+      }}
+    >
+      <Paper
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          margin: "auto",
+          justifyContent: "space-evenly",
+          padding: "10px"
+        }}
       >
-        Delete Employee
-      </Button>
+        <div style={{ paddingTop: "5px" }}>{`${emp.fname} ${emp.lname}`}</div>
+        <div style={{ color: "grey", paddingTop: "5px" }}>{emp.email}</div>
+        <Button
+          variant="contained"
+          onClick={() => props.removeEmployee(emp, orgId)}
+          style={{ width: "10vw" }}
+        >
+          Delete
+        </Button>
+      </Paper>
     </div>
   );
 };

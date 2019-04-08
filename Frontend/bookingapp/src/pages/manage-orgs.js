@@ -6,7 +6,6 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import ViewOrgManagement from "../components/org-management/view-org-mgmt";
 import ViewOrgEmployees from "../components/org-management/view-org-emp";
-import EditOrgEmployees from "../components/org-management/edit-org-emp";
 import EditOrgManagement from "../components/org-management/edit-org-mgmt";
 import SimpleDialog from "../components/choose-org-dialog";
 
@@ -54,12 +53,9 @@ class ManageOrgs extends Component {
           <ViewOrgManagement org={org} editMode={this.handleOrgEditMode} />
         );
       case 1:
-        return this.state.empEdit ? (
-          <EditOrgEmployees org={org} exitEdit={this.handleEmplEditMode} />
-        ) : (
+        return (
           <ViewOrgEmployees org={org} editMode={this.handleEmplEditMode} />
         );
-
       default:
         return <div>Unknown Tab</div>;
     }
