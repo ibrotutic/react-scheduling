@@ -42,13 +42,16 @@ public class EmployeeController {
     @PostMapping("/employees/org")
     public @ResponseBody Person addEmployeeByEmail(@RequestParam String email, @RequestParam String orgId) {
         Person person = personRepository.findByEmail(email);
-        Employee employee = new Employee();
+		
+		if (person != null) {
+			Employee employee = new Employee();
 
-        employee.setOrgId(orgId);
-        employee.setEmpId(person.getpId());
+			employee.setOrgId(orgId);
+			employee.setEmpId(person.getpId());
 
-        empRepository.save(employee);
-
+			empRepository.save(employee);
+		}
+		
         return person;
     }
 
