@@ -56,6 +56,7 @@ class OrgForm extends Component {
       city: "",
       zipCode: "",
       state: "",
+      tags: "",
       lat: "",
       long: ""
     };
@@ -76,7 +77,8 @@ class OrgForm extends Component {
         zipCode: org.zipCode,
         lat: org.clat,
         long: org.clong,
-        serviceType: org.serviceType
+        serviceType: org.serviceType,
+        tags: org.tags
       });
     }
   }
