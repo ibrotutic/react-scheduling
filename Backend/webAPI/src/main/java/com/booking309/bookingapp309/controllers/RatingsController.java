@@ -36,7 +36,7 @@ public class RatingsController {
     }
 
     @CrossOrigin
-    @PostMapping("/rating/org")
+    @GetMapping("/rating/org")
     public @ResponseBody
     List<Rating> getOrgRating(@RequestParam String orgId) {
         return appointmentRepository.findAllByOrgId(orgId).stream()
@@ -48,7 +48,7 @@ public class RatingsController {
     @CrossOrigin
     @PostMapping("/rating")
     public @ResponseBody
-    Rating putOrgInfo(@RequestBody Rating rating) {
+    Rating putRating(@RequestBody Rating rating) {
         ratingsRepository.save(rating);
         return rating;
     }
