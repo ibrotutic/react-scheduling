@@ -80,7 +80,6 @@ export var hackyApiUtility = (function() {
 
   hackyApi.saveOrg = function(modifiedOrgDetails) {
     //spring and elasticsearch stuff to update org
-    console.log(modifiedOrgDetails);
     return new Promise((resolve, reject) => {
       axios
         .post(endpointBase + "/org", modifiedOrgDetails, {
