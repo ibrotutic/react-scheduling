@@ -23,7 +23,7 @@ import java.util.Random;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
-@RunWith(MockitoJUnitRunner.silent.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class RatingsControllerTest {
     private static final int APP_ID = 123;
     private static final String EMP_ID = "1234-567-89";
