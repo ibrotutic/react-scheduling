@@ -41,12 +41,15 @@ public class CalendarControllerWebMockTest {
 
     @Mock
     private AppointmentRepository mockApptRepository;
+
+    @Mock
+    private SimpMessagingTemplate mockedSimpMessagingTemplate;
     private CalendarController calendarController;
-    private SimpMessagingTemplate simp;
+
 
     @Before
     public void setUp() {
-        calendarController = new CalendarController(mockApptRepository, simp);
+        calendarController = new CalendarController(mockApptRepository, mockedSimpMessagingTemplate);
         this.mockMvc = MockMvcBuilders.standaloneSetup(calendarController).build();
     }
 
@@ -69,13 +72,13 @@ public class CalendarControllerWebMockTest {
     public void postValidApptReturnsSuccess() throws Exception {
         Appointment testAppt = createValidFutureAppointment();
 
-        this.mockMvc.perform(MockMvcRequestBuilders
+        this.mockMvc.perform( MockMvcRequestBuilders
                 .post("/calendar")
                 .content(asJsonString(testAppt))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.pid").exists());
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").exists());
     }
 
     @Test
@@ -86,23 +89,6 @@ public class CalendarControllerWebMockTest {
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         verify(mockApptRepository, times(1)).deleteById(APP_ID);
-    }
-
-
-
-    private Appointment createRandomAppointment() {
-        Appointment appointment = new Appointment();
-
-        Random rand = new Random();
-        RandomString randString = new RandomString();
-
-        appointment.setId(rand.nextInt());
-        appointment.setClientId(randString.nextString());
-        appointment.setEmpId(randString.nextString());
-        appointment.setOrgId(randString.nextString());
-        appointment.setEndTime(rand.nextLong());
-
-        return appointment;
     }
 
     private List<Appointment> createValidFutureAppointmentList() {
