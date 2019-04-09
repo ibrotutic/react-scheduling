@@ -86,7 +86,7 @@ public class CalendarControllerWebMockTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         verify(mockApptRepository, times(1)).deleteById(APP_ID);
     }
-    
+
 
     private Appointment createRandomAppointment() {
         Appointment appointment = new Appointment();
@@ -113,6 +113,14 @@ public class CalendarControllerWebMockTest {
         }
 
         return appointments;
+    }
+
+    private static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
