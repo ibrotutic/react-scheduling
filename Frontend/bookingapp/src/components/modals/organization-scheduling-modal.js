@@ -141,8 +141,10 @@ class OrganizationSchedulingModal extends Component {
           if (!resp) {
             alert("Unable to schedule appointment!");
           }
-          this.props.addAppointment({ appointment: appointment });
-          alert("Success");
+          else {
+            this.props.addAppointment({ appointment: appointment });
+            alert("Success");
+          }
         });
       } else {
         alert("Please login before attempting to schedule.");
