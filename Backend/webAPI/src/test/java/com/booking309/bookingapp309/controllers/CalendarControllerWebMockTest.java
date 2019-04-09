@@ -53,7 +53,7 @@ public class CalendarControllerWebMockTest {
     @Test
     public void getValidApptByPersonIdReturnsSuccess() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        List<Appointment> apptList = createRandomAppointmentList();
+        List<Appointment> apptList = createValidFutureAppointmentList();
 
         when(mockApptRepository.findAllByClientIdOrEmpId(PERSON_ID, PERSON_ID)).thenReturn(apptList);
 
@@ -101,16 +101,16 @@ public class CalendarControllerWebMockTest {
         appointment.setEmpId(randString.nextString());
         appointment.setOrgId(randString.nextString());
         appointment.setEndTime(rand.nextLong());
-        
+
         return appointment;
     }
 
-    private List<Appointment> createRandomAppointmentList() {
+    private List<Appointment> createValidFutureAppointmentList() {
         List<Appointment> appointments = new ArrayList<>();
         Random rand = new Random();
 
         for (int i = 0; i < rand.nextInt(10); i++) {
-            appointments.add(createRandomAppointment());
+            appointments.add(createValidFutureAppointment());
         }
 
         return appointments;
