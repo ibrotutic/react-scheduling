@@ -48,7 +48,7 @@ class OrgForm extends Component {
   constructor(props) {
     super(props);
     Geocode.setApiKey(geocodeApi);
-
+    
     this.state = {
       success: false,
       address: "",
@@ -56,6 +56,7 @@ class OrgForm extends Component {
       city: "",
       zipCode: "",
       state: "",
+      tags: "",
       lat: "",
       long: ""
     };
@@ -75,7 +76,9 @@ class OrgForm extends Component {
         zipCode: org.zipCode,
         lat: org.clat,
         long: org.clong,
-        serviceType: org.serviceType
+        serviceType: org.serviceType,
+        tags: org.tags,
+        documentId: org.documentId,
       });
     }
   }
@@ -101,7 +104,8 @@ class OrgForm extends Component {
       city: this.state.city,
       serviceType: this.state.serviceType,
       description: this.state.description,
-      tags: this.state.tags
+      tags: this.state.tags,
+      documentId: this.state.documentId
     };
 
     if (this.validateFields(org)) {
@@ -135,7 +139,8 @@ class OrgForm extends Component {
     org.city = this.state.city;
     org.serviceType = this.state.serviceType;
     org.description = this.state.description;
-    org.tags = this.state.tags;
+    org.tags = this.state.tags
+    org.documentId = this.state.documentId;
 
     let address = this.generateAddress(org);
     try {
