@@ -67,7 +67,7 @@ public class CalendarControllerWebMockTest {
 
     @Test
     public void postValidApptReturnsSuccess() throws Exception {
-        Appointment testAppt = createRandomAppointment();
+        Appointment testAppt = createValidFutureAppointment();
 
         this.mockMvc.perform(MockMvcRequestBuilders
                 .post("/calendar")
@@ -89,6 +89,7 @@ public class CalendarControllerWebMockTest {
     }
 
 
+
     private Appointment createRandomAppointment() {
         Appointment appointment = new Appointment();
 
@@ -100,8 +101,7 @@ public class CalendarControllerWebMockTest {
         appointment.setEmpId(randString.nextString());
         appointment.setOrgId(randString.nextString());
         appointment.setEndTime(rand.nextLong());
-
-
+        
         return appointment;
     }
 
@@ -114,6 +114,24 @@ public class CalendarControllerWebMockTest {
         }
 
         return appointments;
+    }
+
+    private Appointment createValidFutureAppointment() {
+        long epoch = System.currentTimeMillis()/1000;
+        Appointment appointment = new Appointment();
+
+        Random rand = new Random();
+        RandomString randString = new RandomString();
+
+        appointment.setId(rand.nextInt());
+        appointment.setClientId(randString.nextString());
+        appointment.setEmpId(randString.nextString());
+        appointment.setOrgId(randString.nextString());
+        appointment.setStartTime(epoch+10000);
+        appointment.setEndTime(epoch+11000);
+
+
+        return appointment;
     }
 
     private static String asJsonString(final Object obj) {
