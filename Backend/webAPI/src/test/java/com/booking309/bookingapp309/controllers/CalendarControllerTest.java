@@ -63,7 +63,7 @@ public class CalendarControllerTest {
 
     @Test
     public void employeeIsNotifiedOfNewAppointment() {
-        Appointment appointment = createRandomAppointment();
+        Appointment appointment = createValidFutureAppointment();
 
         calendarController.putAppointment(appointment);
         verify(mockedSimpMessageingTemplate, times(1)).convertAndSend("/topic/appt/" + appointment.getEmpId(), appointment);
