@@ -223,6 +223,19 @@ export var hackyApiUtility = (function() {
     });
   };
 
+  hackyApi.deleteAppointmentByAppointmentId = function(appointmentId) {
+    return new Promise((resolve, reject) => {
+      axios
+          .delete(endpointBase + "/calendar?id=" + appointmentId)
+          .then(resp => {
+            resolve(resp);
+          })
+          .catch(err => {
+            reject(err);
+          });
+    });
+  };
+
   return hackyApi; // expose externally
 })();
 

@@ -6,6 +6,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import AppointmentManager from "../utilities/appointment-management-utility";
 import DirectionIcon from "@material-ui/icons/Directions"
+import DeleteForeverOutlinedIcon from "@material-ui/icons/DeleteForeverOutlined"
 import Button from "@material-ui/core/Button";
 
 const styles = {
@@ -30,18 +31,23 @@ const styles = {
 
 class AppointmentCard extends Component {
   constructor(props) {
-    //console.log(props);
+    console.log(props);
     super(props);
     this.state = {
-      appt: props.props,
-      name: props.props.name,
-      org: props.props.org
+      appt: props.props.appt,
+      name: props.props.appt.name,
+      org: props.props.appt.org
     };
     this.mapsSelector= this.mapsSelector.bind(this);
+    this.delete = this.delete.bind(this);
   }
 
   componentDidMount() {
     this.createDates();
+  }
+
+  delete() {
+    this.props.props.deleteAppointment(this.state.appt.id);
   }
 
   createDates = () => {
@@ -89,6 +95,7 @@ class AppointmentCard extends Component {
               :
               null
           }
+          <Button onClick={this.delete}><DeleteForeverOutlinedIcon fontSize={"large"} /></Button>
         </CardContent>
       </Card>
     );
