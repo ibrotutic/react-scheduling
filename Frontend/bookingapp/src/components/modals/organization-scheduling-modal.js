@@ -137,9 +137,14 @@ class OrganizationSchedulingModal extends Component {
           endTime: date + this.state.selectedTime.endTime * 60
         };
 
-        hackyApiUtility.createAppointment(appointment, () => {
-          this.props.addAppointment({ appointment: appointment });
-          alert("Success");
+        hackyApiUtility.createAppointment(appointment, resp => {
+          if (!resp) {
+            alert("Unable to schedule appointment!");
+          }
+          else {
+            this.props.addAppointment({ appointment: appointment });
+            alert("Success");
+          }
         });
       } else {
         alert("Please login before attempting to schedule.");
