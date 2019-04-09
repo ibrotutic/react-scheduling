@@ -71,14 +71,38 @@ export var elasticsearchUtility = (function() {
   };
 
   esClient.createOrg = function(org) {
-    client
-      .index({
-        index: "services",
-        type: "_doc",
-        body: org
-      })
-      .then(resp => console.log(resp))
-      .catch(err => console.log(err));
+    return new Promise((resolve, reject) => {
+      client
+          .index({
+            index: "services",
+            type: "_doc",
+            body: org
+          })
+          .then(resp => {
+            return resolve(resp);
+          })
+          .catch(err => {
+            return reject(err);
+          })
+    });
+  };
+
+  esClient.updateOrg = function(org) {
+    return new Promise((resolve, reject) => {
+      client
+          .index({
+            index: "services",
+            type: "_doc",
+            id: org.documentId,
+            body: org
+          })
+          .then(resp => {
+            return resolve(resp);
+          })
+          .catch(err => {
+            return reject(err);
+          })
+    });
   };
 
   return esClient; // expose externally

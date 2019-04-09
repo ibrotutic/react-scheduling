@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
 import CreateOrg from "../create-org";
 import Modal from "@material-ui/core/Modal";
 

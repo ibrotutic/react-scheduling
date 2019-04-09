@@ -1,5 +1,6 @@
 package com.booking309.bookingapp309.controllers;
 
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -44,7 +45,7 @@ public class CalendarControllerWebMockTest {
     private SimpMessagingTemplate simp;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         calendarController = new CalendarController(mockApptRepository, simp);
         this.mockMvc = MockMvcBuilders.standaloneSetup(calendarController).build();
     }
@@ -65,10 +66,10 @@ public class CalendarControllerWebMockTest {
     }
 
     @Test
-    public void postValidApptReturnsSuccess() throws Exception{
+    public void postValidApptReturnsSuccess() throws Exception {
         Appointment testAppt = createRandomAppointment();
 
-        this.mockMvc.perform( MockMvcRequestBuilders
+        this.mockMvc.perform(MockMvcRequestBuilders
                 .post("/calendar")
                 .content(asJsonString(testAppt))
                 .contentType(MediaType.APPLICATION_JSON)
@@ -78,7 +79,7 @@ public class CalendarControllerWebMockTest {
     }
 
     @Test
-    public void testApptDeleteReturnsSuccess() throws Exception{
+    public void testApptDeleteReturnsSuccess() throws Exception {
         MockHttpServletResponse response = this.mockMvc.perform(delete("/calendar?id={id}", APP_ID))
                 .andReturn()
                 .getResponse();
@@ -122,6 +123,4 @@ public class CalendarControllerWebMockTest {
             throw new RuntimeException(e);
         }
     }
-
-
 }

@@ -13,12 +13,17 @@ export var hackyApiUtility = (function() {
   };
 
   hackyApi.createOrg = function(orgDetails, admin) {
-    elasticsearchUtility.createOrg(orgDetails);
+    elasticsearchUtility.createOrg(orgDetails).then(function (response) {
+      orgDetails.documentId = response._id;
+      hackyApi.createSpringOrg(orgDetails);
+    }, function(error) {
+      console.log(error);
+      alert(error);
+    });
     //our api expects a list...so we send one.
     let employeeList = [];
     employeeList.push(admin);
     hackyApi.addEmployees(employeeList);
-    hackyApi.createSpringOrg(orgDetails);
   };
 
   hackyApi.createSpringOrg = function(orgDetails, callback) {
@@ -81,6 +86,7 @@ export var hackyApiUtility = (function() {
           headers: headers
         })
         .then(function(response) {
+          elasticsearchUtility.updateOrg(modifiedOrgDetails);
           resolve(response);
         })
         .catch(function(error) {
@@ -214,6 +220,19 @@ export var hackyApiUtility = (function() {
         .catch(err => {
           reject(err);
         });
+    });
+  };
+
+  hackyApi.deleteAppointmentByAppointmentId = function(appointmentId) {
+    return new Promise((resolve, reject) => {
+      axios
+          .delete(endpointBase + "/calendar?id=" + appointmentId)
+          .then(resp => {
+            resolve(resp);
+          })
+          .catch(err => {
+            reject(err);
+          });
     });
   };
 

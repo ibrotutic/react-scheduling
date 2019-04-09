@@ -6,6 +6,8 @@ import com.booking309.bookingapp309.repositories.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpOutputMessage;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -15,6 +17,7 @@ import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
@@ -41,14 +44,18 @@ public class CalendarController {
     @CrossOrigin
     @PostMapping("/calendar")
     public @ResponseBody
-    Appointment putAppointment(@RequestBody Appointment appointment) {
-        appointmentRepository.save(appointment);
-        subscribeAppointment(appointment);
-
-        return appointment;
+    ResponseEntity<Appointment> putAppointment(@RequestBody Appointment appointment) {
+        boolean validAppointment = appointmentStartTimeIsValid(appointment);
+        if (validAppointment) {
+            appointmentRepository.save(appointment);
+            subscribeAppointment(appointment);
+            return ResponseEntity.ok(appointment);
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(appointment);
+        }
     }
-
-
+    
     @CrossOrigin
     @DeleteMapping("/calendar")
     public @ResponseBody void deleteCalendar(@RequestParam int id){
@@ -57,5 +64,10 @@ public class CalendarController {
 
     private void subscribeAppointment(Appointment appointment) {
         simp.convertAndSend("/topic/appt/" + appointment.getEmpId(), appointment);
+    }
+
+    private boolean appointmentStartTimeIsValid(Appointment appointment) {
+        long epoch = System.currentTimeMillis()/1000;
+        return appointment.getStartTime() >= epoch;
     }
 }

@@ -16,15 +16,19 @@ const styles = {
 };
 
 class Appointments extends Component {
-  state = {
-    userId: "",
-    appts: this.props.appointments,
-    showUpcoming: true,
-    loading: true,
-    showPast: false,
-    upcomingAppts: [],
-    pastAppts: []
-  };
+  constructor(props){
+    super(props);
+    this.state = {
+      userId: "",
+      appts: this.props.appointments,
+      showUpcoming: true,
+      loading: true,
+      showPast: false,
+      upcomingAppts: [],
+      pastAppts: []
+    };
+    this.deleteAppointment = this.deleteAppointment.bind(this);
+  }
 
   componentDidMount() {
     this.requestAppointments();
@@ -32,6 +36,19 @@ class Appointments extends Component {
 
   componentDidUpdate() {
     this.requestAppointments();
+  }
+
+  deleteAppointment(appointmentId) {
+    hackyApiUtility.deleteAppointmentByAppointmentId(appointmentId).then(() => {
+      let appointments = this.state.appts;
+      appointments.splice(appointments.findIndex(function(i){
+        return i.id === appointmentId;
+      }), 1);
+      this.setState({appointments:appointments});
+      this.filterAppointments(appointments);
+    }, error => {
+      console.log("Error" + error);
+    })
   }
 
   loadOrg = function(appt) {
@@ -147,12 +164,13 @@ class Appointments extends Component {
     let appointmentsToShow = this.getAppointmentsToShow();
     if (appointmentsToShow && appointmentsToShow.length !== 0) {
       return appointmentsToShow.map(appt => {
+        let props = {appt: appt, deleteAppointment:this.deleteAppointment};
         return (
           <li key={appt.id} style={{ marginBottom: "10px" }}>
-            <AppointmentCard props={appt} />
+            <AppointmentCard props={props}/>
           </li>
         );
-      });
+      }, this);
     }
   };
 
