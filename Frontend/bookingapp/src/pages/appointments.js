@@ -39,7 +39,7 @@ class Appointments extends Component {
   }
 
   deleteAppointment(appointmentId) {
-    hackyApiUtility.deleteAppointmentByAppointmentId(appointmentId).then(response => {
+    hackyApiUtility.deleteAppointmentByAppointmentId(appointmentId).then(() => {
       let appointments = this.state.appts;
       appointments.splice(appointments.findIndex(function(i){
         return i.id === appointmentId;
