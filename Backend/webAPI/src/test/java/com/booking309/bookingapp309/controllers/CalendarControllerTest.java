@@ -70,6 +70,8 @@ public class CalendarControllerTest {
     }
 
     private Appointment createRandomAppointment() {
+        long epoch = System.currentTimeMillis()/1000;
+
         Appointment appointment = new Appointment();
 
         Random rand = new Random();
@@ -79,7 +81,8 @@ public class CalendarControllerTest {
         appointment.setClientId(randString.nextString());
         appointment.setEmpId(randString.nextString());
         appointment.setOrgId(randString.nextString());
-        appointment.setEndTime(rand.nextLong());
+        appointment.setStartTime(rand.nextLong()+epoch);
+        appointment.setEndTime(appointment.getStartTime()+1000);
 
 
         return appointment;
