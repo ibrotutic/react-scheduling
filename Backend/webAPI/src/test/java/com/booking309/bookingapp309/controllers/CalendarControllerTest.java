@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class CalendarControllerTest {
     private static final String PERSON_ID = "1234-5678-910";
 
