@@ -34,7 +34,7 @@ import java.util.Random;
 @RunWith(MockitoJUnitRunner.class)
 public class CalendarControllerWebMockTest {
     private static final int APP_ID = 123;
-    private static final String PERSON_ID = "1234-567-89";
+    private static final String PERSON_ID = "1234-5678-910";
 
     @Autowired
     private MockMvc mockMvc;
