@@ -1,25 +1,14 @@
 package com.booking309.bookingapp309.controllers;
 
 import com.booking309.bookingapp309.objects.Appointment;
-import com.booking309.bookingapp309.objects.Person;
 import com.booking309.bookingapp309.repositories.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 
 @EnableWebMvc
@@ -45,7 +34,7 @@ public class CalendarController {
     @PostMapping("/calendar")
     public @ResponseBody
     ResponseEntity<Appointment> putAppointment(@RequestBody Appointment appointment) {
-        boolean validAppointment = appointmentStartTimeIsValid(appointment);
+        boolean validAppointment = isValidAppointment(appointment);
         if (validAppointment) {
             appointmentRepository.save(appointment);
             subscribeAppointment(appointment);
@@ -66,8 +55,37 @@ public class CalendarController {
         simp.convertAndSend("/topic/appt/" + appointment.getEmpId(), appointment);
     }
 
-    private boolean appointmentStartTimeIsValid(Appointment appointment) {
+    private boolean isValidAppointment(Appointment requestedAppointment) {
+        Long requestAppointmentStartTime = requestedAppointment.getStartTime();
+        if (!appointmentStartTimeIsValid(requestAppointmentStartTime)) {
+            return false;
+        }
+        return appointmentTimeConflictsWithClientOrEmployee(requestedAppointment);
+    }
+
+    private boolean appointmentTimeConflictsWithClientOrEmployee(Appointment appointment) {
+        String clientId = appointment.getClientId();
+        String employeeId = appointment.getEmpId();
+        List<Appointment> allClientAndEmployeeAppointments = appointmentRepository.findAllByClientIdOrEmpId(clientId, employeeId);
+        Long requestedAppointmentStartTime = appointment.getStartTime();
+
+        return appointmentListHasConflictsWithGivenStartTime(requestedAppointmentStartTime, allClientAndEmployeeAppointments);
+    }
+
+    private boolean appointmentListHasConflictsWithGivenStartTime(Long requestedStartTime, List<Appointment> appointmentList) {
+
+        for (Appointment appt : appointmentList) {
+            if(appt.getStartTime() == requestedStartTime) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean appointmentStartTimeIsValid(Long requestedStartTime) {
         long epoch = System.currentTimeMillis()/1000;
-        return appointment.getStartTime() >= epoch;
+
+        return requestedStartTime > epoch;
     }
 }
