@@ -68,6 +68,17 @@ public class CalendarController {
 
     private boolean appointmentStartTimeIsValid(Appointment appointment) {
         long epoch = System.currentTimeMillis()/1000;
-        return appointment.getStartTime() >= epoch;
+        
+        if(appointment.getStartTime() < epoch) {
+            return false;
+        }
+        List<Appointment> apptList = getAppointmentByPerson(appointment.getEmpId());
+
+        for(int i = 0; i < apptList.size(); i++){
+            if(appointment.getStartTime() == apptList.get(i).getStartTime())
+                return false;
+        }
+
+        return true;
     }
 }
