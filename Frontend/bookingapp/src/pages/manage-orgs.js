@@ -36,7 +36,8 @@ class ManageOrgs extends Component {
 
   handleChooseOrg = index => {
     this.setState({
-      activeOrg: index === 0 ? 0 : index || this.state.activeOrg
+      activeOrg: index === 0 ? 0 : index || this.state.activeOrg,
+      orgEdit: false
     });
     this.handleChooseOrgMode();
   };
