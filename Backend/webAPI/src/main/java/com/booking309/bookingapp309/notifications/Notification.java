@@ -1,12 +1,17 @@
 package com.booking309.bookingapp309.notifications;
 
-public class Notification<T> {
+import com.booking309.bookingapp309.objects.Appointment;
+import com.booking309.bookingapp309.objects.Organization;
+
+public class Notification<T extends  Appointment, Organization> {
     private NotificationType notificationType;
     private T notificationBody;
+    private String destinationId;
 
-    public Notification(NotificationType notificationType, T notificationBody) {
+    public Notification(NotificationType notificationType, T notificationBody, String destinationId) {
         this.notificationType = notificationType;
         this.notificationBody = notificationBody;
+        this.destinationId = destinationId;
     }
 
     public NotificationType getNotificationType() {
@@ -15,5 +20,9 @@ public class Notification<T> {
 
     public T getNotificationBody() {
         return notificationBody;
+    }
+
+    public String getDestinationId() {
+        return destinationId;
     }
 }
