@@ -1,5 +1,7 @@
 package com.booking309.bookingapp309.controllers;
 
+import com.booking309.bookingapp309.notifications.Notification;
+import com.booking309.bookingapp309.notifications.NotificationManager;
 import com.booking309.bookingapp309.objects.Appointment;
 import com.booking309.bookingapp309.objects.Person;
 import com.booking309.bookingapp309.repositories.AppointmentRepository;
@@ -63,6 +65,7 @@ public class CalendarController {
     }
 
     private void subscribeAppointment(Appointment appointment) {
+        Notification newAppointmentNotification = NotificationManager.createNotificationForNewAppointment(appointment);
         simp.convertAndSend("/topic/appt/" + appointment.getEmpId(), appointment);
     }
 
