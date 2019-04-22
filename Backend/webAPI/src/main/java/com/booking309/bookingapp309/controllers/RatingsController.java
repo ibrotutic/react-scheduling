@@ -1,6 +1,7 @@
 package com.booking309.bookingapp309.controllers;
 
 
+import com.booking309.bookingapp309.objects.Appointment;
 import com.booking309.bookingapp309.objects.Employee;
 import com.booking309.bookingapp309.objects.Rating;
 import com.booking309.bookingapp309.repositories.AppointmentRepository;
@@ -49,7 +50,15 @@ public class RatingsController {
     @PostMapping("/rating")
     public @ResponseBody
     Rating putRating(@RequestBody Rating rating) {
+        updateAppointmentToRated(rating);
         ratingsRepository.save(rating);
         return rating;
+    }
+
+    private void updateAppointmentToRated(Rating rating) {
+        Appointment reviewedAppointment = appointmentRepository.findById(rating.getAppointmentId());
+        appointmentRepository.delete(reviewedAppointment);
+        reviewedAppointment.setIsReviewed(true);
+        appointmentRepository.save(reviewedAppointment);
     }
 }

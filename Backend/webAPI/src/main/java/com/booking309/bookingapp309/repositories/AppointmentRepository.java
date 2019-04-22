@@ -9,4 +9,5 @@ public interface AppointmentRepository extends CrudRepository<Appointment, Integ
     List<Appointment> findAllByClientIdOrEmpId(String clientId, String empId);
     List<Appointment> findAllByEmpId(String empId);
     List<Appointment> findAllByOrgId(String orgId);
+    Appointment findById(int appointmentId);
 }
