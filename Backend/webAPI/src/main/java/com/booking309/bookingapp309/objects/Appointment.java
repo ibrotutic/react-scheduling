@@ -15,6 +15,7 @@ public class Appointment {
     private String orgId;
     private long startTime;
     private long endTime;
+    private boolean isReviewed;
 
     public int getId() { return id; }
 
@@ -60,5 +61,13 @@ public class Appointment {
 
     public void setEndTime(long endTime) {
         this.endTime = endTime;
+    }
+
+    public boolean getIsReviewed() {
+        return isReviewed;
+    }
+
+    public void setIsReviewed(boolean reviewed) {
+        this.isReviewed = reviewed;
     }
 }

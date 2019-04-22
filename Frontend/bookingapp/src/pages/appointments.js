@@ -5,6 +5,7 @@ import AppointmentCard from "../components/appt-card";
 import AppointmentManager from "../utilities/appointment-management-utility";
 import LoadingIndicator from "../components/loading-indicator";
 import Button from "@material-ui/core/Button";
+import LeaveReview from "../components/leave-review";
 
 const styles = {
   resultsContainer: {
@@ -19,8 +20,10 @@ class Appointments extends Component {
   constructor(props){
     super(props);
     this.state = {
+      open: false,
       userId: "",
       appts: this.props.appointments,
+      appointmentBeingReviewed: "",
       showUpcoming: true,
       loading: true,
       showPast: false,
@@ -103,6 +106,7 @@ class Appointments extends Component {
 
   toggleFilter = () => {
     this.setState({ showUpcoming: !this.state.showUpcoming });
+    this.setState({ratingOpen: true});
     this.requestAppointments();
   };
 
@@ -164,7 +168,7 @@ class Appointments extends Component {
     let appointmentsToShow = this.getAppointmentsToShow();
     if (appointmentsToShow && appointmentsToShow.length !== 0) {
       return appointmentsToShow.map(appt => {
-        let props = {appt: appt, deleteAppointment:this.deleteAppointment};
+        let props = {appt: appt, deleteAppointment:this.deleteAppointment, clickReview:this.onClickReview};
         return (
           <li key={appt.id} style={{ marginBottom: "10px" }}>
             <AppointmentCard props={props}/>
@@ -174,7 +178,13 @@ class Appointments extends Component {
     }
   };
 
+  onClickReview = (appointment) => {
+    this.setState({appointmentBeingReviewed: appointment});
+    this.setState({open: true});
+  };
+
   render() {
+
     if (!this.props.cognito) {
       return <div>Must be signed in to see your appointments.</div>;
     } else if (
@@ -188,6 +198,7 @@ class Appointments extends Component {
     } else {
       return (
         <div>
+          <LeaveReview props={{open: this.state.open, appointment:this.state.appointmentBeingReviewed}}/>
           <Button onClick={this.toggleFilter}>
             {!this.state.showUpcoming
               ? "Show future appointments"
