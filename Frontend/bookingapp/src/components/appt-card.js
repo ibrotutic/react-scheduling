@@ -53,7 +53,6 @@ class AppointmentCard extends Component {
   }
 
   review() {
-    console.log("Clicked review");
     this.props.props.clickReview(this.state.appt);
   }
 
