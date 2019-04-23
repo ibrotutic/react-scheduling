@@ -41,6 +41,22 @@ export var hackyApiUtility = (function() {
       });
   };
 
+  hackyApi.leaveAReview = function(review) {
+    return new Promise ((resolve, reject) => {
+      axios
+          .post(endpointBase + "/ratings", review, {
+            headers: headers
+          })
+          .then(function(response) {
+            resolve(response);
+          })
+          .catch(function(error) {
+            reject(error);
+          });
+    })
+
+  };
+
   hackyApi.createUser = function(userDetails, callback) {
     //spring stuff to create user
     Auth.signUp({

@@ -31,15 +31,16 @@ const styles = {
 
 class AppointmentCard extends Component {
   constructor(props) {
-    console.log(props);
     super(props);
     this.state = {
       appt: props.props.appt,
       name: props.props.appt.name,
-      org: props.props.appt.org
+      org: props.props.appt.org,
+      currentTime: (new Date()).getTime()/1000
     };
     this.mapsSelector= this.mapsSelector.bind(this);
     this.delete = this.delete.bind(this);
+    this.review = this.review.bind(this);
   }
 
   componentDidMount() {
@@ -48,6 +49,10 @@ class AppointmentCard extends Component {
 
   delete() {
     this.props.props.deleteAppointment(this.state.appt.id);
+  }
+
+  review() {
+    this.props.props.clickReview(this.state.appt);
   }
 
   createDates = () => {
@@ -96,6 +101,9 @@ class AppointmentCard extends Component {
               null
           }
           <Button onClick={this.delete}><DeleteForeverOutlinedIcon fontSize={"large"} /></Button>
+          {
+            ((this.state.appt.endTime < this.state.currentTime) && !this.state.appt.isReviewed) ? <Button onClick={this.review}>Review</Button> : ""
+          }
         </CardContent>
       </Card>
     );

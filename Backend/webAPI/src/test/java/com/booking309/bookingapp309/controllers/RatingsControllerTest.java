@@ -72,6 +72,8 @@ public class RatingsControllerTest {
     @Test
     public void putOrgInfo() {
         Rating rating = createRating();
+        Appointment appointment = createAppointment();
+        Mockito.when(mockAppointmentRepository.findById(rating.getAppointmentId())).thenReturn(appointment);
         assertThat(ratingsController.putRating(rating), CoreMatchers.is(rating));
     }
 
@@ -90,6 +92,8 @@ public class RatingsControllerTest {
         Random rand = new Random();
         int random = rand.nextInt(4) + 1;
         rating.setRating(random);
+        rating.setDescription("abcde");
+        rating.setAppointmentId(random);
 
         return rating;
     }
@@ -108,6 +112,7 @@ public class RatingsControllerTest {
     private Appointment createAppointment(){
         Appointment appointment = new Appointment();
         appointment.setId(APP_ID);
+        appointment.setIsReviewed(false);
         return appointment;
     }
 

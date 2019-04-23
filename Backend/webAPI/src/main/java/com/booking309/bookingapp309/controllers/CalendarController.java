@@ -24,10 +24,17 @@ public class CalendarController {
     }
 
     @CrossOrigin
-    @GetMapping("/calendar")
+    @GetMapping(value = "/calendar", params = "pid")
     public @ResponseBody
     List<Appointment> getAppointmentByPerson(@RequestParam String pid) {
         return appointmentRepository.findAllByClientIdOrEmpId(pid, pid);
+    }
+
+    @CrossOrigin
+    @GetMapping(value = "/calendar", params = "id")
+    public @ResponseBody
+    Appointment getAppointmentById(@RequestParam int id) {
+        return appointmentRepository.findById(id);
     }
 
     @CrossOrigin
