@@ -9,8 +9,23 @@ public class Rating {
 
     @Id
     private int appointmentId;
+    private String reviewerName;
     private int rating;
+    private String description;
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setReviewerName(String reviewerName){ this.reviewerName = reviewerName; }
+
+    public String getReviewerName() {
+        return reviewerName;
+    }
 
     public int getAppointmentId() {
         return appointmentId;

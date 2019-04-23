@@ -9,6 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Rating from 'react-rating';
 import FullStar from 'react-ionicons/lib/MdStar'
 import EmptyStar from 'react-ionicons/lib/MdStarOutline'
+import hackyApiUtility from "../utilities/hacky-api-utility";
 
 class LeaveReview extends React.Component {
     constructor(props) {
@@ -17,8 +18,9 @@ class LeaveReview extends React.Component {
             open: false,
             validRating: false,
             appointment: "",
+            reviewerName: "",
             rating: 0,
-            description: ""
+            description: "",
         };
     }
 
@@ -26,6 +28,7 @@ class LeaveReview extends React.Component {
         this.setState({
             validRating: false,
             appointment: "",
+            reviewerName: "",
             rating: 0,
             description: "",
             open: false
@@ -34,23 +37,43 @@ class LeaveReview extends React.Component {
 
     handleRatingChange(event) {
         if (event) {
-            this.setState({rating: event, validRating: true});
+            this.setState({rating:event, validRating: true});
         }
     }
 
     onClickLeaveReview = () => {
-        if (this.state.description && this.state.validRating) {
+        if (this.state.description && this.state.validRating && this.state.reviewerName) {
             console.log(this.state);
+            let review = {
+                appointmentId: this.state.appointment.id,
+                rating: this.state.rating,
+                description: this.state.description,
+                reviewerName: this.state.reviewerName
+            };
+
+            hackyApiUtility.leaveAReview(review).then((response) => {
+                alert("Review posted successfully, thanks!");
+                this.props.props.success(this.state.appointment);
+                console.log("Successful review" + response);
+            }).catch((error) => {
+                alert("Something went wrong...try again later");
+                console.log("Review failed" + error);
+            });
             this.handleClose();
         }
         else {
-            alert("Please make sure you have a valid rating and description")
+            alert("Please make sure you have a entered something in all the fields")
         }
     };
 
     handleDescriptionChange(event) {
         this.setState({description: event.target.value})
     }
+
+    handleReviewerNameChange(event) {
+        this.setState({reviewerName: event.target.value})
+    }
+
     componentWillReceiveProps(nextProps, nextContext) {
         if(this.props !== nextProps) {
             this.setState(
@@ -71,6 +94,19 @@ class LeaveReview extends React.Component {
                     <DialogTitle id="form-dialog-title">Leave a Review {this.state.appointment ? "- " + this.state.appointment.org.name
                     : ""} </DialogTitle>
                     <DialogContent>
+                        <DialogContentText >
+                            Your Name
+                        </DialogContentText>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="reviewerName"
+                            label="Your Name"
+                            type="reviewerName"
+                            onChange={(value) => this.handleReviewerNameChange(value)}
+                            fullWidth
+                        />
+                        <p></p>
                         <DialogContentText>
                             Leave a star rating
                         </DialogContentText>
@@ -87,7 +123,7 @@ class LeaveReview extends React.Component {
                         <TextField
                             autoFocus
                             margin="dense"
-                            id="name"
+                            id="description"
                             label="Description"
                             type="description"
                             onChange={(value) => this.handleDescriptionChange(value)}

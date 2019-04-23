@@ -106,7 +106,7 @@ class Appointments extends Component {
 
   toggleFilter = () => {
     this.setState({ showUpcoming: !this.state.showUpcoming });
-    this.setState({ratingOpen: true});
+    this.setState({open: false});
     this.requestAppointments();
   };
 
@@ -147,6 +147,12 @@ class Appointments extends Component {
         return this.loadClient(appt);
       }
     });
+  };
+
+  successfulReview = (appointment) => {
+    let pastAppts = this.state.pastAppts;
+    pastAppts.find(appt => appt.id === appointment.id).isReviewed = true;
+    this.setState({pastAppts: pastAppts});
   };
 
   filterAppointments = apptList => {
@@ -198,7 +204,7 @@ class Appointments extends Component {
     } else {
       return (
         <div>
-          <LeaveReview props={{open: this.state.open, appointment:this.state.appointmentBeingReviewed}}/>
+          <LeaveReview props={{open: this.state.open, appointment:this.state.appointmentBeingReviewed, success:this.successfulReview}}/>
           <Button onClick={this.toggleFilter}>
             {!this.state.showUpcoming
               ? "Show future appointments"

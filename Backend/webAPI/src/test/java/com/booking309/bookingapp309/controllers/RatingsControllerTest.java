@@ -92,6 +92,7 @@ public class RatingsControllerTest {
         Random rand = new Random();
         int random = rand.nextInt(4) + 1;
         rating.setRating(random);
+        rating.setDescription("abcde");
         rating.setAppointmentId(random);
 
         return rating;

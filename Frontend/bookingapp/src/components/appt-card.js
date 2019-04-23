@@ -35,8 +35,10 @@ class AppointmentCard extends Component {
     this.state = {
       appt: props.props.appt,
       name: props.props.appt.name,
-      org: props.props.appt.org
+      org: props.props.appt.org,
+      currentTime: (new Date()).getTime()/1000
     };
+    console.log(this.state.appt.endTime < this.state.currentTime);
     this.mapsSelector= this.mapsSelector.bind(this);
     this.delete = this.delete.bind(this);
     this.review = this.review.bind(this);
@@ -102,7 +104,7 @@ class AppointmentCard extends Component {
           }
           <Button onClick={this.delete}><DeleteForeverOutlinedIcon fontSize={"large"} /></Button>
           {
-            this.state.appt.isReviewed ? "" : <Button onClick={this.review}>Review</Button>
+            ((this.state.appt.endTime < this.state.currentTime) && !this.state.appt.isReviewed) ? <Button onClick={this.review}>Review</Button> : ""
           }
         </CardContent>
       </Card>
