@@ -43,14 +43,12 @@ class LeaveReview extends React.Component {
 
     onClickLeaveReview = () => {
         if (this.state.description && this.state.validRating && this.state.reviewerName) {
-            console.log(this.state);
             let review = {
                 appointmentId: this.state.appointment.id,
                 rating: this.state.rating,
                 description: this.state.description,
                 reviewerName: this.state.reviewerName
             };
-
             hackyApiUtility.leaveAReview(review).then((response) => {
                 alert("Review posted successfully, thanks!");
                 this.props.props.success(this.state.appointment);
