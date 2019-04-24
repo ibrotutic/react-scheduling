@@ -23,6 +23,7 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.1.8",
     "react-stomp": "^4.1.0",
+    "react-success-indicator": "^1.0.0",
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
     "uuid": "^3.3.2"

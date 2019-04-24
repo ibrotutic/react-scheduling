@@ -7,6 +7,7 @@ import com.booking309.bookingapp309.objects.Rating;
 import com.booking309.bookingapp309.repositories.AppointmentRepository;
 import com.booking309.bookingapp309.repositories.OrgRepository;
 import com.booking309.bookingapp309.repositories.RatingsRepository;
+import com.sun.deploy.net.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -74,10 +75,10 @@ public class RatingsController {
     @CrossOrigin
     @PostMapping("/rating")
     public @ResponseBody
-    Rating putRating(@RequestBody Rating rating) {
+    ResponseEntity<Rating> putRating(@RequestBody Rating rating) {
         updateAppointmentToRated(rating);
         ratingsRepository.save(rating);
-        return rating;
+        return ResponseEntity.ok(rating);
     }
 
     private void updateAppointmentToRated(Rating rating) {

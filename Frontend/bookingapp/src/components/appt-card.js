@@ -52,7 +52,9 @@ class AppointmentCard extends Component {
   }
 
   review() {
-    this.props.props.clickReview(this.state.appt);
+    if (((this.state.appt.endTime < this.state.currentTime) && !this.state.appt.isReviewed)) {
+      this.props.props.clickReview(this.state.appt);
+    }
   }
 
   createDates = () => {

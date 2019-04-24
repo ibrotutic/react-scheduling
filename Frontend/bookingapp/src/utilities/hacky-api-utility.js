@@ -44,7 +44,7 @@ export var hackyApiUtility = (function() {
   hackyApi.leaveAReview = function(review) {
     return new Promise ((resolve, reject) => {
       axios
-          .post(endpointBase + "/ratings", review, {
+          .post(endpointBase + "/rating", review, {
             headers: headers
           })
           .then(function(response) {

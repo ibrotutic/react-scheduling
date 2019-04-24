@@ -149,10 +149,16 @@ class Appointments extends Component {
     });
   };
 
-  successfulReview = (appointment) => {
-    let pastAppts = this.state.pastAppts;
-    pastAppts.find(appt => appt.id === appointment.id).isReviewed = true;
-    this.setState({pastAppts: pastAppts});
+  closeForm = () => {
+    this.setState({open: false})
+  }
+
+  successfulReview = (appointmentId) => {
+    if (appointmentId) {
+      let pastAppts = this.state.pastAppts;
+      pastAppts.find(appt => appt.id === appointmentId).isReviewed = true;
+      this.setState({pastAppts: pastAppts});
+    }
   };
 
   filterAppointments = apptList => {
@@ -204,7 +210,7 @@ class Appointments extends Component {
     } else {
       return (
         <div>
-          <LeaveReview props={{open: this.state.open, appointment:this.state.appointmentBeingReviewed, success:this.successfulReview}}/>
+          <LeaveReview props={{open: this.state.open, appointment:this.state.appointmentBeingReviewed, success:this.successfulReview, close:this.closeForm}}/>
           <Button onClick={this.toggleFilter}>
             {!this.state.showUpcoming
               ? "Show future appointments"
