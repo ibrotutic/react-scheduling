@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +75,7 @@ public class RatingsControllerTest {
         Rating rating = createRating();
         Appointment appointment = createAppointment();
         Mockito.when(mockAppointmentRepository.findById(rating.getAppointmentId())).thenReturn(appointment);
-        assertThat(ratingsController.putRating(rating), CoreMatchers.is(rating));
+        assertThat(ratingsController.putRating(rating), CoreMatchers.is(ResponseEntity.ok(rating)));
     }
 
     private List<Rating> createExpectedRatingList(Rating rating, int length) {
