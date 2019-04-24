@@ -90,6 +90,14 @@ public class RatingsControllerTest {
     }
 
     @Test
+    public void orgWithNoRatingsReturnsBadRequest(){
+        List<Appointment> emptyList = new ArrayList<>();
+        Mockito.when(mockAppointmentRepository.findAllByOrgId(Mockito.anyString())).thenReturn(emptyList);
+        assertThat(ratingsController.getAverageRatingForOrg(Mockito.anyString()), CoreMatchers.is(new ResponseEntity<>(
+                "No ratings for specified parameter", new HttpHeaders(), HttpStatus.BAD_REQUEST)));
+    }
+
+    @Test
     public void putOrgInfo() {
         Rating rating = createRating();
         Appointment appointment = createAppointment();
