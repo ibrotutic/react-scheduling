@@ -15,6 +15,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
@@ -68,6 +70,23 @@ public class RatingsControllerTest {
         List<Rating> expectedRatingList = createExpectedRatingList(rating, orgAppointmentList.size());
 
         assertThat(ratingsController.getOrgRating(ORG_ID), is(expectedRatingList));
+    }
+
+    @Test
+    public void appointmentIsUpdatedToReviewedAfterClientRates() {
+        Rating rating = createRating();
+        Appointment appointment = createAppointment();
+        Mockito.when(mockAppointmentRepository.findById(rating.getAppointmentId())).thenReturn(appointment);
+        assertThat(ratingsController.putRating(rating), CoreMatchers.is(ResponseEntity.ok(rating)));
+        assertTrue(mockAppointmentRepository.findById(rating.getAppointmentId()).getIsReviewed());
+    }
+
+    @Test
+    public void employeeWithNoRatingsReturnsBadRequest(){
+        List<Appointment> emptyList = new ArrayList<>();
+        Mockito.when(mockAppointmentRepository.findAllByEmpId(Mockito.anyString())).thenReturn(emptyList);
+        assertThat(ratingsController.getAverageRatingForEmployee(Mockito.anyString()), CoreMatchers.is(new ResponseEntity<>(
+                "No ratings for specified parameter", new HttpHeaders(), HttpStatus.BAD_REQUEST)));
     }
 
     @Test
