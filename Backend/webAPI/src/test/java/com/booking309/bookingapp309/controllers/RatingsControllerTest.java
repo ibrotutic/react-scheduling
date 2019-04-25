@@ -15,6 +15,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,11 +73,36 @@ public class RatingsControllerTest {
     }
 
     @Test
+    public void appointmentIsUpdatedToReviewedAfterClientRates() {
+        Rating rating = createRating();
+        Appointment appointment = createAppointment();
+        Mockito.when(mockAppointmentRepository.findById(rating.getAppointmentId())).thenReturn(appointment);
+        assertThat(ratingsController.putRating(rating), CoreMatchers.is(ResponseEntity.ok(rating)));
+        assertTrue(mockAppointmentRepository.findById(rating.getAppointmentId()).getIsReviewed());
+    }
+
+    @Test
+    public void employeeWithNoRatingsReturnsBadRequest(){
+        List<Appointment> emptyList = new ArrayList<>();
+        Mockito.when(mockAppointmentRepository.findAllByEmpId(Mockito.anyString())).thenReturn(emptyList);
+        assertThat(ratingsController.getAverageRatingForEmployee(Mockito.anyString()), CoreMatchers.is(new ResponseEntity<>(
+                "No ratings for specified parameter", new HttpHeaders(), HttpStatus.BAD_REQUEST)));
+    }
+
+    @Test
+    public void orgWithNoRatingsReturnsBadRequest(){
+        List<Appointment> emptyList = new ArrayList<>();
+        Mockito.when(mockAppointmentRepository.findAllByOrgId(Mockito.anyString())).thenReturn(emptyList);
+        assertThat(ratingsController.getAverageRatingForOrg(Mockito.anyString()), CoreMatchers.is(new ResponseEntity<>(
+                "No ratings for specified parameter", new HttpHeaders(), HttpStatus.BAD_REQUEST)));
+    }
+
+    @Test
     public void putOrgInfo() {
         Rating rating = createRating();
         Appointment appointment = createAppointment();
         Mockito.when(mockAppointmentRepository.findById(rating.getAppointmentId())).thenReturn(appointment);
-        assertThat(ratingsController.putRating(rating), CoreMatchers.is(rating));
+        assertThat(ratingsController.putRating(rating), CoreMatchers.is(ResponseEntity.ok(rating)));
     }
 
     private List<Rating> createExpectedRatingList(Rating rating, int length) {

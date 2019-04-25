@@ -1,11 +1,8 @@
 package com.booking309.bookingapp309.controllers;
 
-
 import com.booking309.bookingapp309.objects.Appointment;
-import com.booking309.bookingapp309.objects.Employee;
 import com.booking309.bookingapp309.objects.Rating;
 import com.booking309.bookingapp309.repositories.AppointmentRepository;
-import com.booking309.bookingapp309.repositories.OrgRepository;
 import com.booking309.bookingapp309.repositories.RatingsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -33,30 +30,21 @@ public class RatingsController {
     @GetMapping("/rating/employees")
     public @ResponseBody
     List<Rating> getEmployeeRating(@RequestParam String empId) {
-        return appointmentRepository.findAllByEmpId(empId).stream()
-                .map(appointment -> ratingsRepository.findByAppointmentId(appointment.getId()))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+        return getRatingsListForEmployee(empId);
     }
 
     @CrossOrigin
     @GetMapping("/rating/org")
     public @ResponseBody
     List<Rating> getOrgRating(@RequestParam String orgId) {
-        return appointmentRepository.findAllByOrgId(orgId).stream()
-                .map(appointment -> ratingsRepository.findByAppointmentId(appointment.getId()))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+        return getRatingsListForOrg(orgId);
     }
 
     @CrossOrigin
     @GetMapping(value = "/rating/average", params = "orgId")
     public @ResponseBody
     ResponseEntity<String> getAverageRatingForOrg(@RequestParam String orgId) {
-        List<Rating> ratings = appointmentRepository.findAllByOrgId(orgId).stream()
-                .map(appointment -> ratingsRepository.findByAppointmentId(appointment.getId()))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+        List<Rating> ratings = getRatingsListForOrg(orgId);
         return calculateAverageAndRespond(ratings);
     }
 
@@ -64,20 +52,31 @@ public class RatingsController {
     @GetMapping(value = "/rating/average", params = "empId")
     public @ResponseBody
     ResponseEntity<String> getAverageRatingForEmployee(@RequestParam String empId) {
-        List<Rating> ratings = appointmentRepository.findAllByEmpId(empId).stream()
-                .map(appointment -> ratingsRepository.findByAppointmentId(appointment.getId()))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+        List<Rating> ratings = getRatingsListForEmployee(empId);
         return calculateAverageAndRespond(ratings);
     }
 
     @CrossOrigin
     @PostMapping("/rating")
     public @ResponseBody
-    Rating putRating(@RequestBody Rating rating) {
+    ResponseEntity<Rating> putRating(@RequestBody Rating rating) {
         updateAppointmentToRated(rating);
         ratingsRepository.save(rating);
-        return rating;
+        return ResponseEntity.ok(rating);
+    }
+
+    private List<Rating> getRatingsListForEmployee(String empId){
+        return appointmentRepository.findAllByEmpId(empId).stream()
+                .map(appointment -> ratingsRepository.findByAppointmentId(appointment.getId()))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
+    private List<Rating> getRatingsListForOrg(String orgId){
+        return appointmentRepository.findAllByOrgId(orgId).stream()
+                .map(appointment -> ratingsRepository.findByAppointmentId(appointment.getId()))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
     private void updateAppointmentToRated(Rating rating) {

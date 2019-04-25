@@ -41,16 +41,18 @@ class Appointments extends Component {
     this.requestAppointments();
   }
 
-  deleteAppointment(appointmentId) {
-    hackyApiUtility.deleteAppointmentByAppointmentId(appointmentId).then(() => {
+  deleteAppointment(appointmentId, callback) {
+    hackyApiUtility.deleteAppointmentByAppointmentId(appointmentId).then((response) => {
       let appointments = this.state.appts;
       appointments.splice(appointments.findIndex(function(i){
         return i.id === appointmentId;
       }), 1);
       this.setState({appointments:appointments});
       this.filterAppointments(appointments);
+      callback(response)
     }, error => {
       console.log("Error" + error);
+      callback(error)
     })
   }
 
@@ -149,10 +151,16 @@ class Appointments extends Component {
     });
   };
 
-  successfulReview = (appointment) => {
-    let pastAppts = this.state.pastAppts;
-    pastAppts.find(appt => appt.id === appointment.id).isReviewed = true;
-    this.setState({pastAppts: pastAppts});
+  closeForm = () => {
+    this.setState({open: false})
+  }
+
+  successfulReview = (appointmentId) => {
+    if (appointmentId) {
+      let pastAppts = this.state.pastAppts;
+      pastAppts.find(appt => appt.id === appointmentId).isReviewed = true;
+      this.setState({pastAppts: pastAppts});
+    }
   };
 
   filterAppointments = apptList => {
@@ -204,7 +212,7 @@ class Appointments extends Component {
     } else {
       return (
         <div>
-          <LeaveReview props={{open: this.state.open, appointment:this.state.appointmentBeingReviewed, success:this.successfulReview}}/>
+          <LeaveReview props={{open: this.state.open, appointment:this.state.appointmentBeingReviewed, success:this.successfulReview, close:this.closeForm}}/>
           <Button onClick={this.toggleFilter}>
             {!this.state.showUpcoming
               ? "Show future appointments"
