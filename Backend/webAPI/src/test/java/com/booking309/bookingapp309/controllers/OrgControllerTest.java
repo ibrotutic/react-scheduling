@@ -2,6 +2,7 @@ package com.booking309.bookingapp309.controllers;
 
 import com.booking309.bookingapp309.objects.Organization;
 import com.booking309.bookingapp309.repositories.OrgRepository;
+import com.booking309.bookingapp309.repositories.PhotoRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,11 +24,13 @@ public class OrgControllerTest {
 
     @Mock
     private OrgRepository mockOrgRepository;
+    @Mock
+    private PhotoRepository photoRepository;
     private OrgController orgController;
 
     @Before
     public void setUp() {
-        orgController = new OrgController(mockOrgRepository);
+        orgController = new OrgController(mockOrgRepository, photoRepository);
     }
 
     @Test
