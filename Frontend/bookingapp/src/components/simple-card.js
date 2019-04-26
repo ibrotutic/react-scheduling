@@ -25,7 +25,7 @@ class SimpleCard extends Component {
     this.state = {
       orgInfo: {
         name: props.props.name,
-        service: props.props.service,
+        serviceType: props.props.serviceType,
         description: props.props.description,
         orgId: props.props.orgId,
         address: props.props.address + ", " + props.props.city +  ", " + props.props.state,
@@ -55,7 +55,7 @@ class SimpleCard extends Component {
                 {this.state.orgInfo.name}
               </Typography>
               <Typography component="p">
-                {this.state.orgInfo.service}
+                {this.state.orgInfo.serviceType}
               </Typography>
               <Typography component="p">
                 {this.state.orgInfo.description}

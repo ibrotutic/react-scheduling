@@ -35,7 +35,7 @@ class ComplexCard extends Component{
         this.state = {
             orgInfo: {
                 name: props.props.name,
-                service: props.props.service,
+                serviceType: props.props.serviceType,
                 description: props.props.description,
                 orgId: props.props.orgId,
                 address: props.props.address + ", " + props.props.city +  ", " + props.props.state,
@@ -65,7 +65,7 @@ class ComplexCard extends Component{
                             <Grid item xs container direction="column" spacing={16}>
                                 <Grid item xs>
                                     <Typography gutterBottom variant="subtitle1">
-                                       {this.state.orgInfo.name} - {this.state.orgInfo.service}
+                                       {this.state.orgInfo.name} - {this.state.orgInfo.serviceType}
                                     </Typography>
                                     <Typography gutterBottom>{this.state.orgInfo.description}</Typography>
                                     <Typography color="textSecondary">{this.state.orgInfo.address}</Typography>
