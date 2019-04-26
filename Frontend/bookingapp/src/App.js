@@ -10,7 +10,6 @@ import ModalRoot from "./components/modal-root";
 import elasticsearchUtility from "./utilities/elastic-search-utility";
 import hackyApiUtility, { endpointBase } from "./utilities/hacky-api-utility";
 import SockJsClient from "react-stomp";
-import AppointmentManager from "./utilities/appointment-management-utility";
 
 Amplify.configure(awsmobile);
 
@@ -37,12 +36,11 @@ class App extends Component {
     );
   }
 
-  notifyAppointment = appointment => {
+  notify = notification => {
+    console.log(notification);
     var info = {
-      title: "New Appointment",
-      message:
-        "You have a new appointment scheduled for " +
-        AppointmentManager.parseAppointmentDate(appointment.startTime)
+      notificationType: notification.notificationType,
+      content: notification.notificationBody
     };
     this.props.showNotificationModal({
       info,
@@ -67,7 +65,7 @@ class App extends Component {
             ref={client => {
               this.clientRef = client;
             }}
-            onMessage={appointment => this.notifyAppointment(appointment)}
+            onMessage={notification => this.notify(notification)}
           />
         </div>
       </BrowserRouter>

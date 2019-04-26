@@ -49,7 +49,7 @@ public class CalendarController {
         boolean validAppointment = isValidAppointment(appointment);
         if (validAppointment) {
             appointmentRepository.save(appointment);
-            subscribeAppointment(appointment);
+            sendNewAppointmentNotification(appointment);
             return ResponseEntity.ok(appointment);
         }
         else {
@@ -60,10 +60,17 @@ public class CalendarController {
     @CrossOrigin
     @DeleteMapping("/calendar")
     public @ResponseBody void deleteCalendar(@RequestParam int id){
+        Appointment appointmentToDelte = appointmentRepository.findById(id);
         appointmentRepository.deleteById(id);
+        sendAppointmentDeletedNotification(appointmentToDelte);
     }
 
-    private void subscribeAppointment(Appointment appointment) {
+    private void sendAppointmentDeletedNotification(Appointment deletedAppointment) {
+        Notification deletedAppointmentNotification = notificationWrapper.createAppointmentDeletedNotificaiton(deletedAppointment);
+        simp.convertAndSend("/topic/appt/" + deletedAppointmentNotification.getDestinationId(), deletedAppointmentNotification);
+    }
+
+    private void sendNewAppointmentNotification(Appointment appointment) {
         Notification newAppointmentNotification = notificationWrapper.createNewAppointmentNotification(appointment);
         simp.convertAndSend("/topic/appt/" + newAppointmentNotification.getDestinationId(), newAppointmentNotification);
     }

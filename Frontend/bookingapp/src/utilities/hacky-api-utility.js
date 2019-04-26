@@ -2,7 +2,7 @@ import elasticsearchUtility from "./elastic-search-utility";
 import axios from "axios";
 import { Auth } from "aws-amplify";
 
-export const endpointBase = "http://cs309-pp-7.misc.iastate.edu:8080";
+export const endpointBase = "http://localhost:8080";
 
 export var hackyApiUtility = (function() {
   let hackyApi = {}; // Public object

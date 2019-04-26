@@ -3,6 +3,7 @@ import Modal from "@material-ui/core/Modal";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
+import AppointmentManager from "../../utilities/appointment-management-utility";
 import { Typography } from "@material-ui/core";
 
 const styles = theme => ({
@@ -46,6 +47,45 @@ function getModalStyle() {
 class NotificationModal extends Component {
   state = {};
 
+  displayNotificaitonInformation = () => {
+    switch(this.props.notificationInfo.notificationType) {
+      case "CREATE_APPOINTMENT":
+        return (
+            <div style={{textAlign: "center"}}>
+              <h2>
+                New Appointment
+              </h2>
+              <Typography>You have a new appointment on {AppointmentManager.parseAppointmentDate(this.props.notificationInfo.content.startTime)}</Typography>
+              <p></p>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => this.props.closeModal()}>
+                Sounds Good!
+              </Button>
+            </div>
+        );
+      case "CANCEL_APPOINTMENT":
+        return (
+            <div style={{textAlign: "center"}}>
+              <h2>
+                Appointment Cancellation
+              </h2>
+              <Typography>Your appointment on {AppointmentManager.parseAppointmentDate(this.props.notificationInfo.content.startTime)} was cancelled.</Typography>
+              <p></p>
+              <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => this.props.closeModal()}>
+                Ok
+              </Button>
+            </div>
+        );
+      default:
+        return null;
+    }
+  };
+
   render() {
     const { classes } = this.props;
     return (
@@ -56,18 +96,7 @@ class NotificationModal extends Component {
         onClose={this.onClick}
       >
         <div style={getModalStyle()} className={classes.paper}>
-          <h2 className={classes.header}>
-            {this.props.notificationInfo.title}
-          </h2>
-          <Typography>{this.props.notificationInfo.message}</Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            onClick={() => this.props.closeModal()}
-          >
-            Sounds Good!
-          </Button>
+          {this.displayNotificaitonInformation()}
         </div>
       </Modal>
     );

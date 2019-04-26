@@ -95,6 +95,10 @@ public class CalendarControllerWebMockTest {
 
     @Test
     public void testApptDeleteReturnsSuccess() throws Exception {
+        Appointment testAppt = createValidFutureAppointment();
+        Notification generatedNotification = new Notification<>(NotificationType.CANCEL_APPOINTMENT, testAppt, testAppt.getEmpId());;
+        when(mockNotificationWrapper.createAppointmentDeletedNotificaiton(any(Appointment.class))).thenReturn(generatedNotification);
+
         MockHttpServletResponse response = this.mockMvc.perform(delete("/calendar?id={id}", APP_ID))
                 .andReturn()
                 .getResponse();
