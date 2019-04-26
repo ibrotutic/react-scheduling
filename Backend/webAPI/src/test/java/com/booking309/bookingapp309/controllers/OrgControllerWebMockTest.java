@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.booking309.bookingapp309.objects.Organization;
 import com.booking309.bookingapp309.repositories.OrgRepository;
+import com.booking309.bookingapp309.repositories.PhotoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,11 +37,13 @@ public class OrgControllerWebMockTest {
 
     @Mock
     private OrgRepository mockOrgRepository;
+    @Mock
+    private PhotoRepository mockPhotoRepository;
     private OrgController orgController;
 
     @Before
     public void setUp() {
-        orgController = new OrgController(mockOrgRepository);
+        orgController = new OrgController(mockOrgRepository, mockPhotoRepository);
         this.mockMvc = MockMvcBuilders.standaloneSetup(orgController).build();
     }
 
