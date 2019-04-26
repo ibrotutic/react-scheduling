@@ -9,6 +9,8 @@ import connect from "react-redux/es/connect/connect";
 import LoadingIndicator from "../loading-indicator";
 import hackyApiUtility from "../../utilities/hacky-api-utility";
 import SelectTime from "../select-time";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 
 const styles = theme => ({
   paper: {
@@ -29,7 +31,8 @@ function getModalStyle() {
     transform: `translate(-50%, -50%)`,
     overflowY: "auto",
     maxHeight: "85vh",
-    maxWidth: "95%"
+    maxWidth: "95%",
+    minWidth: "500px"
   };
 }
 
@@ -80,7 +83,8 @@ class OrganizationSchedulingModal extends Component {
       employees: {},
       selectedEmployeeIndex: 0,
       selectedDate: this.getDefaultDate(),
-      selectedTime: 0
+      selectedTime: 0,
+      selectedTab: "schedule"
     };
     this.close = this.props.props.onClick.bind(this);
 
@@ -141,8 +145,7 @@ class OrganizationSchedulingModal extends Component {
         hackyApiUtility.createAppointment(appointment, resp => {
           if (!resp) {
             alert("Unable to schedule appointment!");
-          }
-          else {
+          } else {
             this.props.addAppointment({ appointment: appointment });
             alert("Success");
           }
@@ -152,6 +155,30 @@ class OrganizationSchedulingModal extends Component {
       }
     } else {
       alert("Please select a time slot.");
+    }
+  };
+
+  getTabSection = calendarProps => {
+    const { selectedTab } = this.state;
+
+    switch (selectedTab) {
+      case "schedule":
+        return (
+          <div>
+            <EmployeeMenu
+              selectedEmployeeIndex={index =>
+                this.handleChange("employeeIndex", index)
+              }
+              employees={this.state.employees}
+            />
+            <ScheduleComponent props={calendarProps} />
+          </div>
+        );
+      case "gallery":
+              return <img src="https://images.pexels.com/photos/248797/pexels-photo-248797.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"></img>
+      case "ratings":
+      default:
+        return <div>{selectedTab}</div>;
     }
   };
 
@@ -193,19 +220,25 @@ class OrganizationSchedulingModal extends Component {
           {this.state.loading ? (
             <LoadingIndicator />
           ) : (
-            <EmployeeMenu
-              selectedEmployeeIndex={index =>
-                this.handleChange("employeeIndex", index)
-              }
-              employees={this.state.employees}
-            />
+            <div>
+              <Tabs
+                value={this.state.selectedTab}
+                onChange={(event, value) =>
+                  this.setState({ selectedTab: value })
+                }
+              >
+                <Tab label="schedule" value="schedule" />
+                <Tab label="gallery" value="gallery" />
+                <Tab label="ratings" value="ratings" />
+              </Tabs>
+              {this.getTabSection(calendarProps)}
+            </div>
           )}
           {!this.state.scheduling ? (
             <Button onClick={this.onClick}>Close</Button>
           ) : (
             ""
           )}
-          <ScheduleComponent props={calendarProps} />
         </div>
       </Modal>
     );
