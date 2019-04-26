@@ -27,8 +27,6 @@ export var hackyApiUtility = (function() {
   };
 
   hackyApi.createSpringOrg = function(orgDetails, callback) {
-    orgDetails.serviceType = orgDetails.service;
-    delete orgDetails.service;
     axios
       .post(endpointBase + "/org", orgDetails, {
         headers: headers
