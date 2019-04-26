@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.booking309.bookingapp309.notifications.Notification;
-import com.booking309.bookingapp309.notifications.NotificationManager;
 import com.booking309.bookingapp309.notifications.NotificationType;
 import com.booking309.bookingapp309.notifications.NotificationWrapper;
 import com.booking309.bookingapp309.objects.Appointment;
@@ -18,9 +17,7 @@ import net.bytebuddy.utility.RandomString;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,8 +93,10 @@ public class CalendarControllerWebMockTest {
     @Test
     public void testApptDeleteReturnsSuccess() throws Exception {
         Appointment testAppt = createValidFutureAppointment();
-        Notification generatedNotification = new Notification<>(NotificationType.CANCEL_APPOINTMENT, testAppt, testAppt.getEmpId());;
-        when(mockNotificationWrapper.createAppointmentDeletedNotificaiton(any(Appointment.class))).thenReturn(generatedNotification);
+        Notification generatedNotification = new Notification<>(NotificationType.CANCEL_APPOINTMENT, testAppt, testAppt.getEmpId());
+        
+        when(mockApptRepository.findById(anyInt())).thenReturn(testAppt);
+        when(mockNotificationWrapper.createAppointmentDeletedNotification(any(Appointment.class))).thenReturn(generatedNotification);
 
         MockHttpServletResponse response = this.mockMvc.perform(delete("/calendar?id={id}", APP_ID))
                 .andReturn()

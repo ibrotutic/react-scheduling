@@ -1,7 +1,6 @@
 package com.booking309.bookingapp309.controllers;
 
 import com.booking309.bookingapp309.notifications.Notification;
-import com.booking309.bookingapp309.notifications.NotificationManager;
 import com.booking309.bookingapp309.notifications.NotificationWrapper;
 import com.booking309.bookingapp309.objects.Appointment;
 import com.booking309.bookingapp309.repositories.AppointmentRepository;
@@ -60,13 +59,13 @@ public class CalendarController {
     @CrossOrigin
     @DeleteMapping("/calendar")
     public @ResponseBody void deleteCalendar(@RequestParam int id){
-        Appointment appointmentToDelte = appointmentRepository.findById(id);
+        Appointment appointmentToDelete = appointmentRepository.findById(id);
         appointmentRepository.deleteById(id);
-        sendAppointmentDeletedNotification(appointmentToDelte);
+        sendAppointmentDeletedNotification(appointmentToDelete);
     }
 
     private void sendAppointmentDeletedNotification(Appointment deletedAppointment) {
-        Notification deletedAppointmentNotification = notificationWrapper.createAppointmentDeletedNotificaiton(deletedAppointment);
+        Notification deletedAppointmentNotification = notificationWrapper.createAppointmentDeletedNotification(deletedAppointment);
         simp.convertAndSend("/topic/appt/" + deletedAppointmentNotification.getDestinationId(), deletedAppointmentNotification);
     }
 

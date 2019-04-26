@@ -22,7 +22,7 @@ public class NotificationWrapper {
         return notificationManager.createNotificationForNewAppointment(appointment);
     }
 
-    public Notification createAppointmentDeletedNotificaiton(Appointment deletedAppointment){
+    public Notification createAppointmentDeletedNotification(Appointment deletedAppointment){
         return notificationManager.createNotificationForCancelledAppointment(deletedAppointment);
     }
 
