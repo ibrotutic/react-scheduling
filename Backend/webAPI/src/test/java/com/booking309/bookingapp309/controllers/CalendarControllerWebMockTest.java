@@ -7,6 +7,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.booking309.bookingapp309.notifications.Notification;
+import com.booking309.bookingapp309.notifications.NotificationManager;
+import com.booking309.bookingapp309.notifications.NotificationType;
+import com.booking309.bookingapp309.notifications.NotificationWrapper;
 import com.booking309.bookingapp309.objects.Appointment;
 import com.booking309.bookingapp309.repositories.AppointmentRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,8 +18,10 @@ import net.bytebuddy.utility.RandomString;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,11 +51,14 @@ public class CalendarControllerWebMockTest {
     @Mock
     private SimpMessagingTemplate mockedSimpMessagingTemplate;
     private CalendarController calendarController;
+    @Mock
+    private NotificationWrapper mockNotificationWrapper;
 
 
     @Before
     public void setUp() {
-        calendarController = new CalendarController(mockApptRepository, mockedSimpMessagingTemplate);
+        MockitoAnnotations.initMocks(this);
+        calendarController = new CalendarController(mockApptRepository, mockedSimpMessagingTemplate, mockNotificationWrapper);
         this.mockMvc = MockMvcBuilders.standaloneSetup(calendarController).build();
     }
 
@@ -71,6 +80,9 @@ public class CalendarControllerWebMockTest {
     @Test
     public void postValidApptReturnsSuccess() throws Exception {
         Appointment testAppt = createValidFutureAppointment();
+
+        Notification generatedNotification = new Notification<>(NotificationType.CREATE_APPOINTMENT, testAppt, testAppt.getEmpId());;
+        when(mockNotificationWrapper.createNewAppointmentNotification(any(Appointment.class))).thenReturn(generatedNotification);
 
         this.mockMvc.perform( MockMvcRequestBuilders
                 .post("/calendar")

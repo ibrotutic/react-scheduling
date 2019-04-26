@@ -2,6 +2,7 @@ package com.booking309.bookingapp309.controllers;
 
 import com.booking309.bookingapp309.notifications.Notification;
 import com.booking309.bookingapp309.notifications.NotificationManager;
+import com.booking309.bookingapp309.notifications.NotificationWrapper;
 import com.booking309.bookingapp309.objects.Appointment;
 import com.booking309.bookingapp309.repositories.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,13 @@ import java.util.List;
 public class CalendarController {
     private AppointmentRepository appointmentRepository;
     private SimpMessagingTemplate simp;
+    private NotificationWrapper notificationWrapper;
 
     @Autowired
-    public CalendarController(AppointmentRepository appointmentRepository, SimpMessagingTemplate simp) {
+    public CalendarController(AppointmentRepository appointmentRepository, SimpMessagingTemplate simp, final NotificationWrapper notificationWrapper) {
         this.appointmentRepository = appointmentRepository;
         this.simp = simp;
+        this.notificationWrapper = notificationWrapper;
     }
 
     @CrossOrigin
@@ -61,8 +64,8 @@ public class CalendarController {
     }
 
     private void subscribeAppointment(Appointment appointment) {
-        Notification newAppointmentNotification = NotificationManager.createNotificationForNewAppointment(appointment);
-        simp.convertAndSend("/topic/appt/" + appointment.getEmpId(), appointment);
+        Notification newAppointmentNotification = notificationWrapper.createNewAppointmentNotification(appointment);
+        simp.convertAndSend("/topic/appt/" + newAppointmentNotification.getDestinationId(), newAppointmentNotification);
     }
 
     private boolean isValidAppointment(Appointment requestedAppointment) {

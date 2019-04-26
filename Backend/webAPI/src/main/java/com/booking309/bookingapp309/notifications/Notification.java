@@ -1,20 +1,17 @@
 package com.booking309.bookingapp309.notifications;
 
-import com.booking309.bookingapp309.objects.Appointment;
-import com.booking309.bookingapp309.objects.Organization;
-
-public class Notification<T extends  Appointment, Organization> {
-    private NotificationType notificationType;
+public class Notification<T> {
+    private String notificationType;
     private T notificationBody;
     private String destinationId;
 
     public Notification(NotificationType notificationType, T notificationBody, String destinationId) {
-        this.notificationType = notificationType;
+        this.notificationType = NotificationTypesMap.myMap.get(notificationType);
         this.notificationBody = notificationBody;
         this.destinationId = destinationId;
     }
 
-    public NotificationType getNotificationType() {
+    public String getNotificationType() {
         return notificationType;
     }
 
