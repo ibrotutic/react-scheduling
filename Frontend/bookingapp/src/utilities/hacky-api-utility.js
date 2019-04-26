@@ -27,8 +27,6 @@ export var hackyApiUtility = (function() {
   };
 
   hackyApi.createSpringOrg = function(orgDetails, callback) {
-    orgDetails.serviceType = orgDetails.service;
-    delete orgDetails.service;
     axios
       .post(endpointBase + "/org", orgDetails, {
         headers: headers
@@ -39,6 +37,22 @@ export var hackyApiUtility = (function() {
       .catch(function(error) {
         console.log("Spring create error:" + error.toString());
       });
+  };
+
+  hackyApi.leaveAReview = function(review) {
+    return new Promise ((resolve, reject) => {
+      axios
+          .post(endpointBase + "/rating", review, {
+            headers: headers
+          })
+          .then(function(response) {
+            resolve(response);
+          })
+          .catch(function(error) {
+            reject(error);
+          });
+    })
+
   };
 
   hackyApi.createUser = function(userDetails, callback) {

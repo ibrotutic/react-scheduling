@@ -8,6 +8,7 @@ import AppointmentManager from "../utilities/appointment-management-utility";
 import DirectionIcon from "@material-ui/icons/Directions"
 import DeleteForeverOutlinedIcon from "@material-ui/icons/DeleteForeverOutlined"
 import Button from "@material-ui/core/Button";
+import LoadingIndicator from "../components/loading-indicator"
 
 const styles = {
   card: {
@@ -31,15 +32,17 @@ const styles = {
 
 class AppointmentCard extends Component {
   constructor(props) {
-    console.log(props);
     super(props);
     this.state = {
       appt: props.props.appt,
       name: props.props.appt.name,
-      org: props.props.appt.org
+      org: props.props.appt.org,
+      deleting: false,
+      currentTime: (new Date()).getTime()/1000
     };
     this.mapsSelector= this.mapsSelector.bind(this);
     this.delete = this.delete.bind(this);
+    this.review = this.review.bind(this);
   }
 
   componentDidMount() {
@@ -47,7 +50,21 @@ class AppointmentCard extends Component {
   }
 
   delete() {
-    this.props.props.deleteAppointment(this.state.appt.id);
+    this.props.props.deleteAppointment(this.state.appt.id, this.checkResponse);
+    this.setState({deleting: true})
+  }
+
+  checkResponse = (response) => {
+    if (response.status !== 200) {
+      alert("Had issues deleting...refresh and try again");
+      this.setState({deleting: false});
+    }
+  };
+
+  review() {
+    if (((this.state.appt.endTime < this.state.currentTime) && !this.state.appt.isReviewed)) {
+      this.props.props.clickReview(this.state.appt);
+    }
   }
 
   createDates = () => {
@@ -70,6 +87,23 @@ class AppointmentCard extends Component {
 
     window.open("https://maps.google.com/maps?daddr="+lat+","+long+"&saddr=My+Location");
   }
+
+  showReviewIconIfAppointmentIsOver = () => {
+    if((this.state.appt.endTime < this.state.currentTime) && !this.state.appt.isReviewed){
+      return <Button onClick={this.review}>Review</Button>;
+    }
+    else {
+      return null;
+    }
+  }
+
+  showDeleteIcon = () => {
+    if (this.state.deleting) {
+      return <LoadingIndicator/>
+    } else {
+      return <Button onClick={this.delete}><DeleteForeverOutlinedIcon fontSize={"large"} /></Button>
+    }
+  };
 
   render() {
     const { classes } = this.props;
@@ -95,7 +129,8 @@ class AppointmentCard extends Component {
               :
               null
           }
-          <Button onClick={this.delete}><DeleteForeverOutlinedIcon fontSize={"large"} /></Button>
+          {this.showDeleteIcon()}
+          {this.showReviewIconIfAppointmentIsOver()}
         </CardContent>
       </Card>
     );

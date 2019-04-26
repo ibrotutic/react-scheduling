@@ -139,7 +139,7 @@ class OrgForm extends Component {
     org.city = this.state.city;
     org.serviceType = this.state.serviceType;
     org.description = this.state.description;
-    org.tags = this.state.tags
+    org.tags = this.state.tags;
     org.documentId = this.state.documentId;
 
     let address = this.generateAddress(org);

@@ -54,12 +54,12 @@ export var elasticsearchUtility = (function() {
         let result = {};
 
         result.name = hit._source.name;
-        result.service = hit._source.service;
+        result.serviceType = hit._source.serviceType;
         result.description = hit._source.description;
         result.orgId = hit._source.orgId;
         result.address = hit._source.address;
         result.city = hit._source.city;
-        result.zipcopde = hit._source.zipcode;
+        result.zipcode = hit._source.zipcode;
         result.state = hit._source.state;
         result.tags = hit._source.tags;
         result.cLat = hit._source.cLat;

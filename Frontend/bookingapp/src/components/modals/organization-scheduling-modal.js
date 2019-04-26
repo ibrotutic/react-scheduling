@@ -134,7 +134,8 @@ class OrganizationSchedulingModal extends Component {
           empId: this.state.employees[this.state.selectedEmployeeIndex].pId,
           orgId: this.props.orgInfo.orgId,
           startTime: date + this.state.selectedTime.startTime * 60,
-          endTime: date + this.state.selectedTime.endTime * 60
+          endTime: date + this.state.selectedTime.endTime * 60,
+          isReviewed: false
         };
 
         hackyApiUtility.createAppointment(appointment, resp => {
