@@ -175,7 +175,9 @@ class OrganizationSchedulingModal extends Component {
           </div>
         );
       case "gallery":
-              return <img src="https://images.pexels.com/photos/248797/pexels-photo-248797.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"></img>
+        return (
+          <img src="https://images.pexels.com/photos/248797/pexels-photo-248797.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" />
+        );
       case "ratings":
       default:
         return <div>{selectedTab}</div>;
