@@ -93,11 +93,17 @@ class OrganizationSchedulingModal extends Component {
   }
 
   componentDidMount() {
-    this.setState({ loading: true });
+    this.setState({ loading: true, photosLoading: true });
+    const { orgId } = this.props.orgInfo;
 
-    hackyApiUtility.getEmployeesForOrg(this.props.orgInfo.orgId, resp => {
+    hackyApiUtility.getEmployeesForOrg(orgId, resp => {
       this.setState({ employees: resp });
       this.setState({ loading: false });
+    });
+
+    hackyApiUtility.getPhotosForOrg(orgId).then(urls => {
+      this.setState({ urls });
+      this.setState({ photosLoading: false });
     });
   }
 
@@ -158,6 +164,25 @@ class OrganizationSchedulingModal extends Component {
     }
   };
 
+  getPhotos = () => {
+    const { photosLoading, urls } = this.state;
+
+    if (photosLoading) {
+      return <LoadingIndicator />;
+    } else {
+      return urls.map(url => {
+        return (
+          <img
+            src={url}
+            alt=""
+            key={url}
+            style={{ height: 200, width: 500, marginTop: 15, marginBottom: 15 }}
+          />
+        );
+      });
+    }
+  };
+
   getTabSection = calendarProps => {
     const { selectedTab } = this.state;
 
@@ -175,9 +200,7 @@ class OrganizationSchedulingModal extends Component {
           </div>
         );
       case "gallery":
-        return (
-          <img src="https://images.pexels.com/photos/248797/pexels-photo-248797.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" />
-        );
+        return this.getPhotos();
       case "ratings":
       default:
         return <div>{selectedTab}</div>;
