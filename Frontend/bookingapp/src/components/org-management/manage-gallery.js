@@ -34,7 +34,6 @@ class ManageGallery extends Component {
     hackyApiUtility
       .getPhotosForOrg(orgId)
       .then(photos => {
-        console.log(photos);
         this.setState({ photos });
       })
       .catch(err => alert(err));
