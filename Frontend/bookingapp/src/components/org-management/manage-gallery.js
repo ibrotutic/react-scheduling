@@ -66,7 +66,7 @@ class ManageGallery extends Component {
           photos.push(resp.url);
           this.setState({ photos });
         })
-        .catch(err => console.log(err));
+        .catch(err => err => alert("Unable to delete photo"));
 
       this.handleAddPhoto();
     }
@@ -79,10 +79,10 @@ class ManageGallery extends Component {
         .deletePhoto(orgId, url)
         .then(resp => {
           var { photos } = this.state;
-          photos = photos.filter(p => p != resp);
+          photos = photos.filter(p => p !== url);
           this.setState({ photos });
         })
-        .catch(err => console.log(err));
+        .catch(err => alert("Unable to delete photo"));
     }
   };
 
