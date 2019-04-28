@@ -12,6 +12,12 @@ const PhotoComponent = props => {
   return (
     <Paper style={{ padding: "25px", width: "500px", margin: "30px" }}>
       <img src={props.url} alt="" style={{ height: "300px", width: "500px" }} />
+      <Button
+        variant="contained"
+        onClick={() => props.handleDeletePhoto(props.url)}
+      >
+        Delete
+      </Button>
     </Paper>
   );
 };
@@ -36,7 +42,13 @@ class ManageGallery extends Component {
 
   getPictures = () => {
     return this.state.photos.map(p => {
-      return <PhotoComponent url={p} key={p} />;
+      return (
+        <PhotoComponent
+          url={p}
+          key={p}
+          handleDeletePhoto={this.handleDeletePhoto}
+        />
+      );
     });
   };
 
@@ -57,6 +69,20 @@ class ManageGallery extends Component {
         .catch(err => console.log(err));
 
       this.handleAddPhoto();
+    }
+  };
+
+  handleDeletePhoto = url => {
+    const { orgId } = this.props;
+    if (url) {
+      hackyApiUtility
+        .deletePhoto(orgId, url)
+        .then(resp => {
+          var { photos } = this.state;
+          photos = photos.filter(p => p != resp);
+          this.setState({ photos });
+        })
+        .catch(err => console.log(err));
     }
   };
 
