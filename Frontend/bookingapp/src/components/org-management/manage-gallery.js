@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import { hackyApiUtility } from "../../utilities/hacky-api-utility";
-import { Paper } from "@material-ui/core";
+import {
+  Paper,
+  Button,
+  Dialog,
+  TextField,
+  DialogTitle
+} from "@material-ui/core";
 
 const PhotoComponent = props => {
   return (
@@ -12,7 +18,9 @@ const PhotoComponent = props => {
 
 class ManageGallery extends Component {
   state = {
-    photos: []
+    photos: [],
+    addPhoto: false,
+    url: ""
   };
 
   componentDidMount() {
@@ -32,8 +40,79 @@ class ManageGallery extends Component {
     });
   };
 
+  handleAddPhoto = () => {
+    this.setState({ addPhoto: !this.state.addPhoto });
+  };
+
+  addPhoto = () => {
+    const { url } = this.state;
+    if (url) {
+      hackyApiUtility
+        .addPhoto(this.props.orgId, url)
+        .then(resp => {
+          var { photos } = this.state;
+          photos.push(resp.url);
+          this.setState({ photos });
+        })
+        .catch(err => console.log(err));
+
+      this.handleAddPhoto();
+    }
+  };
+
+  handleURLChange = e => {
+    this.setState({
+      url: e.target.value
+    });
+  };
+
   render() {
-    return <div>{this.getPictures()}</div>;
+    return (
+      <div>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            alignItem: "center",
+            justifyContent: "center"
+          }}
+        >
+          {this.getPictures()}
+        </div>
+        <Button variant="contained" onClick={this.handleAddPhoto}>
+          Add Photo
+        </Button>
+        <Dialog open={this.state.addPhoto} onClose={this.handleAddPhoto}>
+          <Paper>
+            <DialogTitle>Add New Photo</DialogTitle>
+            <div style={{ textAlign: "center" }}>
+              <TextField
+                type="text"
+                id="outlined-email"
+                label="Photo URL"
+                // className={classes.textField}
+                value={this.state.url}
+                onChange={e => this.handleURLChange(e)}
+                margin="normal"
+                variant="outlined"
+              />
+            </div>
+            <div style={{ margin: "10px", textAlign: "center" }}>
+              <Button
+                variant="contained"
+                onClick={this.addPhoto}
+                style={{ marginRight: "10px" }}
+              >
+                Add Photo
+              </Button>
+              <Button variant="contained" onClick={this.handleAddPhoto}>
+                Cancel
+              </Button>
+            </div>
+          </Paper>
+        </Dialog>
+      </div>
+    );
   }
 }
 
