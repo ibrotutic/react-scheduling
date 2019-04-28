@@ -91,6 +91,82 @@ curl "http://cs309-pp-7.misc.iastate.edu:8080/employees/org?orgId=youtellme"
 
 `GET http://cs309-pp-7.misc.iastate.edu:8080/employees/org?orgId=<ID>`
 
+## Get all photo urls of an org
+
+Gets all the photos for an orgs gallery
+
+```shell
+curl "http://cs309-pp-7.misc.iastate.edu:8080/org/photos?orgId=youtellme"
+  -H "Content-Type: application/json"
+```
+
+```javascript
+// todo
+```
+
+> Returns photos as a string in a list
+
+```json
+[
+  "https://google.com/photo/examples",
+  "foobarbaz.com/photo?123342"
+]
+```
+
+### HTTP Request
+
+`GET http://cs309-pp-7.misc.iastate.edu:8080/org/photos?orgId=<ID>`
+
+## Add photo to an org
+
+Adds single photo to an org
+
+```shell
+curl "http://cs309-pp-7.misc.iastate.edu:8080/org/photos?orgId=youtellme&url=htts://asdfasdfa"
+  -X POST -H "Content-Type: application/json"
+```
+
+```javascript
+// todo
+```
+
+> Returns the url added
+
+```json
+{
+  "https://google.com/photo/examples"
+}
+```
+
+### HTTP Request
+
+`POST http://cs309-pp-7.misc.iastate.edu:8080/org/photos?orgId=<ID>&url=<URL>`
+
+## Delete a photo from an org
+
+Deletes a photo from an org
+
+```shell
+curl "http://cs309-pp-7.misc.iastate.edu:8080/org/photos?orgId=youtellme&url=asdf"
+  -X DELETE -H "Content-Type: application/json"
+```
+
+```javascript
+// todo
+```
+
+> Returns string of the url deleted
+
+```json
+{
+  "https://google.com/photo/examples"
+ }
+```
+
+### HTTP Request
+
+`GET http://cs309-pp-7.misc.iastate.edu:8080/org/photos?orgId=<ID>`
+
 ## Add an employee by email to org
 
 Adds an employee to the org specefied by email address
