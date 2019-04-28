@@ -175,6 +175,28 @@ export var hackyApiUtility = (function() {
     });
   };
 
+  hackyApi.addPhoto = function(orgId, url) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(`${endpointBase}/org/photos?orgId=${orgId}&url=${url}`)
+        .then(resp => {
+          resolve(resp.data);
+        })
+        .catch(err => reject(err));
+    });
+  };
+
+  hackyApi.deletePhoto = function(orgId, url) {
+    return new Promise((resolve, reject) => {
+      axios
+        .delete(`${endpointBase}/org/photos?orgId=${orgId}&url=${url}`)
+        .then(resp => {
+          resolve(resp.data);
+        })
+        .catch(err => reject(err));
+    });
+  };
+
   hackyApi.removeEmployee = function(employeeId, orgId) {
     //remove an employee from a given orgid
     return new Promise((resolve, reject) => {
