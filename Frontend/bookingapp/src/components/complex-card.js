@@ -43,7 +43,6 @@ class ComplexCard extends Component{
                 lat: props.props.cLat,
                 long: props.props.cLong,
                 distance: props.props.distance,
-                averageRating: props.props.averageRating
             }
         };
         this.onClick = this.onClick.bind(this);
