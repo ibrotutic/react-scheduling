@@ -94,4 +94,5 @@ public class OrgController {
         photoRepository.deleteByOrgIdAndUrl(orgId, url);
         return url;
     }
+
 }

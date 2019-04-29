@@ -1,8 +1,10 @@
 package com.booking309.bookingapp309.controllers;
 
+import com.booking309.bookingapp309.notifications.NotificationWrapper;
 import com.booking309.bookingapp309.objects.Employee;
 import com.booking309.bookingapp309.objects.Person;
 import com.booking309.bookingapp309.repositories.EmployeeRepository;
+import com.booking309.bookingapp309.repositories.OrgRepository;
 import com.booking309.bookingapp309.repositories.PersonRepository;
 import net.bytebuddy.utility.RandomString;
 import org.junit.Before;
@@ -11,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +32,19 @@ public class EmployeeControllerTest {
     private PersonRepository mockPersonRepository;
     private EmployeeController employeeController;
 
+    @Mock
+    private OrgRepository mockOrgRepository;
+
+    @Mock
+    private NotificationWrapper mockNotificationWrapper;
+
+    @Mock
+    private SimpMessagingTemplate mockedSimpMessageingTemplate;
+
     @Before
     public void setUp() {
-        employeeController = new EmployeeController(mockEmployeeRepository, mockPersonRepository);
+        employeeController = new EmployeeController(mockEmployeeRepository, mockPersonRepository,
+                mockOrgRepository, mockedSimpMessageingTemplate, mockNotificationWrapper);
     }
 
     @Test
