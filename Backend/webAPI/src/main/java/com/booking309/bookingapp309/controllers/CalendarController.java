@@ -61,7 +61,9 @@ public class CalendarController {
     public @ResponseBody void deleteCalendar(@RequestParam int id){
         Appointment appointmentToDelete = appointmentRepository.findById(id);
         appointmentRepository.deleteById(id);
-        sendAppointmentDeletedNotification(appointmentToDelete);
+        if (appointmentStartTimeIsValid(appointmentToDelete.getStartTime())) {
+            sendAppointmentDeletedNotification(appointmentToDelete);
+        }
     }
 
     private void sendAppointmentDeletedNotification(Appointment deletedAppointment) {
