@@ -87,7 +87,7 @@ class NotificationModal extends Component {
               <h2>
                 New Job!
               </h2>
-              <Typography>You have been added as an employee!</Typography>
+              <Typography>You have been added as an employee of {this.props.notificationInfo.content.name}</Typography>
               <p></p>
               <Button
                   variant="contained"
@@ -103,7 +103,7 @@ class NotificationModal extends Component {
               <h2>
                 Removed from Organization
               </h2>
-              <Typography>You are no longer an employee.</Typography>
+              <Typography>You are no longer an employee of {this.props.notificationInfo.content.name}</Typography>
               <p></p>
               <Button
                   variant="contained"
