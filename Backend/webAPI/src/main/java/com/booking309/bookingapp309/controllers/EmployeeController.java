@@ -97,12 +97,16 @@ public class EmployeeController {
     @CrossOrigin
     @DeleteMapping("/employees")
     public @ResponseBody void deleteEmployee(@RequestParam String empId, String orgId){
+
+        Organization org = orgRepository.findByOrgId(orgId);
+        Person person = personRepository.findBypId(empId);
+        sendRemovedEmployeeNotification(org, person);
         empRepository.deleteByEmpIdAndOrgId(empId, orgId);
     }
 
 
-    private void sendRemovedEmployeeNotification(Organization org, Employee employee) {
-        Notification removedEmployeeNotification = notificationWrapper.createRemovedEmployeeNotification(org, employee);
+    private void sendRemovedEmployeeNotification(Organization org, Person person) {
+        Notification removedEmployeeNotification = notificationWrapper.createRemovedEmployeeNotification(org, person);
         simp.convertAndSend("/topic/appt/" + removedEmployeeNotification.getDestinationId(), removedEmployeeNotification);
     }
 

@@ -3,6 +3,7 @@ package com.booking309.bookingapp309.notifications;
 import com.booking309.bookingapp309.objects.Appointment;
 import com.booking309.bookingapp309.objects.Employee;
 import com.booking309.bookingapp309.objects.Organization;
+import com.booking309.bookingapp309.objects.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,8 +33,8 @@ public class NotificationWrapper {
         return notificationManager.createNotificationForNewEmployee(org, employee);
     }
 
-    public Notification createRemovedEmployeeNotification(Organization org, Employee employee) {
-        return notificationManager.createNotificationForRemovedEmployee(org, employee);
+    public Notification createRemovedEmployeeNotification(Organization org, Person person) {
+        return notificationManager.createNotificationForRemovedEmployee(org, person);
     }
 
 }
