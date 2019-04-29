@@ -13,13 +13,16 @@ export var hackyApiUtility = (function() {
   };
 
   hackyApi.createOrg = function(orgDetails, admin) {
-    elasticsearchUtility.createOrg(orgDetails).then(function (response) {
-      orgDetails.documentId = response._id;
-      hackyApi.createSpringOrg(orgDetails);
-    }, function(error) {
-      console.log(error);
-      alert(error);
-    });
+    elasticsearchUtility.createOrg(orgDetails).then(
+      function(response) {
+        orgDetails.documentId = response._id;
+        hackyApi.createSpringOrg(orgDetails);
+      },
+      function(error) {
+        console.log(error);
+        alert(error);
+      }
+    );
     //our api expects a list...so we send one.
     let employeeList = [];
     employeeList.push(admin);
@@ -40,19 +43,18 @@ export var hackyApiUtility = (function() {
   };
 
   hackyApi.leaveAReview = function(review) {
-    return new Promise ((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       axios
-          .post(endpointBase + "/rating", review, {
-            headers: headers
-          })
-          .then(function(response) {
-            resolve(response);
-          })
-          .catch(function(error) {
-            reject(error);
-          });
-    })
-
+        .post(endpointBase + "/rating", review, {
+          headers: headers
+        })
+        .then(function(response) {
+          resolve(response);
+        })
+        .catch(function(error) {
+          reject(error);
+        });
+    });
   };
 
   hackyApi.createUser = function(userDetails, callback) {
@@ -162,6 +164,39 @@ export var hackyApiUtility = (function() {
       });
   };
 
+  hackyApi.getPhotosForOrg = function(orgId) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`${endpointBase}/org/photos?orgId=${orgId}`)
+        .then(resp => {
+          resolve(resp.data);
+        })
+        .catch(err => reject(err));
+    });
+  };
+
+  hackyApi.addPhoto = function(orgId, url) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(`${endpointBase}/org/photos?orgId=${orgId}&url=${url}`)
+        .then(resp => {
+          resolve(resp.data);
+        })
+        .catch(err => reject(err));
+    });
+  };
+
+  hackyApi.deletePhoto = function(orgId, url) {
+    return new Promise((resolve, reject) => {
+      axios
+        .delete(`${endpointBase}/org/photos?orgId=${orgId}&url=${url}`)
+        .then(resp => {
+          resolve(resp.data);
+        })
+        .catch(err => reject(err));
+    });
+  };
+
   hackyApi.removeEmployee = function(employeeId, orgId) {
     //remove an employee from a given orgid
     return new Promise((resolve, reject) => {
@@ -240,13 +275,13 @@ export var hackyApiUtility = (function() {
   hackyApi.deleteAppointmentByAppointmentId = function(appointmentId) {
     return new Promise((resolve, reject) => {
       axios
-          .delete(endpointBase + "/calendar?id=" + appointmentId)
-          .then(resp => {
-            resolve(resp);
-          })
-          .catch(err => {
-            reject(err);
-          });
+        .delete(endpointBase + "/calendar?id=" + appointmentId)
+        .then(resp => {
+          resolve(resp);
+        })
+        .catch(err => {
+          reject(err);
+        });
     });
   };
 

@@ -8,6 +8,7 @@ import ViewOrgManagement from "../components/org-management/view-org-mgmt";
 import ViewOrgEmployees from "../components/org-management/view-org-emp";
 import EditOrgManagement from "../components/org-management/edit-org-mgmt";
 import SimpleDialog from "../components/choose-org-dialog";
+import ManageGallery from "../components/org-management/manage-gallery";
 
 class ManageOrgs extends Component {
   state = {
@@ -57,6 +58,8 @@ class ManageOrgs extends Component {
         return (
           <ViewOrgEmployees org={org} editMode={this.handleEmplEditMode} />
         );
+      case 2:
+        return <ManageGallery orgId={org.orgId} />;
       default:
         return <div>Unknown Tab</div>;
     }
@@ -93,6 +96,7 @@ class ManageOrgs extends Component {
             >
               <Tab label="Manage Org" />
               <Tab label="Manage Employees" />
+              <Tab label="Manage Gallery" />
             </Tabs>
           </Paper>
           {this.getCorrectTab(orgs)}
