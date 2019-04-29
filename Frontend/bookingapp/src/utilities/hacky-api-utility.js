@@ -2,7 +2,7 @@ import elasticsearchUtility from "./elastic-search-utility";
 import axios from "axios";
 import { Auth } from "aws-amplify";
 
-export const endpointBase = "http://localhost:8080";
+export const endpointBase = "http://cs309-pp-7.misc.iastate.edu:8080";
 
 export var hackyApiUtility = (function() {
   let hackyApi = {}; // Public object
@@ -40,6 +40,28 @@ export var hackyApiUtility = (function() {
       .catch(function(error) {
         console.log("Spring create error:" + error.toString());
       });
+  };
+
+  hackyApi.getReviewsForOrg = function(orgId) {
+      return new Promise((resolve, reject) => {
+        axios
+            .get(`${endpointBase}/rating/org?orgId=${orgId}`)
+            .then(resp => {
+              resolve(resp.data);
+            })
+            .catch(err => reject(err));
+      });
+  };
+
+  hackyApi.getAverageRatingForOrg = function(orgId) {
+    return new Promise((resolve, reject) => {
+      axios
+          .get(`${endpointBase}/rating/average?orgId=${orgId}`)
+          .then(resp => {
+            resolve(resp.data);
+          })
+          .catch(err => reject(err));
+    });
   };
 
   hackyApi.leaveAReview = function(review) {

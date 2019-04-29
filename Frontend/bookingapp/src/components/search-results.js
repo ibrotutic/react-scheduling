@@ -5,6 +5,7 @@ import GeocodingUtil from "../utilities/geocoding-utils";
 import SortingUtils from "../utilities/sorting-utils"
 import ComplexCard from "./complex-card";
 import {isMobile} from 'react-device-detect';
+import hackyApiUtility from "../utilities/hacky-api-utility";
 import Sorting from './sorting';
 
 
@@ -78,14 +79,35 @@ class SearchResults extends Component {
       let sortedArray = SortingUtils.sortByName(this.props.results, direction);
       this.setState({results:sortedArray});
     }
+    else if (field === "averageRating") {
+      let sortedArray = SortingUtils.sortByRating(this.props.results, direction);
+      this.setState({results:sortedArray});
+    }
+  }
+
+  getAverageRatings(results) {
+    let self = this;
+    if(results && results.length > 0) {
+      results.map(result => {
+        hackyApiUtility.getAverageRatingForOrg(result.orgId).then(average => {
+          results.find(arrayResult => arrayResult.orgId === result.orgId).averageRating = average;
+          self.setState({results: results});
+        }).catch(rejected => {
+          console.log("No data for org" + rejected);
+        });
+        return result;
+      });
+    }
   }
 
   componentDidMount() {
     this.generateDistances(this.props.results);
+    this.getAverageRatings(this.props.results);
   }
 
   componentWillReceiveProps(nextProps, nextContext){
     this.generateDistances(nextProps.results);
+    this.getAverageRatings(nextProps.results);
   };
 
   getResultList() {

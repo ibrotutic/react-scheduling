@@ -6,6 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from "@material-ui/core/Button";
 import {connect} from "react-redux";
+import hackyApiUtility from "../utilities/hacky-api-utility";
 
 const styles = theme => ({
     root: {
@@ -31,7 +32,6 @@ const styles = theme => ({
 class ComplexCard extends Component{
     constructor(props) {
         super(props);
-
         this.state = {
             orgInfo: {
                 name: props.props.name,
@@ -42,7 +42,8 @@ class ComplexCard extends Component{
                 tags: props.props.tags,
                 lat: props.props.cLat,
                 long: props.props.cLong,
-                distance: props.props.distance
+                distance: props.props.distance,
+                averageRating: props.props.averageRating
             }
         };
         this.onClick = this.onClick.bind(this);
@@ -50,6 +51,16 @@ class ComplexCard extends Component{
 
     onClick() {
         this.props.populateOrgInfo(this.state.orgInfo);
+    }
+
+    componentDidMount() {
+        hackyApiUtility.getAverageRatingForOrg(this.state.orgInfo.orgId).then(averageRating => {
+            let orgInfo = this.state.orgInfo;
+            orgInfo.averageRating = averageRating;
+            this.setState({orgInfo:orgInfo});
+        }).catch(rejected => {
+            console.log("No data for org" + rejected);
+        });
     }
 
     render() {
@@ -60,6 +71,7 @@ class ComplexCard extends Component{
                     <Grid container spacing={16}>
                         <Grid item className={classes.image}>
                             <img className={classes.img} alt={"org"} src={require('../isu.png')} />
+                            {this.state.orgInfo.averageRating ? "Rating: "+ this.state.orgInfo.averageRating : ""}
                         </Grid>
                         <Grid item xs={12} sm container>
                             <Grid item xs container direction="column" spacing={16}>
