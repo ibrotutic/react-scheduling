@@ -39,6 +39,15 @@ class Sorting extends Component {
                         </div>
                     </Paper>
                 </Grid>
+                <Grid item xs>
+                    <Paper className={styles.paper}>
+                        <div style={{display: "flex", flexDirection: "column"}}>
+                            Rating
+                            <Button onClick={() => this.sort("averageRating", "asc")}>Ascending</Button>
+                            <Button onClick={() => this.sort("averageRating", "des")}>Descending</Button>
+                        </div>
+                    </Paper>
+                </Grid>
             </Grid>
                 <Button onClick={this.openSorting}>Cancel</Button>
             </Paper>

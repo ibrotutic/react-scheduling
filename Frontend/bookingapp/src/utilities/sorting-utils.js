@@ -22,7 +22,16 @@ const SortingUtility = {
             return 0;
         });
         return inputArray;
-    }
+    },
+    sortByRating(inputArray, direction) {
+        inputArray.sort(function(a, b){
+            if (direction === "des") {
+                return b.averageRating - a.averageRating
+            }
+            return a.averageRating - b.averageRating
+        });
+        return inputArray;
+    },
 };
 
 export default SortingUtility;

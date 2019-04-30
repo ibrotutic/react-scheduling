@@ -11,6 +11,13 @@ import hackyApiUtility from "../../utilities/hacky-api-utility";
 import SelectTime from "../select-time";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
+import List from "@material-ui/core/List";
+import FullStar from 'react-ionicons/lib/MdStar';
+import EmptyStar from 'react-ionicons/lib/MdStarOutline';
+import ListItem from "@material-ui/core/ListItem"
+import {ListItemText} from "@material-ui/core";
+import Rating from "react-rating";
+import Divider from "@material-ui/core/Divider";
 
 const styles = theme => ({
   paper: {
@@ -93,7 +100,7 @@ class OrganizationSchedulingModal extends Component {
   }
 
   componentDidMount() {
-    this.setState({ loading: true, photosLoading: true });
+    this.setState({ loading: true, photosLoading: true, reviewsLoading: true});
     const { orgId } = this.props.orgInfo;
 
     hackyApiUtility.getEmployeesForOrg(orgId, resp => {
@@ -105,6 +112,11 @@ class OrganizationSchedulingModal extends Component {
       this.setState({ urls });
       this.setState({ photosLoading: false });
     });
+
+    hackyApiUtility.getReviewsForOrg(orgId).then(reviews => {
+      this.setState({reviews});
+      this.setState({reviewsLoading: false});
+    })
   }
 
   onClick() {
@@ -164,6 +176,53 @@ class OrganizationSchedulingModal extends Component {
     }
   };
 
+  getReviews = () => {
+    const { reviewsLoading, reviews } = this.state;
+    console.log(reviews);
+
+    if (reviewsLoading) {
+      return <LoadingIndicator/>
+    }
+    else if (!reviews || reviews.length === 0) {
+      return <h1>No reviews yet</h1>
+    }
+    else {
+      return <List>
+        {this.getReviewsList(reviews)}
+      </List>
+    }
+
+  };
+
+  getReviewsList = (reviews) => {
+    return reviews.map(review =>
+        (
+            <ListItem
+                key={review.appointmentId}
+                style={{
+                  marginBottom: "10px",
+                  alignItems:"flex-start"
+                }}
+            >
+              <ListItemText>
+                <Typography variant="h5" gutterBottom>
+                {review.reviewerName}
+                </Typography>
+                <Rating
+                    emptySymbol={<EmptyStar/>}
+                    fullSymbol={<FullStar/>}
+                    initialRating={review.rating}
+                    readonly
+                />
+                <Typography variant="body1" gutterBottom>
+                  {review.description}
+                </Typography>
+              </ListItemText>
+              <Divider />
+            </ListItem>
+        ));
+  };
+
   getPhotos = () => {
     const { photosLoading, urls } = this.state;
 
@@ -202,6 +261,7 @@ class OrganizationSchedulingModal extends Component {
       case "gallery":
         return this.getPhotos();
       case "ratings":
+        return this.getReviews();
       default:
         return <div>{selectedTab}</div>;
     }
@@ -219,7 +279,6 @@ class OrganizationSchedulingModal extends Component {
       schedule: this.scheduleAppointment,
       hideModal: this.props.hideModal
     };
-    console.log(calendarProps.employeeError);
     let orgInfo = this.props.orgInfo;
 
     return (

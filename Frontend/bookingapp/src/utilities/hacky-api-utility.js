@@ -42,6 +42,28 @@ export var hackyApiUtility = (function() {
       });
   };
 
+  hackyApi.getReviewsForOrg = function(orgId) {
+      return new Promise((resolve, reject) => {
+        axios
+            .get(`${endpointBase}/rating/org?orgId=${orgId}`)
+            .then(resp => {
+              resolve(resp.data);
+            })
+            .catch(err => reject(err));
+      });
+  };
+
+  hackyApi.getAverageRatingForOrg = function(orgId) {
+    return new Promise((resolve, reject) => {
+      axios
+          .get(`${endpointBase}/rating/average?orgId=${orgId}`)
+          .then(resp => {
+            resolve(resp.data);
+          })
+          .catch(err => reject(err));
+    });
+  };
+
   hackyApi.leaveAReview = function(review) {
     return new Promise((resolve, reject) => {
       axios
