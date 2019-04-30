@@ -37,7 +37,6 @@ class App extends Component {
   }
 
   notify = notification => {
-    console.log(notification);
     var info = {
       notificationType: notification.notificationType,
       content: notification.notificationBody
@@ -60,7 +59,7 @@ class App extends Component {
             topics={[
               "/topic/appt",
               "/topic/appt/" +
-                (this.props.cognito ? this.props.cognito.attributes.sub : "")
+                (this.props.cognito && this.props.cognito.attributes && this.props.cognito.attributes.sub ? this.props.cognito.attributes.sub : "")
             ]}
             ref={client => {
               this.clientRef = client;

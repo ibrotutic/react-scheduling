@@ -17,8 +17,8 @@ public class NotificationManager {
         return new Notification<>(NotificationType.ADD_EMPLOYEE, organization, addedEmployee.getEmpId());
     }
 
-    public Notification createNotificationForCancelledAppointment(Appointment appointment){
-        return new Notification<>(NotificationType.CANCEL_APPOINTMENT, appointment, appointment.getEmpId());
+    public Notification createNotificationForCancelledAppointment(Appointment appointment, String destinationId){
+        return new Notification<>(NotificationType.CANCEL_APPOINTMENT, appointment, destinationId);
     }
 
     public Notification createNotificationForRemovedEmployee(Organization organization, Person removedPerson){

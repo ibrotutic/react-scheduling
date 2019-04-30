@@ -57,17 +57,24 @@ public class CalendarController {
     }
     
     @CrossOrigin
-    @DeleteMapping("/calendar")
-    public @ResponseBody void deleteCalendar(@RequestParam int id){
+    @DeleteMapping(value = "/calendar", params = "sender")
+    public @ResponseBody ResponseEntity deleteCalendar(@RequestParam int id, @RequestParam String sender){
         Appointment appointmentToDelete = appointmentRepository.findById(id);
         appointmentRepository.deleteById(id);
         if (appointmentStartTimeIsValid(appointmentToDelete.getStartTime())) {
-            sendAppointmentDeletedNotification(appointmentToDelete);
+            String destinationId;
+            if (sender.equals(appointmentToDelete.getEmpId())) {
+                destinationId = appointmentToDelete.getClientId();
+            } else {
+                destinationId = appointmentToDelete.getEmpId();
+            }
+            sendAppointmentDeletedNotification(appointmentToDelete, destinationId);
         }
+        return ResponseEntity.ok("Deleted");
     }
 
-    private void sendAppointmentDeletedNotification(Appointment deletedAppointment) {
-        Notification deletedAppointmentNotification = notificationWrapper.createAppointmentDeletedNotification(deletedAppointment);
+    private void sendAppointmentDeletedNotification(Appointment deletedAppointment, String destinationId) {
+        Notification deletedAppointmentNotification = notificationWrapper.createAppointmentDeletedNotification(deletedAppointment, destinationId);
         simp.convertAndSend("/topic/appt/" + deletedAppointmentNotification.getDestinationId(), deletedAppointmentNotification);
     }
 

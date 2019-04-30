@@ -45,7 +45,9 @@ class LeaveReview extends React.Component {
                 appointmentId: this.state.appointment.id,
                 rating: this.state.rating,
                 description: this.state.description,
-                reviewerName: this.state.reviewerName
+                reviewerName: this.state.reviewerName,
+                empId: this.state.appointment.empId,
+                orgId: this.state.appointment.orgId
             };
             hackyApiUtility.leaveAReview(review).then((response) => {
                 this.props.props.success(response.data.appointmentId);
