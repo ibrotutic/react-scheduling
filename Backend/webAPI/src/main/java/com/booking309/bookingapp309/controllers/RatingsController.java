@@ -11,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @RestController
 public class RatingsController {
@@ -66,17 +64,11 @@ public class RatingsController {
     }
 
     private List<Rating> getRatingsListForEmployee(String empId){
-        return appointmentRepository.findAllByEmpId(empId).stream()
-                .map(appointment -> ratingsRepository.findByAppointmentId(appointment.getId()))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+        return ratingsRepository.findByEmpId(empId);
     }
 
     private List<Rating> getRatingsListForOrg(String orgId){
-        return appointmentRepository.findAllByOrgId(orgId).stream()
-                .map(appointment -> ratingsRepository.findByAppointmentId(appointment.getId()))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+        return ratingsRepository.findByOrgId(orgId);
     }
 
     private void updateAppointmentToRated(Rating rating) {

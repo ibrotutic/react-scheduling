@@ -8,5 +8,7 @@ import java.util.List;
 
 public interface RatingsRepository extends CrudRepository<Rating, Integer> {
     Rating findByAppointmentId(int appointmentId);
+    List<Rating> findByEmpId(String employeeId);
+    List<Rating> findByOrgId(String orgId);
 }
 

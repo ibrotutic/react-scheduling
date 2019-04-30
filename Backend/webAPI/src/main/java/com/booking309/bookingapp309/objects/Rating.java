@@ -12,9 +12,23 @@ public class Rating {
     private String reviewerName;
     private int rating;
     private String description;
+    private String empId;
+    private String orgId;
 
     public String getDescription() {
         return description;
+    }
+
+    public String getEmpId() { return empId; }
+
+    public String getOrgId() { return orgId; }
+
+    public void setEmpId(String empId) {
+        this.empId = empId;
+    }
+
+    public void setOrgId(String orgId) {
+        this.orgId = orgId;
     }
 
     public void setDescription(String description) {

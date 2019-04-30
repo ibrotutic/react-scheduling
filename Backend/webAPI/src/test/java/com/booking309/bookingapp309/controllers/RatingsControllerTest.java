@@ -46,30 +46,23 @@ public class RatingsControllerTest {
     @Test
     public void getEmployeeRating() {
         List<Rating> employeeRatingList = createRatingsList();
-        Rating rating = createRating();
         List<Appointment> employeeAppointmentList = createAppointmentList();
-        Appointment appointment = createAppointment();
 
-        Mockito.when(mockRatingsRepository.findByAppointmentId(APP_ID)).thenReturn(rating);
+        Mockito.when(mockRatingsRepository.findByEmpId(EMP_ID)).thenReturn(employeeRatingList);
         Mockito.when(mockAppointmentRepository.findAllByEmpId(Mockito.anyString())).thenReturn(employeeAppointmentList);
 
-        List<Rating> expectedRatingList = createExpectedRatingList(rating, employeeAppointmentList.size());
-
-        assertThat(ratingsController.getEmployeeRating(EMP_ID), is(expectedRatingList));
+        assertThat(ratingsController.getEmployeeRating(EMP_ID), is(employeeRatingList));
     }
 
     @Test
     public void getOrgRating() {
         List<Rating> orgRatingList = createRatingsList();
-        Rating rating = createRating();
         List<Appointment> orgAppointmentList = createAppointmentList();
 
-        Mockito.when(mockRatingsRepository.findByAppointmentId(APP_ID)).thenReturn(rating);
+        Mockito.when(mockRatingsRepository.findByOrgId(ORG_ID)).thenReturn(orgRatingList);
         Mockito.when(mockAppointmentRepository.findAllByOrgId(Mockito.anyString())).thenReturn(orgAppointmentList);
 
-        List<Rating> expectedRatingList = createExpectedRatingList(rating, orgAppointmentList.size());
-
-        assertThat(ratingsController.getOrgRating(ORG_ID), is(expectedRatingList));
+        assertThat(ratingsController.getOrgRating(ORG_ID), is(orgRatingList));
     }
 
     @Test
