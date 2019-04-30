@@ -42,7 +42,8 @@ class Appointments extends Component {
   }
 
   deleteAppointment(appointmentId, callback) {
-    hackyApiUtility.deleteAppointmentByAppointmentId(appointmentId).then((response) => {
+    let sender = this.props.cognito.attributes.sub;
+    hackyApiUtility.deleteAppointmentByAppointmentId(appointmentId, sender).then((response) => {
       let appointments = this.state.appts;
       appointments.splice(appointments.findIndex(function(i){
         return i.id === appointmentId;

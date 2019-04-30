@@ -25,8 +25,8 @@ public class NotificationWrapper {
         return notificationManager.createNotificationForNewAppointment(appointment);
     }
 
-    public Notification createAppointmentDeletedNotification(Appointment deletedAppointment){
-        return notificationManager.createNotificationForCancelledAppointment(deletedAppointment);
+    public Notification createAppointmentDeletedNotification(Appointment deletedAppointment, String destinationId){
+        return notificationManager.createNotificationForCancelledAppointment(deletedAppointment, destinationId);
     }
 
     public Notification createEmployeeAddedNotification(Organization org, Employee employee) {

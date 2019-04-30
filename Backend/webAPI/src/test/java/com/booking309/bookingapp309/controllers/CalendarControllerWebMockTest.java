@@ -96,9 +96,9 @@ public class CalendarControllerWebMockTest {
         Notification generatedNotification = new Notification<>(NotificationType.CANCEL_APPOINTMENT, testAppt, testAppt.getEmpId());
 
         when(mockApptRepository.findById(anyInt())).thenReturn(testAppt);
-        when(mockNotificationWrapper.createAppointmentDeletedNotification(any(Appointment.class))).thenReturn(generatedNotification);
+        when(mockNotificationWrapper.createAppointmentDeletedNotification(any(Appointment.class), anyString())).thenReturn(generatedNotification);
 
-        MockHttpServletResponse response = this.mockMvc.perform(delete("/calendar?id={id}", APP_ID))
+        MockHttpServletResponse response = this.mockMvc.perform(delete("/calendar?id={id}&sender={sender}", APP_ID, testAppt.getClientId()))
                 .andReturn()
                 .getResponse();
 

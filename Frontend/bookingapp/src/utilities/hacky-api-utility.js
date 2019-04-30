@@ -294,10 +294,10 @@ export var hackyApiUtility = (function() {
     });
   };
 
-  hackyApi.deleteAppointmentByAppointmentId = function(appointmentId) {
+  hackyApi.deleteAppointmentByAppointmentId = function(appointmentId, sender) {
     return new Promise((resolve, reject) => {
       axios
-        .delete(endpointBase + "/calendar?id=" + appointmentId)
+        .delete(endpointBase + "/calendar?id=" + appointmentId + "&sender=" + sender)
         .then(resp => {
           resolve(resp);
         })
