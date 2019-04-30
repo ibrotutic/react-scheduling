@@ -1,5 +1,9 @@
 package com.booking309.bookingapp309.controllers;
 
+import com.booking309.bookingapp309.notifications.Notification;
+import com.booking309.bookingapp309.notifications.NotificationManager;
+import com.booking309.bookingapp309.notifications.NotificationType;
+import com.booking309.bookingapp309.notifications.NotificationWrapper;
 import com.booking309.bookingapp309.objects.Appointment;
 import com.booking309.bookingapp309.repositories.AppointmentRepository;
 import net.bytebuddy.utility.RandomString;
@@ -20,8 +24,7 @@ import java.util.Random;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CalendarControllerTest {
@@ -33,10 +36,12 @@ public class CalendarControllerTest {
     @Mock
     private SimpMessagingTemplate mockedSimpMessageingTemplate;
     private CalendarController calendarController;
+    @Mock
+    private NotificationWrapper mockNotificationWrapper;
 
     @Before
     public void setUp() {
-        calendarController = new CalendarController(mockedAppointmentRepository, mockedSimpMessageingTemplate);
+        calendarController = new CalendarController(mockedAppointmentRepository, mockedSimpMessageingTemplate, mockNotificationWrapper);
     }
 
     @Test
@@ -52,6 +57,8 @@ public class CalendarControllerTest {
     @Test
     public void putAppointmentInFutureByPersonReturnsSuccess() {
         Appointment appointment = createValidFutureAppointment();
+        Notification generatedNotification = new Notification<>(NotificationType.CREATE_APPOINTMENT, appointment, appointment.getEmpId());
+        when(mockNotificationWrapper.createNewAppointmentNotification(appointment)).thenReturn(generatedNotification);
 
         assertThat(calendarController.putAppointment(appointment), is(ResponseEntity.ok(appointment)));
     }
@@ -77,6 +84,8 @@ public class CalendarControllerTest {
         List<Appointment> apptList = new ArrayList<>();
         apptList.add(appointment);
 
+        Notification generatedNotification = new Notification<>(NotificationType.CREATE_APPOINTMENT, appointment, appointment.getEmpId());
+        when(mockNotificationWrapper.createNewAppointmentNotification(nonOverlappingAppointment)).thenReturn(generatedNotification);
         Mockito.when(mockedAppointmentRepository.findAllByClientIdOrEmpId(anyString(), anyString())).thenReturn(apptList);
 
         assertThat(calendarController.putAppointment(nonOverlappingAppointment), is(ResponseEntity.ok(nonOverlappingAppointment)));
@@ -93,8 +102,10 @@ public class CalendarControllerTest {
     public void employeeIsNotifiedOfNewAppointment() {
         Appointment appointment = createValidFutureAppointment();
 
+        Notification generatedNotification = new Notification<>(NotificationType.CREATE_APPOINTMENT, appointment, appointment.getEmpId());
+        when(mockNotificationWrapper.createNewAppointmentNotification(appointment)).thenReturn(generatedNotification);
         calendarController.putAppointment(appointment);
-        verify(mockedSimpMessageingTemplate, times(1)).convertAndSend("/topic/appt/" + appointment.getEmpId(), appointment);
+        verify(mockedSimpMessageingTemplate, times(1)).convertAndSend("/topic/appt/" + generatedNotification.getDestinationId(), generatedNotification);
     }
 
     private Appointment createRandomAppointment() {

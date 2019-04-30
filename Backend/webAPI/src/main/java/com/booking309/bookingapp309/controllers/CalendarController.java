@@ -1,5 +1,7 @@
 package com.booking309.bookingapp309.controllers;
 
+import com.booking309.bookingapp309.notifications.Notification;
+import com.booking309.bookingapp309.notifications.NotificationWrapper;
 import com.booking309.bookingapp309.objects.Appointment;
 import com.booking309.bookingapp309.repositories.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +18,13 @@ import java.util.List;
 public class CalendarController {
     private AppointmentRepository appointmentRepository;
     private SimpMessagingTemplate simp;
+    private NotificationWrapper notificationWrapper;
 
     @Autowired
-    public CalendarController(AppointmentRepository appointmentRepository, SimpMessagingTemplate simp) {
+    public CalendarController(AppointmentRepository appointmentRepository, SimpMessagingTemplate simp, final NotificationWrapper notificationWrapper) {
         this.appointmentRepository = appointmentRepository;
         this.simp = simp;
+        this.notificationWrapper = notificationWrapper;
     }
 
     @CrossOrigin
@@ -44,7 +48,7 @@ public class CalendarController {
         boolean validAppointment = isValidAppointment(appointment);
         if (validAppointment) {
             appointmentRepository.save(appointment);
-            subscribeAppointment(appointment);
+            sendNewAppointmentNotification(appointment);
             return ResponseEntity.ok(appointment);
         }
         else {
@@ -55,11 +59,21 @@ public class CalendarController {
     @CrossOrigin
     @DeleteMapping("/calendar")
     public @ResponseBody void deleteCalendar(@RequestParam int id){
+        Appointment appointmentToDelete = appointmentRepository.findById(id);
         appointmentRepository.deleteById(id);
+        if (appointmentStartTimeIsValid(appointmentToDelete.getStartTime())) {
+            sendAppointmentDeletedNotification(appointmentToDelete);
+        }
     }
 
-    private void subscribeAppointment(Appointment appointment) {
-        simp.convertAndSend("/topic/appt/" + appointment.getEmpId(), appointment);
+    private void sendAppointmentDeletedNotification(Appointment deletedAppointment) {
+        Notification deletedAppointmentNotification = notificationWrapper.createAppointmentDeletedNotification(deletedAppointment);
+        simp.convertAndSend("/topic/appt/" + deletedAppointmentNotification.getDestinationId(), deletedAppointmentNotification);
+    }
+
+    private void sendNewAppointmentNotification(Appointment appointment) {
+        Notification newAppointmentNotification = notificationWrapper.createNewAppointmentNotification(appointment);
+        simp.convertAndSend("/topic/appt/" + newAppointmentNotification.getDestinationId(), newAppointmentNotification);
     }
 
     private boolean isValidAppointment(Appointment requestedAppointment) {
