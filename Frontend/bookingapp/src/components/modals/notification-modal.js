@@ -81,6 +81,38 @@ class NotificationModal extends Component {
               </Button>
             </div>
         );
+      case "ADD_EMPLOYEE":
+        return (
+            <div style={{textAlign: "center"}}>
+              <h2>
+                New Job!
+              </h2>
+              <Typography>You have been added as an employee of {this.props.notificationInfo.content.name}</Typography>
+              <p></p>
+              <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => this.props.closeModal()}>
+                Ok
+              </Button>
+            </div>
+        );
+      case "REMOVE_EMPLOYEE":
+        return (
+            <div style={{textAlign: "center"}}>
+              <h2>
+                Removed from Organization
+              </h2>
+              <Typography>You are no longer an employee of {this.props.notificationInfo.content.name}</Typography>
+              <p></p>
+              <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => this.props.closeModal()}>
+                Ok
+              </Button>
+            </div>
+        );
       default:
         return null;
     }
