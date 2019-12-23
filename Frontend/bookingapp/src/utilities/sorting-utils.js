@@ -26,9 +26,12 @@ const SortingUtility = {
     sortByRating(inputArray, direction) {
         inputArray.sort(function(a, b){
             if (direction === "des") {
-                return b.averageRating - a.averageRating
+                return (a.averageRating===null)-(b.averageRating===null) || -(a.averageRating>b.averageRating)||+(a.averageRating<b.averageRating);
             }
-            return a.averageRating - b.averageRating
+            else if (direction === "asc") {
+                return (a.averageRating===null)-(b.averageRating===null) || +(a.averageRating>b.averageRating)||-(a.averageRating<b.averageRating);
+            }
+
         });
         return inputArray;
     },

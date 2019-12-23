@@ -75,6 +75,7 @@ class Sorting extends Component {
         this.setState(prevState => ({
             open: !prevState.open
         }));
+        console.log(direction);
         this.props.sortBy(field, direction);
     }
 
